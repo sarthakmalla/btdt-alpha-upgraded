@@ -225,12 +225,17 @@
     .ios-lockscreen.dragging {
       transition: none !important;
     }
-    .ios-lockscreen.unlocked,
-    .ios-lockscreen.hidden-os {
+    .ios-lockscreen.unlocked {
       transform: translate3d(0, -104%, 0) scale(0.96) !important;
       opacity: 0 !important;
       pointer-events: none !important;
       visibility: hidden !important;
+    }
+    .ios-lockscreen.hidden-os {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      opacity: 0 !important;
     }
     .ls-torch-glow {
       position: absolute;
