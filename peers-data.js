@@ -3,13 +3,13 @@ window.BTDT_SEED = (() => {
   const UNI_LOGO_FILES = {
     tum: { src: "./media/unis/tum.svg", wide: true },
     mit: { src: "./media/unis/mit.svg", wide: true },
-    stanford: { src: "./media/unis/stanford.svg", wide: false },
+    stanford: { src: "./media/unis/stanford.svg", wide: true },
     ethz: { src: "./media/unis/ethz.svg", wide: true },
     epfl: { src: "./media/unis/epfl.svg", wide: true },
     columbia: { src: "./media/unis/columbia.svg", wide: false },
-    berkeley: { src: "./media/unis/berkeley.svg", wide: false },
+    berkeley: { src: "./media/unis/berkeley.svg", wide: true },
     princeton: { src: "./media/unis/princeton.svg", wide: true },
-    yale: { src: "./media/unis/yale.svg", wide: false },
+    yale: { src: "./media/unis/yale.svg", wide: true },
     lse: { src: "./media/unis/lse.svg", wide: false },
     lmu: { src: "./media/unis/lmu.svg", wide: true },
     ubc: { src: "./media/unis/ubc.svg", wide: false },
@@ -21,7 +21,7 @@ window.BTDT_SEED = (() => {
     uoft: { src: "./media/unis/uoft.svg", wide: true },
     manchester: { src: "./media/unis/manchester.svg", wide: false },
     rwth: { src: "./media/unis/rwth.svg", wide: true },
-    uva: { src: "./media/unis/uva.svg", wide: false },
+    uva: { src: "./media/unis/uva.svg", wide: true },
     asu: { src: "./media/unis/asu.svg", wide: true },
     oxford: { src: "./media/unis/oxford.svg", wide: false },
     cambridge: { src: "./media/unis/cambridge.svg", wide: false },
@@ -30,7 +30,7 @@ window.BTDT_SEED = (() => {
     delft: { src: "./media/unis/delft.svg", wide: false },
     mcgill: { src: "./media/unis/mcgill.svg", wide: false },
     melbourne: { src: "./media/unis/melbourne.svg", wide: false },
-    harvard: { src: "./media/unis/harvard.svg", wide: false }
+    harvard: { src: "./media/unis/harvard.svg", wide: true }
   };
 
   function getUniLogo(uni, sizeClass = "w-5 h-5") {

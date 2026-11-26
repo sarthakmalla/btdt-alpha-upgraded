@@ -573,136 +573,158 @@
     .ios .toolbar-bottom { padding-bottom: 20px !important; height: 78px !important; }
     .ios .toolbar-bottom ~ .page-content { padding-bottom: 86px !important; }
 
-    /* BTDT Dark Crimzon App Theme */
+    /* BTDT Native Apple iOS 18 Cupertino Dark Theme */
     .btdt-app-page {
-      background: radial-gradient(circle at 80% 8%, rgba(246, 72, 56, 0.14), transparent 44%),
-                  radial-gradient(circle at 12% 90%, rgba(108, 24, 25, 0.22), transparent 52%),
-                  #050101 !important;
+      background: #000000 !important;
       color: #ffffff !important;
-      font-family: var(--btdt-body) !important;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", -apple-system-subheadline, "Helvetica Neue", Arial, sans-serif !important;
+      letter-spacing: -0.015em;
     }
     .btdt-app-page .navbar-bg {
-      background: rgba(10, 4, 4, 0.88) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(28, 28, 30, 0.82) !important;
+      backdrop-filter: blur(25px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.12) !important;
     }
     .btdt-app-page .navbar-inner,
     .btdt-app-page .navbar .title {
       color: #ffffff !important;
-      font-family: var(--btdt-display);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      font-weight: 600;
       letter-spacing: -0.02em;
     }
     .btdt-app-page .navbar .link {
       color: #f64838 !important;
-      font-family: var(--btdt-mono);
-      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
     }
     .btdt-app-page .toolbar-bottom {
-      background: rgba(10, 4, 4, 0.94) !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+      background: rgba(28, 28, 30, 0.88) !important;
+      backdrop-filter: blur(25px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.14) !important;
     }
     .btdt-app-page .toolbar-bottom .tab-link {
-      color: rgba(255, 255, 255, 0.5) !important;
-      font-family: var(--btdt-body);
+      color: rgba(255, 255, 255, 0.45) !important;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 10px;
+      font-weight: 500;
     }
-    .btdt-app-page .toolbar-bottom .tab-link-active { color: #f64838 !important; }
-    .btdt-app-page .page-content { padding-left: 16px; padding-right: 16px; }
+    .btdt-app-page .toolbar-bottom .tab-link-active {
+      color: #f64838 !important;
+      font-weight: 600;
+    }
+    .btdt-app-page .page-content {
+      padding-left: 16px;
+      padding-right: 16px;
+      background: #000000;
+    }
 
     .btdt-h2 {
-      font-family: var(--btdt-display);
-      font-size: 23px;
-      font-weight: 500;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      font-size: 24px;
+      font-weight: 700;
       letter-spacing: -0.03em;
       color: #ffffff;
       margin: 0;
       line-height: 1.18;
-      animation: appCardFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: appCardFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes appCardFade {
-      from { opacity: 0; transform: translate3d(0, 10px, 0); }
+      from { opacity: 0; transform: translate3d(0, 8px, 0); }
       to   { opacity: 1; transform: translate3d(0, 0, 0); }
     }
-    .btdt-mono { font-family: var(--btdt-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+    .btdt-mono { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; font-size: 10.5px; letter-spacing: 0.04em; }
+    
+    /* Authentic Cupertino Segmented Control */
     .ios-role-pill {
       display: inline-flex;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 999px;
-      padding: 2.5px;
-      gap: 3px;
+      background: rgba(118, 118, 128, 0.28);
+      border-radius: 8.9px;
+      padding: 2px;
+      gap: 2px;
     }
     .ios-role-pill button {
       border: 0;
       background: transparent;
-      color: rgba(255, 255, 255, 0.62);
-      font-family: var(--btdt-body);
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 3.5px 12px;
-      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 7px;
       cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .ios-role-pill button.active {
-      background: #f64838;
+      background: #636366;
       color: #ffffff;
-      box-shadow: 0 2px 10px rgba(246, 72, 56, 0.45);
+      font-weight: 600;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.2);
     }
+
+    /* Apple Grouped Inset Cards */
     .btdt-card {
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      border-radius: 14px;
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+      background: #1c1c1e;
       padding: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     }
     .btdt-card-accent {
-      border-radius: 18px;
-      border: 1px solid rgba(246, 72, 56, 0.45);
-      background: linear-gradient(155deg, rgba(246, 72, 56, 0.18) 0%, rgba(22, 6, 6, 0.85) 60%, #070202 100%);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 10px 32px rgba(246, 72, 56, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-      padding: 15px;
+      border-radius: 16px;
+      border: 0.5px solid rgba(255, 255, 255, 0.15);
+      background: #1c1c1e;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      padding: 16px;
+      position: relative;
     }
     .btdt-pill {
       display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
-      border-radius: 6px; border: 1px solid rgba(246, 72, 56, 0.45);
+      border-radius: 6px; border: 0.5px solid rgba(246, 72, 56, 0.45);
       background: rgba(246, 72, 56, 0.14); color: #ff7e72;
-      font-family: var(--btdt-mono); font-size: 10px; text-transform: uppercase;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase;
       white-space: nowrap; flex-shrink: 0;
     }
     .btdt-pill-green { border-color: rgba(74, 222, 128, 0.35); background: rgba(34, 197, 94, 0.14); color: #4ade80; }
+    
+    /* Apple Native Buttons with Tactile Spring Feel */
     .btdt-btn-fill {
-      width: 100%; padding: 12px 14px; border-radius: 10px; border: 0;
-      background: #f64838; color: #ffffff; font-family: var(--btdt-body);
+      width: 100%; padding: 11px 16px; border-radius: 12px; border: 0;
+      background: #f64838; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
       font-size: 13.5px; font-weight: 600; cursor: pointer;
-      box-shadow: 0 8px 24px rgba(246, 72, 56, 0.28);
+      box-shadow: 0 4px 14px rgba(246, 72, 56, 0.35);
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
     }
-    .btdt-btn-fill:active { transform: scale(0.98); opacity: 0.9; }
+    .btdt-btn-fill:active { transform: scale(0.97); opacity: 0.9; }
     .btdt-btn-outline {
-      width: 100%; padding: 11px 14px; border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: rgba(255, 255, 255, 0.03); color: #ffffff;
-      font-family: var(--btdt-body); font-size: 13px; font-weight: 500; cursor: pointer;
+      width: 100%; padding: 10px 16px; border-radius: 12px;
+      border: 0.5px solid rgba(255, 255, 255, 0.18);
+      background: #2c2c2e; color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .btdt-btn-outline:active { transform: scale(0.97); }
+
     .btdt-input, .btdt-select {
       width: 100%; margin-top: 5px; padding: 11px 12px; border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.16); background: #0d0505;
-      color: #ffffff; font-family: var(--btdt-body); font-size: 13.5px; outline: none;
+      border: 0.5px solid rgba(255, 255, 255, 0.16); background: #2c2c2e;
+      color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; font-size: 14px; outline: none;
     }
-    .btdt-input:focus, .btdt-select:focus { border-color: #f64838; }
+    .btdt-input:focus, .btdt-select:focus { border-color: #f64838; background: #3a3a3c; }
     .btdt-seg {
-      display: grid; grid-template-columns: 1fr 1fr; padding: 4px;
-      border-radius: 11px; border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04); gap: 4px;
+      display: grid; grid-template-columns: 1fr 1fr; padding: 3px;
+      border-radius: 9px; border: 0.5px solid rgba(255, 255, 255, 0.1);
+      background: rgba(118, 118, 128, 0.24); gap: 2px;
     }
     .btdt-seg button {
-      border: 0; padding: 9px; border-radius: 8px;
-      font-family: var(--btdt-body); font-size: 13px; font-weight: 600;
+      border: 0; padding: 7px; border-radius: 7px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; font-size: 13px; font-weight: 500;
       cursor: pointer; color: rgba(255, 255, 255, 0.65); background: transparent;
+      transition: all 0.18s ease;
     }
-    .btdt-seg button.active { background: #f64838; color: #ffffff; }
+    .btdt-seg button.active { background: #636366; color: #ffffff; font-weight: 600; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 
     /* BTDT Splash Screen */
     .btdt-splash {
@@ -733,21 +755,60 @@
     }
     .btdt-msg {
       width: fit-content;
-      max-width: 82%;
-      padding: 9px 13px;
-      border-radius: 17px;
-      font-size: 13.2px;
-      line-height: 1.42;
-      margin-bottom: 9px;
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 13.5px;
+      line-height: 1.38;
+      margin-bottom: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
       word-break: break-word;
       overflow-wrap: anywhere;
-      animation: msgPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: msgPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes msgPop {
       from { opacity: 0; transform: translate3d(0, 6px, 0) scale(0.97); }
       to   { opacity: 1; transform: translate3d(0, 0, 0)   scale(1); }
     }
-    .btdt-msg.me { align-self: flex-end; background: #f64838; color: #ffffff; border-bottom-right-radius: 5px; }
+    .btdt-msg.me {
+      align-self: flex-end;
+      background: linear-gradient(180deg, #f64838 0%, #e03425 100%);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 2px 8px rgba(246, 72, 56, 0.25);
+    }
+    .btdt-msg.them {
+      align-self: flex-start;
+      background: #2c2c2e;
+      color: #ffffff;
+      border-bottom-left-radius: 4px;
+      border: 0.5px solid rgba(255, 255, 255, 0.08);
+    }
+    .ios-typing-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 14px;
+      background: #2c2c2e;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      border: 0.5px solid rgba(255, 255, 255, 0.08);
+      align-self: flex-start;
+    }
+    .ios-dot {
+      width: 6.5px;
+      height: 6.5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      animation: iosDotBounce 1.25s infinite ease-in-out;
+    }
+    .ios-dot:nth-child(1) { animation-delay: 0s; }
+    .ios-dot:nth-child(2) { animation-delay: 0.2s; }
+    .ios-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes iosDotBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
     .btdt-msg.me.deleting {
       background: rgba(255, 59, 48, 0.25);
       border: 1px dashed #ff453a;
@@ -1850,43 +1911,51 @@
           const doneCount = items.filter(([k]) => state.kitDone[k]).length, pct = Math.round((doneCount / items.length) * 100);
 
           bodyHtml = `
-            <div style="display:flex;flex-direction:column;gap:13px;padding-top:10px;">
-              <!-- 4K Cupertino Relocation Hero Card -->
-              <div class="btdt-card-accent" style="position:relative;overflow:hidden;">
-                <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(246,72,56,0.35),transparent 70%);pointer-events:none;"></div>
-                
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="btdt-pill" style="background:#f64838;color:#fff;border-color:#f64838;box-shadow:0 0 12px rgba(246,72,56,0.4);">
-                    <i class="f7-icons" style="font-size:10px;margin-right:2px;">checkmark_seal_fill</i> STUDENT RELOCATION HUB
+            <div style="display:flex;flex-direction:column;gap:12px;padding-top:10px;">
+              <!-- Apple iOS 18 Relocation Hero Card -->
+              <div class="btdt-card-accent" style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span class="btdt-pill" style="background:#f64838;color:#fff;border-color:#f64838;box-shadow:0 0 12px rgba(246,72,56,0.35);">
+                    <i class="f7-icons" style="font-size:10px;margin-right:2px;">checkmark_seal_fill</i> RELOCATION HUB
                   </span>
-                  <span class="btdt-mono" style="color:#4ade80;font-size:11px;display:flex;align-items:center;gap:4px;">
-                    <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 6px #4ade80;"></span>
+                  <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#34c759;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#34c759;display:inline-block;box-shadow:0 0 6px #34c759;"></span>
                     ${routePeers.length} Mentors Online
                   </span>
                 </div>
 
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                  <img src="./media/unis/${u.id}.svg" class="uni-logo-pill" style="height:36px;max-width:78px;flex-shrink:0;" alt="${u.shortName}" />
+                <!-- Flight Route Trajectory -->
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#2c2c2e;border-radius:12px;border:0.5px solid rgba(255,255,255,0.08);">
+                  <div>
+                    <span style="font-size:10px;color:rgba(255,255,255,0.5);display:block;font-weight:600;">FROM</span>
+                    <span style="font-size:14px;font-weight:700;color:#fff;">${h.name} (${h.iso})</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;padding:0 8px;">
+                    <i class="f7-icons" style="font-size:16px;color:#f64838;transform:rotate(90deg);">airplane</i>
+                    <span style="font-size:9.5px;color:#ff7e72;font-weight:600;margin-top:2px;">Day -14</span>
+                  </div>
+                  <div style="text-align:right;">
+                    <span style="font-size:10px;color:rgba(255,255,255,0.5);display:block;font-weight:600;">CAMPUS</span>
+                    <span style="font-size:14px;font-weight:700;color:#fff;">${u.shortName}</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <img src="./media/unis/${u.id}.svg" class="uni-logo-pill" style="height:38px;max-width:96px;flex-shrink:0;object-fit:contain;" alt="${u.shortName}" />
                   <div style="min-width:0;flex:1;">
-                    <h3 style="font-family:${uFont};font-size:17px;font-weight:700;color:#fff;margin:0;line-height:1.2;letter-spacing:-0.02em;">${u.name}</h3>
-                    <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;">
-                      ${h.name} (${h.iso}) ➔ ${u.city}, ${u.country}
+                    <h3 style="font-size:16px;font-weight:700;color:#fff;margin:0;line-height:1.2;letter-spacing:-0.02em;">${u.name}</h3>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.65);margin-top:2px;">
+                      ${state.intakeTerm} · ${u.city}, ${u.country}
                     </div>
                   </div>
                 </div>
 
-                <!-- Live Countdown & Term Pill -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px;background:rgba(0,0,0,0.45);border-radius:12px;border:1px solid rgba(255,255,255,0.1);margin-bottom:12px;font-size:11.5px;">
-                  <div><span style="color:rgba(255,255,255,0.55);display:block;font-size:10px;font-family:var(--btdt-mono);">CAMPUS INTAKE</span><strong style="color:#fff;">${state.intakeTerm}</strong></div>
-                  <div><span style="color:rgba(255,255,255,0.55);display:block;font-size:10px;font-family:var(--btdt-mono);">TAKEOFF STATUS</span><strong style="color:#ff7e72;">Day -14 · Staging</strong></div>
-                </div>
-
                 <!-- 1-Tap Actions -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                  <button class="btdt-btn-fill" style="padding:9px;font-size:12px;" onclick="stateJumpChat('${quickMatch.id}')">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:2px;">
+                  <button class="btdt-btn-fill" style="padding:10px;font-size:12.5px;" onclick="stateJumpChat('${quickMatch.id}')">
                     <i class="f7-icons" style="font-size:13px;vertical-align:-1px;margin-right:3px;">chat_bubble_text_fill</i> Instant Chat
                   </button>
-                  <button class="btdt-btn-outline" style="padding:9px;font-size:12px;" onclick="openBookingSheet('${quickMatch.id}')">
+                  <button class="btdt-btn-outline" style="padding:10px;font-size:12.5px;" onclick="openBookingSheet('${quickMatch.id}')">
                     <i class="f7-icons" style="font-size:13px;vertical-align:-1px;margin-right:3px;">calendar_badge_plus</i> Book €20+
                   </button>
                 </div>
@@ -1895,22 +1964,22 @@
               <!-- Relocation Progress Gauge -->
               <div class="btdt-card" style="padding:12px 14px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
-                  <span class="btdt-mono" style="color:#f64838;font-size:10.5px;">WEEK-1 READINESS CHECKLIST</span>
-                  <span class="btdt-mono" style="color:#4ade80;font-size:11px;font-weight:600;">${pct}% Complete</span>
+                  <span style="font-size:11px;font-weight:700;color:#f64838;text-transform:uppercase;letter-spacing:0.04em;">WEEK-1 READINESS CHECKLIST</span>
+                  <span style="font-size:11px;font-weight:700;color:#34c759;">${pct}% Complete</span>
                 </div>
                 <div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.12);overflow:hidden;margin-bottom:10px;">
-                  <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#f64838,#4ade80);border-radius:999px;transition:width 0.3s ease;"></div>
+                  <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#f64838,#34c759);border-radius:999px;transition:width 0.3s ease;"></div>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:rgba(255,255,255,0.7);">
                   <span>Next: ${items.find(([k]) => !state.kitDone[k])?.[1] || "All Set for Takeoff!"}</span>
-                  <button onclick="switchStudentTab('kit')" style="background:none;border:0;color:#f64838;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">Open Kit →</button>
+                  <button onclick="switchStudentTab('kit')" style="background:none;border:0;color:#f64838;font-size:11px;font-weight:600;text-decoration:underline;cursor:pointer;">Open Kit →</button>
                 </div>
               </div>
 
               <!-- Top Countrymen Mentors List -->
               <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 4px 0;">
-                <span class="btdt-mono" style="color:rgba(255,255,255,0.65);font-size:11px;text-transform:uppercase;">VERIFIED SENIORS FROM ${h.name.toUpperCase()} (${routePeers.length})</span>
-                <button onclick="switchStudentTab('peers')" style="background:none;border:0;color:#fff;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">See All</button>
+                <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.04em;">VERIFIED SENIORS FROM ${h.name.toUpperCase()} (${routePeers.length})</span>
+                <button onclick="switchStudentTab('peers')" style="background:none;border:0;color:#fff;font-size:11px;font-weight:600;text-decoration:underline;cursor:pointer;">See All</button>
               </div>
 
               ${routePeers.slice(0, 5).map((p) => `
@@ -2017,14 +2086,15 @@
                     ` : ""}
                   </div>
                 `).join("")}
-                ${state.chatTyping ? `<div class="btdt-msg them" style="display:inline-flex;gap:4px;align-items:center;"><span class="btdt-mono" style="color:rgba(255,255,255,0.7);">Senior typing...</span></div>` : ""}
+                ${state.chatTyping ? `<div class="ios-typing-dots"><span class="ios-dot"></span><span class="ios-dot"></span><span class="ios-dot"></span></div>` : ""}
               </div>
 
               <!-- Quick Suggestion Chips -->
               <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;">
-                <button onclick="sendChatReply('Hi!')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Say Hi</button>
-                <button onclick="sendChatReply('What are real rent & dorm options near campus?')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Dorms &amp; rent reality?</button>
-                <button onclick="sendChatReply('Does my transcript seal look ready for enrollment?')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Transcript audit?</button>
+                <button onclick="sendChatReply('Hi!')" style="padding:6px 12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.18);background:#2c2c2e;color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;">Say Hi</button>
+                <button onclick="sendChatReply('What are real rent & dorm options near campus?')" style="padding:6px 12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.18);background:#2c2c2e;color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;">Dorms &amp; rent reality?</button>
+                <button onclick="sendChatReply('Does my transcript seal look ready for enrollment?')" style="padding:6px 12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.18);background:#2c2c2e;color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;">Transcript audit?</button>
+                <button onclick="sendChatReply('How do I activate student eSIM & transit pass?')" style="padding:6px 12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.18);background:#2c2c2e;color:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;cursor:pointer;">eSIM &amp; transit card?</button>
               </div>
 
               <!-- Anti-Scam Filter Live Warning -->
@@ -2032,10 +2102,13 @@
                 Numbers, emails, and off-platform links are blocked automatically.
               </div>
 
-              <!-- Input Row -->
-              <div style="display:flex;gap:8px;">
-                <input id="f7ChatInput" class="btdt-input" style="margin-top:0;flex:1;" type="text" oninput="onChatInputLive(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChatReply();}" placeholder="Message ${activePeer.name.split(" ")[0]}..." />
-                <button class="btdt-btn-fill" style="width:auto;padding:0 16px;" onclick="sendChatReply()">Send</button>
+              <!-- Apple iMessage Input Row -->
+              <div style="display:flex;align-items:center;gap:8px;padding-top:2px;">
+                <button type="button" style="width:34px;height:34px;border-radius:50%;background:#2c2c2e;border:0.5px solid rgba(255,255,255,0.18);color:#fff;font-size:20px;font-weight:300;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">+</button>
+                <input id="f7ChatInput" class="btdt-input" style="margin-top:0;flex:1;border-radius:20px;padding:9px 14px;" type="text" oninput="onChatInputLive(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChatReply();}" placeholder="iMessage · ${activePeer.name.split(" ")[0]}..." />
+                <button class="btdt-btn-fill" style="width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="sendChatReply()">
+                  <i class="f7-icons" style="font-size:15px;color:#fff;">arrow_up</i>
+                </button>
               </div>
             </div>
           `;
@@ -2146,9 +2219,10 @@
             <div class="toolbar toolbar-bottom tabbar tabbar-icons">
               <div class="toolbar-inner">
                 ${tabs.map(([id, ic, lbl]) => `
-                  <a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchStudentTab('${id}')" style="cursor:pointer;">
+                  <a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchStudentTab('${id}')" style="cursor:pointer;position:relative;">
                     <i class="f7-icons">${ic}</i>
                     <span class="tabbar-label">${lbl}</span>
+                    ${id === "chat" ? `<span style="position:absolute;top:6px;right:25%;width:7px;height:7px;border-radius:50%;background:#ff3b30;border:1.5px solid #1c1c1e;"></span>` : ""}
                   </a>
                 `).join("")}
               </div>

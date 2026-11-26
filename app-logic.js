@@ -140,12 +140,10 @@
   function renderCampusSurfaces() {
     const marqueeHtml = S.universities.map((u) => {
       const isWide = Boolean(S.UNI_LOGOS[u.id]?.wide);
-      const logoCls = isWide ? "h-6 w-auto max-w-[112px] object-contain" : "h-8 w-8 object-contain";
-      const uniFont = u.font || "var(--font-display)";
+      const logoCls = isWide ? "h-9 md:h-10 w-auto max-w-[150px] md:max-w-[185px] object-contain" : "h-9 md:h-10 w-auto max-w-[58px] object-contain";
       return `
-      <button onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-3 text-white/95 hover:text-white transition-colors shrink-0 group cursor-pointer">
-        <img src="./media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.22)]" />
-        <span style="font-family: ${uniFont};" class="text-[16.5px] font-semibold tracking-[-0.015em] whitespace-nowrap">${u.name}</span>
+      <button onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center px-4 py-2 hover:opacity-100 opacity-90 transition-all shrink-0 group cursor-pointer hover:scale-105" aria-label="${u.name}" title="${u.name}">
+        <img src="./media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_10px_rgba(255,255,255,0.25)]" />
       </button>
     `;
     }).join("");
