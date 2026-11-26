@@ -225,10 +225,12 @@
     .ios-lockscreen.dragging {
       transition: none !important;
     }
-    .ios-lockscreen.unlocked {
-      transform: translate3d(0, -104%, 0) scale(0.96);
-      opacity: 0;
-      pointer-events: none;
+    .ios-lockscreen.unlocked,
+    .ios-lockscreen.hidden-os {
+      transform: translate3d(0, -104%, 0) scale(0.96) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
     }
     .ls-torch-glow {
       position: absolute;
@@ -1163,7 +1165,7 @@
 
         if (lsPadlock) lsPadlock.textContent = "lock_fill";
         if (lockScreen) {
-          lockScreen.classList.remove("unlocked", "dragging");
+          lockScreen.classList.remove("unlocked", "hidden-os", "dragging");
           lockScreen.style.transform = "";
           lockScreen.style.opacity = "";
         }
@@ -2053,7 +2055,7 @@
                   <img src="${activePeer.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #4ade80;" />
                   <div style="min-width:0;">
                     <div style="font-size:13.5px;font-weight:600;color:#fff;">${activePeer.name}</div>
-                    <div class="btdt-mono" style="color:#4ade80;font-size:10.5px;">✓ Verified ${activePeer.homeCountry} ➔ ${u.shortName}</div>
+                    <div class="btdt-mono" style="color:#4ade80;font-size:10.5px;">[VERIFIED] ${activePeer.homeCountry} → ${u.shortName}</div>
                   </div>
                 </div>
                 <button class="btdt-btn-fill" style="width:auto;padding:6px 12px;font-size:11px;" onclick="openBookingSheet('${activePeer.id}')">Book Pass</button>
@@ -2080,7 +2082,7 @@
                     ` : ""}
                     ${m.receiptTitle ? `
                       <div style="margin-top:7px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.55);border:1px solid rgba(246,72,56,0.35);">
-                        <div class="btdt-mono" style="color:#f64838;font-size:11px;">✓ ${m.receiptTitle}</div>
+                        <div class="btdt-mono" style="color:#f64838;font-size:11px;">RECEIPT: ${m.receiptTitle}</div>
                         <div style="font-size:11px;color:rgba(255,255,255,0.78);margin-top:2px;">${m.receiptDesc}</div>
                       </div>
                     ` : ""}
@@ -2182,7 +2184,7 @@
                       <div style="display:flex;flex-direction:column;gap:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.1);">
                         ${ps.notes.map((nt) => `
                           <div style="padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.12);font-size:11.5px;color:rgba(255,255,255,0.88);">
-                            ✓ ${nt}
+                            CONFIRMED: ${nt}
                           </div>
                         `).join("")}
                       </div>
@@ -2245,7 +2247,7 @@
                 </div>
                 <div style="font-family:var(--btdt-display);font-size:15px;font-weight:600;color:#fff;">${state.mentorEduEmail}</div>
                 <div class="btdt-mono" style="color:${state.mentorIdUploaded ? "#4ade80" : "rgba(255,255,255,0.72)"};margin-top:3px;">
-                  Student ID Check: ${state.mentorIdUploaded ? "✓ Verified Preview Staged" : "Pending ID Upload"}
+                  Student ID Check: ${state.mentorIdUploaded ? "Verified Preview Staged" : "Pending ID Upload"}
                 </div>
               </div>
               ${state.mentorQueue.map((req) => `
@@ -2405,7 +2407,11 @@
         openStudentScreen: (tab = "home") => {
           cancelPendingBootAndUnlock();
           state.isLocked = false;
-          if (lockScreen) lockScreen.classList.add("hidden-os");
+          if (lockScreen) {
+            lockScreen.classList.add("unlocked", "hidden-os");
+            lockScreen.style.transform = "";
+            lockScreen.style.opacity = "";
+          }
           if (bootOverlay) bootOverlay.classList.add("done");
           if (btdtSplash) btdtSplash.classList.remove("visible");
           if (activeAppShell) activeAppShell.classList.add("visible");
@@ -2419,7 +2425,11 @@
         openMentorScreen: (tab = "queue") => {
           cancelPendingBootAndUnlock();
           state.isLocked = false;
-          if (lockScreen) lockScreen.classList.add("hidden-os");
+          if (lockScreen) {
+            lockScreen.classList.add("unlocked", "hidden-os");
+            lockScreen.style.transform = "";
+            lockScreen.style.opacity = "";
+          }
           if (bootOverlay) bootOverlay.classList.add("done");
           if (btdtSplash) btdtSplash.classList.remove("visible");
           if (activeAppShell) activeAppShell.classList.add("visible");
