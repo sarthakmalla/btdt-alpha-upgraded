@@ -144,7 +144,7 @@
       const uniFont = u.font || "var(--font-display)";
       return `
       <button onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-3 text-white/95 hover:text-white transition-colors shrink-0 group cursor-pointer">
-        <img src="../media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.22)]" />
+        <img src="./media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.22)]" />
         <span style="font-family: ${uniFont};" class="text-[16.5px] font-semibold tracking-[-0.015em] whitespace-nowrap">${u.name}</span>
       </button>
     `;
@@ -455,11 +455,14 @@
   function routeIosDemoScreen(screen = "os_home") {
     withIosBridge((bridge) => {
       if (screen === "os_home") bridge.bootToLockScreen();
-      else if (bridge.bootAndOpen) bridge.bootAndOpen(screen);
       else if (screen === "auth") bridge.openAuth();
+      else if (screen === "student" || screen === "student_home" || screen === "home") bridge.openStudentScreen("home");
+      else if (screen === "peers") bridge.openStudentScreen("peers");
       else if (screen === "chat") bridge.openStudentScreen("chat");
-      else if (screen === "arrival") bridge.openStudentScreen("kit");
-      else if (screen === "wallet") bridge.openStudentScreen("passes");
+      else if (screen === "arrival" || screen === "kit") bridge.openStudentScreen("kit");
+      else if (screen === "wallet" || screen === "passes") bridge.openStudentScreen("passes");
+      else if (screen === "mentor" || screen === "queue" || screen === "requests") bridge.openMentorScreen("queue");
+      else if (bridge.bootAndOpen) bridge.bootAndOpen(screen);
       else bridge.bootToLockScreen();
     });
   }
@@ -502,11 +505,13 @@
       let active = false;
       if (tabTarget === "os_home") active = isOsHome;
       else if (tabTarget === "auth") active = isAuthStage;
+      else if (tabTarget === "student_home" || tabTarget === "home") active = isStudentStage && (st.studentTab === "home");
+      else if (tabTarget === "peers") active = isStudentStage && st.studentTab === "peers";
       else if (tabTarget === "chat") active = isStudentStage && st.studentTab === "chat";
       else if (tabTarget === "kit") active = isStudentStage && st.studentTab === "kit";
       else if (tabTarget === "passes") active = isStudentStage && st.studentTab === "passes";
       else if (tabTarget === "match") active = isStudentStage && (st.studentTab === "home" || st.studentTab === "peers");
-      else if (tabTarget === "requests") active = isMentorStage;
+      else if (tabTarget === "requests" || tabTarget === "mentor") active = isMentorStage;
       btn.className = active
         ? "px-3 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/15 text-white text-[12px] font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
         : "px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/75 hover:text-white hover:border-white/30 text-[12px] inline-flex items-center gap-1.5 transition-colors cursor-pointer";
@@ -546,8 +551,11 @@
     });
     document.getElementById("siteFooter")?.classList.remove("hidden");
     document.querySelector("header")?.classList.remove("hidden");
-    document.getElementById("gdprBanner")?.style.removeProperty("display");
-    document.getElementById("privacyPill")?.style.removeProperty("display");
+    // GDPR banner intentionally disabled for now to allow full animated view
+    const gb = document.getElementById("gdprBanner");
+    if (gb) gb.style.display = "none";
+    const pp = document.getElementById("privacyPill");
+    if (pp) pp.style.display = "none";
   }
 
   function showLanding(scrollTop = false) {

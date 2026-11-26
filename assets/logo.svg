@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" fill="none" width="260" height="64">
+  <defs>
+    <!-- Radiant Crimson Gradients -->
+    <linearGradient id="btdtCrimsonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff695b" />
+      <stop offset="45%" stop-color="#f64838" />
+      <stop offset="100%" stop-color="#aa1412" />
+    </linearGradient>
+
+    <linearGradient id="btdtDarkGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#180707" />
+      <stop offset="100%" stop-color="#070202" />
+    </linearGradient>
+
+    <linearGradient id="btdtSilverGleam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#a3a3a3" stop-opacity="0.4" />
+    </linearGradient>
+
+    <filter id="btdtDropGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#f64838" flood-opacity="0.45" />
+    </filter>
+  </defs>
+
+  <!-- ICON BADGE (48x48) -->
+  <g transform="translate(8, 8)">
+    <!-- Base Squircle with Glass Border -->
+    <rect x="0" y="0" width="48" height="48" rx="14" fill="url(#btdtDarkGlass)" stroke="url(#btdtSilverGleam)" stroke-width="1" />
+    <rect x="1" y="1" width="46" height="46" rx="13" stroke="rgba(246,72,56,0.25)" stroke-width="1" fill="none" />
+
+    <!-- Ambient Crimson Center Radial -->
+    <circle cx="24" cy="24" r="16" fill="#f64838" opacity="0.12" />
+
+    <!-- Trajectory Flight Arc (Been There -> Done That) -->
+    <path d="M12 34 C 13 19, 21 14, 36 14" stroke="url(#btdtCrimsonGlow)" stroke-width="2.8" stroke-linecap="round" filter="url(#btdtDropGlow)" />
+    
+    <!-- Secondary Intersecting Return Curve (The Peer Link) -->
+    <path d="M14 26 C 22 26, 32 29, 36 34" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.5 4" opacity="0.65" />
+
+    <!-- Origin Node (Home Country) -->
+    <circle cx="12" cy="34" r="3.2" fill="#070202" stroke="#ffffff" stroke-width="2" />
+    <circle cx="12" cy="34" r="1.2" fill="#ffffff" />
+
+    <!-- Destination Apex Node (Target Campus Beacon) -->
+    <circle cx="36" cy="14" r="4.2" fill="url(#btdtCrimsonGlow)" />
+    <path d="M36 11 L37 14 L40 14 L37.5 15.5 L38.5 18.5 L36 16.5 L33.5 18.5 L34.5 15.5 L32 14 L35 14 Z" fill="#ffffff" transform="scale(0.48) translate(39, 2)" />
+  </g>
+
+  <!-- WORDMARK: BTDT -->
+  <g transform="translate(68, 14)">
+    <!-- Letters BTDT in Bold Architectural Geometry -->
+    <text x="0" y="27" font-family="-apple-system, BlinkMacSystemFont, 'Space Grotesk', 'Plus Jakarta Sans', sans-serif" font-size="27" font-weight="700" letter-spacing="-0.04em" fill="#ffffff">
+      BTDT<tspan fill="#f64838">.</tspan>
+    </text>
+
+    <!-- Subtitle / Tagline -->
+    <text x="1" y="41" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="500" letter-spacing="0.18em" fill="rgba(255,255,255,0.52)" text-transform="uppercase">
+      BEEN THERE · DONE THAT
+    </text>
+  </g>
+</svg>

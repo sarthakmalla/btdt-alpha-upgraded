@@ -1,36 +1,36 @@
 // BTDT Seed Dataset: 30 Universities x 14 Home Countries x 2 Peers = 840+ Verified Peers
 window.BTDT_SEED = (() => {
   const UNI_LOGO_FILES = {
-    tum: { src: "/media/unis/tum.svg", wide: true },
-    mit: { src: "/media/unis/mit.svg", wide: true },
-    stanford: { src: "/media/unis/stanford.svg", wide: false },
-    ethz: { src: "/media/unis/ethz.svg", wide: true },
-    epfl: { src: "/media/unis/epfl.svg", wide: true },
-    columbia: { src: "/media/unis/columbia.svg", wide: false },
-    berkeley: { src: "/media/unis/berkeley.svg", wide: false },
-    princeton: { src: "/media/unis/princeton.svg", wide: true },
-    yale: { src: "/media/unis/yale.svg", wide: false },
-    lse: { src: "/media/unis/lse.svg", wide: false },
-    lmu: { src: "/media/unis/lmu.svg", wide: true },
-    ubc: { src: "/media/unis/ubc.svg", wide: false },
-    kuleuven: { src: "/media/unis/kuleuven.svg", wide: true },
-    uwr: { src: "/media/unis/uwr.svg", wide: true },
-    uw: { src: "/media/unis/uw.svg", wide: false },
-    unibo: { src: "/media/unis/unibo.svg", wide: false },
-    tcd: { src: "/media/unis/tcd.svg", wide: false },
-    uoft: { src: "/media/unis/uoft.svg", wide: true },
-    manchester: { src: "/media/unis/manchester.svg", wide: false },
-    rwth: { src: "/media/unis/rwth.svg", wide: true },
-    uva: { src: "/media/unis/uva.svg", wide: false },
-    asu: { src: "/media/unis/asu.svg", wide: true },
-    oxford: { src: "/media/unis/oxford.svg", wide: false },
-    cambridge: { src: "/media/unis/cambridge.svg", wide: false },
-    imperial: { src: "/media/unis/imperial.svg", wide: false },
-    edinburgh: { src: "/media/unis/edinburgh.svg", wide: false },
-    delft: { src: "/media/unis/delft.svg", wide: false },
-    mcgill: { src: "/media/unis/mcgill.svg", wide: false },
-    melbourne: { src: "/media/unis/melbourne.svg", wide: false },
-    harvard: { src: "/media/unis/harvard.svg", wide: false }
+    tum: { src: "./media/unis/tum.svg", wide: true },
+    mit: { src: "./media/unis/mit.svg", wide: true },
+    stanford: { src: "./media/unis/stanford.svg", wide: false },
+    ethz: { src: "./media/unis/ethz.svg", wide: true },
+    epfl: { src: "./media/unis/epfl.svg", wide: true },
+    columbia: { src: "./media/unis/columbia.svg", wide: false },
+    berkeley: { src: "./media/unis/berkeley.svg", wide: false },
+    princeton: { src: "./media/unis/princeton.svg", wide: true },
+    yale: { src: "./media/unis/yale.svg", wide: false },
+    lse: { src: "./media/unis/lse.svg", wide: false },
+    lmu: { src: "./media/unis/lmu.svg", wide: true },
+    ubc: { src: "./media/unis/ubc.svg", wide: false },
+    kuleuven: { src: "./media/unis/kuleuven.svg", wide: true },
+    uwr: { src: "./media/unis/uwr.svg", wide: true },
+    uw: { src: "./media/unis/uw.svg", wide: false },
+    unibo: { src: "./media/unis/unibo.svg", wide: false },
+    tcd: { src: "./media/unis/tcd.svg", wide: false },
+    uoft: { src: "./media/unis/uoft.svg", wide: true },
+    manchester: { src: "./media/unis/manchester.svg", wide: false },
+    rwth: { src: "./media/unis/rwth.svg", wide: true },
+    uva: { src: "./media/unis/uva.svg", wide: false },
+    asu: { src: "./media/unis/asu.svg", wide: true },
+    oxford: { src: "./media/unis/oxford.svg", wide: false },
+    cambridge: { src: "./media/unis/cambridge.svg", wide: false },
+    imperial: { src: "./media/unis/imperial.svg", wide: false },
+    edinburgh: { src: "./media/unis/edinburgh.svg", wide: false },
+    delft: { src: "./media/unis/delft.svg", wide: false },
+    mcgill: { src: "./media/unis/mcgill.svg", wide: false },
+    melbourne: { src: "./media/unis/melbourne.svg", wide: false },
+    harvard: { src: "./media/unis/harvard.svg", wide: false }
   };
 
   function getUniLogo(uni, sizeClass = "w-5 h-5") {
@@ -58,8 +58,8 @@ window.BTDT_SEED = (() => {
   const UNI_LOGOS = UNI_LOGO_FILES;
 
   const AVATAR_POOL = [
-    "/media/avatar-1.jpg", "/media/avatar-2.jpg", "/media/avatar-3.jpg",
-    "/media/avatar-4.jpg", "/media/avatar-5.jpg", "/media/avatar-6.jpg"
+    "./media/avatar-1.jpg", "./media/avatar-2.jpg", "./media/avatar-3.jpg",
+    "./media/avatar-4.jpg", "./media/avatar-5.jpg", "./media/avatar-6.jpg"
   ];
 
   const homeCountries = [

@@ -163,7 +163,7 @@
             pointer-events: none;
             z-index: 3;
             opacity: 0.08;
-            background-image: url("/media/grain.png");
+            background-image: url("./media/grain.png");
             background-repeat: repeat;
             background-size: 192px 192px;
         }
@@ -173,7 +173,7 @@
             inset: 0;
             pointer-events: none;
             opacity: 0.08;
-            background-image: url("/media/grain.png");
+            background-image: url("./media/grain.png");
             background-repeat: repeat;
             background-size: 192px 192px;
         }
@@ -398,16 +398,8 @@
     <header class="fixed top-0 inset-x-0 z-50 border-b border-white/20" style="background: rgba(5, 1, 1, 0.65); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);">
         <div class="crimzon-container py-[14px] md:py-[18px] flex items-center justify-between gap-3">
 
-            <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left shrink-0 group">
-                <span class="w-7 h-7 rounded-[7px] border border-white/25 bg-white/[0.04] flex items-center justify-center group-hover:border-crimzon/70 transition-colors">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M5.5 17C7 10 11.8 7 18 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
-                        <circle cx="5.5" cy="17" r="2.2" fill="#ffffff"/>
-                        <circle cx="18" cy="7" r="2.8" fill="#f64838"/>
-                    </svg>
-                </span>
-                <span style="font-family: var(--font-display);" class="text-[19px] font-medium tracking-[-0.04em] text-white">BTDT<span class="text-crimzon">.</span></span>
+            <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left shrink-0 group" aria-label="BTDT Home">
+                <img src="./assets/logo.svg" alt="BTDT (Been There, Done That)" class="h-9 w-auto hover:opacity-95 transition-opacity drop-shadow-[0_2px_12px_rgba(246,72,56,0.25)]">
             </button>
 
             <nav class="hidden lg:flex items-center gap-[26px]" aria-label="Main Navigation">
@@ -1459,11 +1451,13 @@
                 <div class="space-y-2">
                     <p class="font-mono text-[10px] uppercase tracking-wider text-white/50">Jump Directly Inside Phone</p>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="routeIosDemoScreen('os_home')" data-demo-tab="os_home" class="px-3 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/15 text-white text-[12px] font-medium cursor-pointer transition-colors">Reboot Lock Screen</button>
-                        <button onclick="switchStudentDemoScreen('chat')" data-demo-tab="chat" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Student Chat</button>
-                        <button onclick="switchStudentDemoScreen('kit')" data-demo-tab="kit" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Arrival Kit</button>
-                        <button onclick="switchStudentDemoScreen('wallet')" data-demo-tab="passes" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Pass Wallet</button>
-                        <button onclick="setDemoMode('mentor')" data-demo-tab="requests" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Mentor Studio</button>
+                        <button onclick="setDemoMode('student')" data-demo-tab="student_home" class="px-3.5 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/20 text-white text-[12px] font-semibold cursor-pointer transition-all hover:bg-crimzon/35 hover:scale-[1.02] shadow-[0_0_12px_rgba(246,72,56,0.25)]">🎓 Student Workspace</button>
+                        <button onclick="switchStudentDemoScreen('peers')" data-demo-tab="peers" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">👥 Enrolled Peers</button>
+                        <button onclick="switchStudentDemoScreen('chat')" data-demo-tab="chat" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">💬 Student Chat</button>
+                        <button onclick="switchStudentDemoScreen('kit')" data-demo-tab="kit" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🧳 Arrival Checklist</button>
+                        <button onclick="switchStudentDemoScreen('wallet')" data-demo-tab="passes" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🎫 Apple Wallet Pass</button>
+                        <button onclick="setDemoMode('mentor')" data-demo-tab="requests" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🛡️ Mentor Studio</button>
+                        <button onclick="routeIosDemoScreen('os_home')" data-demo-tab="os_home" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">📱 Lock Screen</button>
                     </div>
                 </div>
 
@@ -1479,11 +1473,8 @@
     <footer id="siteFooter" class="relative z-[4] bg-[#050101]">
         <div class="crimzon-container py-[48px] flex flex-col md:flex-row items-start justify-between gap-12">
             <div class="max-w-[320px] space-y-3">
-                <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left">
-                    <span class="w-7 h-7 rounded-[7px] border border-white/25 bg-white/[0.04] flex items-center justify-center">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/><circle cx="5.5" cy="17" r="2.2" fill="#ffffff"/><circle cx="18" cy="7" r="2.8" fill="#f64838"/></svg>
-                    </span>
-                    <span style="font-family: var(--font-display);" class="text-[19px] font-medium tracking-[-0.04em] text-white">BTDT<span class="text-crimzon">.</span></span>
+                <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left" aria-label="BTDT Home">
+                    <img src="./assets/logo.svg" alt="BTDT (Been There, Done That)" class="h-9 w-auto hover:opacity-95 transition-opacity">
                 </button>
                 <p class="crimzon-body">The peer network that’s been there before you.</p>
             </div>
@@ -1522,13 +1513,13 @@
         </div>
     </footer>
 
-    <!-- PRIVACY PILL + FIRST-SCREEN EU GDPR BANNER -->
-    <button id="privacyPill" onclick="openGDPRModal()" class="hidden fixed bottom-5 left-5 z-[60] px-3.5 py-2 rounded-full border border-white/20 bg-[#0b0707]/90 backdrop-blur-md text-[11px] font-mono text-white/80 hover:text-white hover:border-crimzon transition-colors inline-flex items-center gap-1.5">
+    <!-- PRIVACY PILL + FIRST-SCREEN EU GDPR BANNER (Hidden for now to showcase full live landing animations) -->
+    <button id="privacyPill" onclick="openGDPRModal()" class="hidden fixed bottom-5 left-5 z-[60] px-3.5 py-2 rounded-full border border-white/20 bg-[#0b0707]/90 backdrop-blur-md text-[11px] font-mono text-white/80 hover:text-white hover:border-crimzon transition-colors inline-flex items-center gap-1.5" style="display:none !important;">
         <svg class="w-3.5 h-3.5 text-crimzon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         <span>Privacy</span>
     </button>
 
-    <div id="gdprBanner" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="gdprDialogTitle" class="fixed inset-0 z-[75] flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
+    <div id="gdprBanner" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="gdprDialogTitle" class="hidden fixed inset-0 z-[75] items-center justify-center bg-black/75 backdrop-blur-md p-4" style="display:none !important;">
         <div class="w-full max-w-[460px] max-h-[92vh] overflow-y-auto rounded-[16px] border border-white/20 bg-[#0a0505] shadow-[0_24px_80px_rgba(0,0,0,0.85)] p-6 md:p-7 space-y-5 modal-animate">
             <!-- Centered Brand Header -->
             <div class="text-center space-y-1.5">

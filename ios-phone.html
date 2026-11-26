@@ -6,7 +6,7 @@
   <title>BTDT iOS 27 Phone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Crimson+Pro:wght@500;600;700&family=EB+Garamond:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./vendor/f7/framework7-bundle.min.css" />
   <link rel="stylesheet" href="./vendor/f7/framework7-icons.css" />
   <style>
@@ -207,7 +207,7 @@
       position: fixed;
       inset: 0;
       z-index: 9000;
-      background: #141210 url('/media/ios27/wallpaper_default.png') center/cover no-repeat;
+      background: #141210 url('./media/ios27/wallpaper_default.png') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -220,7 +220,7 @@
       transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.26s ease;
     }
     .ios-lockscreen.dark-wallpaper {
-      background-image: url('/media/ios27/wallpaper_dark.png');
+      background-image: url('./media/ios27/wallpaper_dark.png');
     }
     .ios-lockscreen.dragging {
       transition: none !important;
@@ -347,7 +347,7 @@
     .springboard {
       position: fixed;
       inset: 0;
-      background: #1a1816 url('/media/ios27/wallpaper_default.png') center/cover no-repeat;
+      background: #1a1816 url('./media/ios27/wallpaper_default.png') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -358,7 +358,7 @@
       transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.34s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.25s ease;
     }
     .springboard.dark-wallpaper {
-      background-image: url('/media/ios27/wallpaper_dark.png');
+      background-image: url('./media/ios27/wallpaper_dark.png');
     }
     .springboard.locked-behind {
       transform: translate3d(0, 0, 0) scale(0.94);
@@ -622,17 +622,48 @@
       to   { opacity: 1; transform: translate3d(0, 0, 0); }
     }
     .btdt-mono { font-family: var(--btdt-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+    .ios-role-pill {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 2.5px;
+      gap: 3px;
+    }
+    .ios-role-pill button {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.62);
+      font-family: var(--btdt-body);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3.5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ios-role-pill button.active {
+      background: #f64838;
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(246, 72, 56, 0.45);
+    }
     .btdt-card {
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      background: rgba(255, 255, 255, 0.035);
-      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      padding: 14px;
     }
     .btdt-card-accent {
-      border-radius: 15px;
-      border: 1px solid rgba(246, 72, 56, 0.5);
-      background: linear-gradient(155deg, rgba(246, 72, 56, 0.2), #150707 58%, #070303 100%);
-      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(246, 72, 56, 0.45);
+      background: linear-gradient(155deg, rgba(246, 72, 56, 0.18) 0%, rgba(22, 6, 6, 0.85) 60%, #070202 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 10px 32px rgba(246, 72, 56, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      padding: 15px;
     }
     .btdt-pill {
       display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
@@ -1174,6 +1205,9 @@
       }
 
       function setPageHtml(html, lightStatusBar = false) {
+        if (lockScreen) lockScreen.classList.add("hidden-os");
+        if (bootOverlay) bootOverlay.classList.add("done");
+        state.isLocked = false;
         springBoard.classList.add("hidden-os");
         btdtSplash.classList.remove("visible");
         activeAppShell.classList.add("visible");
@@ -1808,80 +1842,473 @@
         const u = getUniObj(), h = getHomeObj(), routePeers = getRoutePeers();
         const quickMatch = routePeers[0] || S.peers[0], activePeer = S.peers.find((p) => p.id === state.activePeerId) || quickMatch;
         const tab = state.studentTab;
+        const uFont = u.font || "var(--btdt-display)";
         let bodyHtml = "";
 
         if (tab === "home") {
+          const items = [["esim", "Airport Arrival eSIM Active", "Roam at gate"], ["funds", "Blocked Account / Banking Staged", "Approved notes"], ["health", "Public Health Insurance Check", "TK / Barmer"], ["rail", `${u.city} Semester Pass & City Reg`, "Address forms"]];
+          const doneCount = items.filter(([k]) => state.kitDone[k]).length, pct = Math.round((doneCount / items.length) * 100);
+
           bodyHtml = `
-            <div style="display:flex;flex-direction:column;gap:12px;padding-top:10px;">
-              <div class="btdt-card" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-                <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
-                  <img src="./media/unis/${u.id}.svg" class="uni-logo-pill" style="flex-shrink:0;" alt="${u.shortName}" />
+            <div style="display:flex;flex-direction:column;gap:13px;padding-top:10px;">
+              <!-- 4K Cupertino Relocation Hero Card -->
+              <div class="btdt-card-accent" style="position:relative;overflow:hidden;">
+                <div style="position:absolute;top:-18px;right:-18px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(246,72,56,0.35),transparent 70%);pointer-events:none;"></div>
+                
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span class="btdt-pill" style="background:#f64838;color:#fff;border-color:#f64838;box-shadow:0 0 12px rgba(246,72,56,0.4);">
+                    <i class="f7-icons" style="font-size:10px;margin-right:2px;">checkmark_seal_fill</i> STUDENT RELOCATION HUB
+                  </span>
+                  <span class="btdt-mono" style="color:#4ade80;font-size:11px;display:flex;align-items:center;gap:4px;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 6px #4ade80;"></span>
+                    ${routePeers.length} Mentors Online
+                  </span>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                  <img src="./media/unis/${u.id}.svg" class="uni-logo-pill" style="height:36px;max-width:78px;flex-shrink:0;" alt="${u.shortName}" />
                   <div style="min-width:0;flex:1;">
-                    <div style="font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.name} -> ${u.shortName}</div>
-                    <div class="btdt-mono" style="color:#f64838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${routePeers.length} peers · ${u.city}</div>
+                    <h3 style="font-family:${uFont};font-size:17px;font-weight:700;color:#fff;margin:0;line-height:1.2;letter-spacing:-0.02em;">${u.name}</h3>
+                    <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px;">
+                      ${h.name} (${h.iso}) ➔ ${u.city}, ${u.country}
+                    </div>
                   </div>
                 </div>
-                <button onclick="btdtBack('student_onboard')" style="width:auto;flex:0 0 auto;white-space:nowrap;padding:6px 10px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:#fff;font-size:11px;font-weight:500;cursor:pointer;">Change</button>
+
+                <!-- Live Countdown & Term Pill -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 12px;background:rgba(0,0,0,0.45);border-radius:12px;border:1px solid rgba(255,255,255,0.1);margin-bottom:12px;font-size:11.5px;">
+                  <div><span style="color:rgba(255,255,255,0.55);display:block;font-size:10px;font-family:var(--btdt-mono);">CAMPUS INTAKE</span><strong style="color:#fff;">${state.intakeTerm}</strong></div>
+                  <div><span style="color:rgba(255,255,255,0.55);display:block;font-size:10px;font-family:var(--btdt-mono);">TAKEOFF STATUS</span><strong style="color:#ff7e72;">Day -14 · Staging</strong></div>
+                </div>
+
+                <!-- 1-Tap Actions -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <button class="btdt-btn-fill" style="padding:9px;font-size:12px;" onclick="stateJumpChat('${quickMatch.id}')">
+                    <i class="f7-icons" style="font-size:13px;vertical-align:-1px;margin-right:3px;">chat_bubble_text_fill</i> Instant Chat
+                  </button>
+                  <button class="btdt-btn-outline" style="padding:9px;font-size:12px;" onclick="openBookingSheet('${quickMatch.id}')">
+                    <i class="f7-icons" style="font-size:13px;vertical-align:-1px;margin-right:3px;">calendar_badge_plus</i> Book €20+
+                  </button>
+                </div>
               </div>
-              <div class="btdt-card-accent">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="btdt-mono" style="color:#f64838;">1-TAP INSTANT MATCH</span><span class="btdt-mono" style="color:#4ade80;">Online · ~${getReplyMins(quickMatch)}m</span></div>
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><img src="${quickMatch.avatar}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.25);" /><div style="flex:1;min-width:0;"><div style="font-size:14.5px;font-weight:600;color:#fff;">${quickMatch.name}</div><div style="font-size:11.5px;color:rgba(255,255,255,0.7);">${quickMatch.hometown} · ${quickMatch.languages.slice(0,2).join(", ")}</div></div><strong class="btdt-mono" style="color:#fff;">${quickMatch.aura}/100</strong></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><button class="btdt-btn-fill" style="padding:8px;font-size:12px;" onclick="stateJumpChat('${quickMatch.id}')">Instant Chat</button><button class="btdt-btn-outline" style="padding:8px;font-size:12px;" onclick="openBookingSheet('${quickMatch.id}')">Quick Book</button></div>
+
+              <!-- Relocation Progress Gauge -->
+              <div class="btdt-card" style="padding:12px 14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+                  <span class="btdt-mono" style="color:#f64838;font-size:10.5px;">WEEK-1 READINESS CHECKLIST</span>
+                  <span class="btdt-mono" style="color:#4ade80;font-size:11px;font-weight:600;">${pct}% Complete</span>
+                </div>
+                <div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.12);overflow:hidden;margin-bottom:10px;">
+                  <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#f64838,#4ade80);border-radius:999px;transition:width 0.3s ease;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:rgba(255,255,255,0.7);">
+                  <span>Next: ${items.find(([k]) => !state.kitDone[k])?.[1] || "All Set for Takeoff!"}</span>
+                  <button onclick="switchStudentTab('kit')" style="background:none;border:0;color:#f64838;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">Open Kit →</button>
+                </div>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 2px 0;"><span class="btdt-mono" style="color:rgba(255,255,255,0.55);">ROUTE MENTORS (${routePeers.length})</span><span class="btdt-mono" style="color:rgba(255,255,255,0.4);">Tap for Ledger</span></div>
-              ${routePeers.slice(0, 6).map((p) => `<div class="btdt-card" style="padding:11px;"><div onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;min-width:0;"><img src="${p.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${p.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.role} · ${p.program}</div></div></div><span class="btdt-pill">${p.aura} Aura</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);"><button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="stateJumpChat('${p.id}')">Text Now</button><button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="openBookingSheet('${p.id}')">Book €20+</button></div></div>`).join("")}
+
+              <!-- Top Countrymen Mentors List -->
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 4px 0;">
+                <span class="btdt-mono" style="color:rgba(255,255,255,0.65);font-size:11px;text-transform:uppercase;">VERIFIED SENIORS FROM ${h.name.toUpperCase()} (${routePeers.length})</span>
+                <button onclick="switchStudentTab('peers')" style="background:none;border:0;color:#fff;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">See All</button>
+              </div>
+
+              ${routePeers.slice(0, 5).map((p) => `
+                <div class="btdt-card" style="padding:12px;">
+                  <div onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;margin-bottom:8px;">
+                    <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                      <div style="position:relative;">
+                        <img src="${p.avatar}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,255,255,0.25);" />
+                        <span style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#4ade80;border:2px solid #050101;display:flex;align-items:center;justify-content:center;">
+                          <i class="f7-icons" style="font-size:8px;color:#050101;font-weight:900;">checkmark</i>
+                        </span>
+                      </div>
+                      <div style="min-width:0;">
+                        <div style="font-size:14px;font-weight:600;color:#fff;">${p.name}</div>
+                        <div style="font-size:11.5px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                          ${p.role} · ${p.program}
+                        </div>
+                      </div>
+                    </div>
+                    <div style="text-align:right;flex-shrink:0;">
+                      <span class="btdt-pill" style="font-size:9.5px;">${p.aura} Aura</span>
+                      <div class="btdt-mono" style="color:#4ade80;font-size:10px;margin-top:2px;">~${getReplyMins(p)}m</div>
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);">
+                    <button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="stateJumpChat('${p.id}')">
+                      <i class="f7-icons" style="font-size:12px;margin-right:3px;">chat_bubble_fill</i> Text Now
+                    </button>
+                    <button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="openBookingSheet('${p.id}')">
+                      Book €20+
+                    </button>
+                  </div>
+                </div>
+              `).join("")}
             </div>
           `;
         } else if (tab === "peers") {
           const q = state.peerQuery.trim().toLowerCase();
           const list = S.peers.filter((p) => !q || `${p.name} ${p.homeCountry} ${p.university} ${p.uniCity} ${p.languages.join(" ")}`.toLowerCase().includes(q));
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><input id="btdtPeerSearch" class="btdt-input" style="margin-top:0;" type="search" value="${state.peerQuery}" oninput="filterPeers(this.value)" placeholder="Search country, language, campus..." /><div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${list.length} VERIFIED PEERS ACROSS ${S.universities.length} CAMPUSES</div>${list.slice(0, 14).map((p) => `<div class="btdt-card" onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><div style="display:flex;align-items:center;gap:10px;min-width:0;"><img src="${p.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${p.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);">${p.homeIso} -> ${p.uniShort} · ${p.languages[0]}</div></div></div><div style="text-align:right;flex-shrink:0;"><div class="btdt-mono" style="color:#f64838;">${p.aura} Aura</div><div class="btdt-mono" style="color:#4ade80;">~${getReplyMins(p)}m</div></div></div>`).join("")}</div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;">
+              <input id="btdtPeerSearch" class="btdt-input" style="margin-top:0;" type="search" value="${state.peerQuery}" oninput="filterPeers(this.value)" placeholder="Search senior name, language, campus..." />
+              <div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${list.length} VERIFIED PEERS ACROSS 30 CAMPUSES</div>
+              ${list.slice(0, 16).map((p) => {
+                const pu = S.universities.find((x) => x.id === p.uniId) || u;
+                return `
+                <div class="btdt-card" onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;">
+                  <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                    <img src="${p.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);" />
+                    <div style="min-width:0;">
+                      <div style="font-size:13.5px;font-weight:600;color:#fff;">${p.name}</div>
+                      <div style="font-size:11px;color:rgba(255,255,255,0.65);font-family:${pu.font || "inherit"};">
+                        ${p.homeIso} ➔ ${p.uniShort} · ${p.languages[0]}
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align:right;flex-shrink:0;">
+                    <div class="btdt-mono" style="color:#f64838;font-size:11px;">${p.aura} Aura</div>
+                    <div class="btdt-mono" style="color:#4ade80;font-size:10px;">~${getReplyMins(p)}m</div>
+                  </div>
+                </div>
+              `;}).join("")}
+            </div>
+          `;
         } else if (tab === "chat") {
           bodyHtml = `
-            <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;">
-              <div class="btdt-card" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;"><div style="display:flex;align-items:center;gap:9px;min-width:0;"><img src="${activePeer.avatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${activePeer.name}</div><div class="btdt-mono" style="color:#4ade80;">Verified ${activePeer.homeCountry} -> ${u.shortName}</div></div></div><button class="btdt-btn-fill" style="width:auto;padding:6px 10px;font-size:11px;" onclick="openBookingSheet('${activePeer.id}')">Book Pass</button></div>
-              <div style="padding:9px 11px;border-radius:11px;border:1px solid rgba(246,72,56,0.48);background:rgba(246,72,56,0.1);font-size:11px;line-height:1.42;color:rgba(255,255,255,0.88);">
-                <strong style="color:#ff7e72;">Safety Disclaimer:</strong> Never share personal contact details (phone, WhatsApp, email, or socials) or send money outside BTDT. BTDT is not responsible for scams or issues faced off-platform.
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:10px;">
+              <!-- Peer Header Card -->
+              <div class="btdt-card" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;">
+                <div style="display:flex;align-items:center;gap:9px;min-width:0;">
+                  <img src="${activePeer.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1.5px solid #4ade80;" />
+                  <div style="min-width:0;">
+                    <div style="font-size:13.5px;font-weight:600;color:#fff;">${activePeer.name}</div>
+                    <div class="btdt-mono" style="color:#4ade80;font-size:10.5px;">✓ Verified ${activePeer.homeCountry} ➔ ${u.shortName}</div>
+                  </div>
+                </div>
+                <button class="btdt-btn-fill" style="width:auto;padding:6px 12px;font-size:11px;" onclick="openBookingSheet('${activePeer.id}')">Book Pass</button>
               </div>
+
+              <!-- Anti-Scam Security Banner -->
+              <div style="padding:9px 12px;border-radius:12px;border:1px solid rgba(246,72,56,0.48);background:rgba(246,72,56,0.12);font-size:11.5px;line-height:1.4;color:rgba(255,255,255,0.9);">
+                <strong style="color:#ff7e72;">🛡️ Safe Student Protocol:</strong> Never share WhatsApp, personal phone numbers, or wire deposits outside BTDT. Off-platform contact sharing is automatically blocked.
+              </div>
+
+              <!-- Chat Stream -->
               <div class="btdt-chat-stream">
-                ${state.chatMessages.map((m) => `<div class="btdt-msg ${m.sender}"><div>${m.text}</div>${m.pdfName ? `<div onclick="showSavedPdfChecklist()" style="margin-top:7px;padding:7px 9px;border-radius:9px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.2);display:flex;justify-content:space-between;align-items:center;cursor:pointer;"><div><div class="btdt-mono" style="color:#fff;">${m.pdfName}</div><div style="font-size:10px;color:rgba(255,255,255,0.6);">${m.pdfSize}</div></div><span class="btdt-mono" style="color:#fff;text-decoration:underline;">View</span></div>` : ""}${m.receiptTitle ? `<div style="margin-top:7px;padding:7px 9px;border-radius:9px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.16);"><div class="btdt-mono" style="color:#f64838;">${m.receiptTitle}</div><div style="font-size:11px;color:rgba(255,255,255,0.78);">${m.receiptDesc}</div></div>` : ""}</div>`).join("")}
-                ${state.chatTyping ? `<div class="btdt-msg them" style="display:inline-flex;gap:4px;align-items:center;"><span class="btdt-mono" style="color:rgba(255,255,255,0.7);">Typing...</span></div>` : ""}
+                ${state.chatMessages.map((m) => `
+                  <div class="btdt-msg ${m.sender}">
+                    <div>${m.text}</div>
+                    ${m.pdfName ? `
+                      <div onclick="showSavedPdfChecklist()" style="margin-top:7px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.22);display:flex;justify-content:space-between;align-items:center;cursor:pointer;">
+                        <div>
+                          <div class="btdt-mono" style="color:#fff;font-size:11px;">📄 ${m.pdfName}</div>
+                          <div style="font-size:10px;color:rgba(255,255,255,0.6);">${m.pdfSize}</div>
+                        </div>
+                        <span class="btdt-mono" style="color:#4ade80;font-size:10px;font-weight:600;">VERIFIED</span>
+                      </div>
+                    ` : ""}
+                    ${m.receiptTitle ? `
+                      <div style="margin-top:7px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.55);border:1px solid rgba(246,72,56,0.35);">
+                        <div class="btdt-mono" style="color:#f64838;font-size:11px;">✓ ${m.receiptTitle}</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.78);margin-top:2px;">${m.receiptDesc}</div>
+                      </div>
+                    ` : ""}
+                  </div>
+                `).join("")}
+                ${state.chatTyping ? `<div class="btdt-msg them" style="display:inline-flex;gap:4px;align-items:center;"><span class="btdt-mono" style="color:rgba(255,255,255,0.7);">Senior typing...</span></div>` : ""}
               </div>
-              <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;"><button onclick="sendChatReply('Hi!')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Say Hi</button><button onclick="sendChatReply('What are real rent & dorm options?')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Rent &amp; dorms?</button><button onclick="sendChatReply('Does my transcript seal look ready?')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Transcript check?</button></div>
-              <div id="f7ChatLiveWarn" style="display:none;padding:7px 10px;border-radius:9px;border:1px solid #ff453a;background:rgba(255,69,58,0.16);color:#ffb4ae;font-size:11px;font-weight:600;">Do not send personal details here — numbers, email IDs, and off-platform messages are automatically deleted.</div>
-              <div style="display:flex;gap:7px;"><input id="f7ChatInput" class="btdt-input" style="margin-top:0;flex:1;" type="text" oninput="onChatInputLive(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChatReply();}" placeholder="Message ${activePeer.name.split(" ")[0]}..." /><button class="btdt-btn-fill" style="width:auto;padding:0 14px;" onclick="sendChatReply()">Send</button></div>
+
+              <!-- Quick Suggestion Chips -->
+              <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;">
+                <button onclick="sendChatReply('Hi!')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Say Hi</button>
+                <button onclick="sendChatReply('What are real rent & dorm options near campus?')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Dorms &amp; rent reality?</button>
+                <button onclick="sendChatReply('Does my transcript seal look ready for enrollment?')" style="padding:5px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Transcript audit?</button>
+              </div>
+
+              <!-- Anti-Scam Filter Live Warning -->
+              <div id="f7ChatLiveWarn" style="display:none;padding:7px 11px;border-radius:10px;border:1px solid #ff453a;background:rgba(255,69,58,0.18);color:#ffb4ae;font-size:11px;font-weight:600;">
+                Numbers, emails, and off-platform links are blocked automatically.
+              </div>
+
+              <!-- Input Row -->
+              <div style="display:flex;gap:8px;">
+                <input id="f7ChatInput" class="btdt-input" style="margin-top:0;flex:1;" type="text" oninput="onChatInputLive(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChatReply();}" placeholder="Message ${activePeer.name.split(" ")[0]}..." />
+                <button class="btdt-btn-fill" style="width:auto;padding:0 16px;" onclick="sendChatReply()">Send</button>
+              </div>
             </div>
           `;
         } else if (tab === "kit") {
           const items = [["esim", "Arrival eSIM & Campus SIM Partner", "Roam from landing, swap on campus day 1"], ["funds", "Student Banking & Proof-of-Funds Prep", "Approved student accounts & living budget notes"], ["health", "Student Health Insurance Activation", "Public & student plan enrollment guide"], ["rail", `${u.city} Semester Transit & City Reg`, "U-Bahn/rail pass + municipal address checklist"]];
           const doneCount = items.filter(([k]) => state.kitDone[k]).length, pct = Math.round((doneCount / items.length) * 100);
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-card"><div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span class="btdt-mono" style="color:#f64838;">LANDING READINESS</span><span class="btdt-mono" style="color:#fff;">${pct}% · ${doneCount}/4</span></div><div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;"><div style="height:100%;width:${pct}%;background:#f64838;transition:width 0.25s ease;"></div></div></div>${items.map(([k, title, sub]) => `<label class="btdt-card" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border-color:${state.kitDone[k] ? "rgba(74,222,128,0.4)" : "rgba(255,255,255,0.13)"};"><input type="checkbox" ${state.kitDone[k] ? "checked" : ""} onchange="toggleKitCheck('${k}')" style="margin-top:3px;accent-color:#f64838;" /><div><div style="font-size:13px;font-weight:500;color:#fff;${state.kitDone[k] ? "text-decoration:line-through;opacity:0.6;" : ""}">${title}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);margin-top:2px;">${sub}</div></div></label>`).join("")}<div class="btdt-card" style="font-size:11.5px;color:rgba(255,255,255,0.68);line-height:1.45;"><strong style="color:#fff;">Peer Guidance Policy:</strong> BTDT connects seniors and incoming students for practical arrival &amp; document formatting guidance. Official visa issuance remains solely with embassies.</div></div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;">
+              <div class="btdt-card">
+                <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+                  <span class="btdt-mono" style="color:#f64838;">LANDING READINESS</span>
+                  <span class="btdt-mono" style="color:#fff;">${pct}% · ${doneCount}/4 Complete</span>
+                </div>
+                <div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;">
+                  <div style="height:100%;width:${pct}%;background:#f64838;transition:width 0.25s ease;"></div>
+                </div>
+              </div>
+              ${items.map(([k, title, sub]) => `
+                <label class="btdt-card" style="display:flex;align-items:flex-start;gap:11px;cursor:pointer;border-color:${state.kitDone[k] ? "rgba(74,222,128,0.45)" : "rgba(255,255,255,0.13)"};">
+                  <input type="checkbox" ${state.kitDone[k] ? "checked" : ""} onchange="toggleKitCheck('${k}')" style="margin-top:3px;accent-color:#f64838;width:17px;height:17px;" />
+                  <div>
+                    <div style="font-size:13.5px;font-weight:600;color:#fff;${state.kitDone[k] ? "text-decoration:line-through;opacity:0.65;" : ""}">${title}</div>
+                    <div style="font-size:11.5px;color:rgba(255,255,255,0.62);margin-top:2px;">${sub}</div>
+                  </div>
+                </label>
+              `).join("")}
+              <div class="btdt-card" style="font-size:11.5px;color:rgba(255,255,255,0.7);line-height:1.45;">
+                <strong style="color:#fff;">Peer Guidance Policy:</strong> BTDT connects seniors and incoming students for practical arrival &amp; document formatting guidance.
+              </div>
+            </div>
+          `;
         } else {
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="btdt-mono" style="color:#f64838;">SESSION PASSES &amp; NOTES</span><button onclick="openBookingSheet('${quickMatch.id}')" style="background:none;border:0;color:#fff;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">+ New Pass</button></div>${state.passes.map((ps) => { const pu = S.universities.find((x) => x.id === ps.uniId) || u, open = state.expandedPass === ps.code; return `<div class="btdt-card" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="btdt-mono" style="color:#f64838;">${ps.code}</span><span class="btdt-pill ${ps.status === "Confirmed" ? "btdt-pill-green" : ""}">${ps.status}</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><div style="display:flex;align-items:center;gap:9px;min-width:0;"><img src="./media/unis/${pu.id}.svg" class="uni-logo-pill" alt="${pu.shortName}" /><div style="min-width:0;"><div style="font-size:14px;font-weight:600;color:#fff;">${ps.mentorName}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);">${pu.shortName} · ${ps.pkg}</div></div></div><strong class="btdt-mono" style="font-size:15px;color:#fff;">€${ps.total}</strong></div><div style="border-top:1px dashed rgba(255,255,255,0.18);"></div><div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;"><span style="color:rgba(255,255,255,0.6);">${ps.when}</span><button onclick="togglePassExpand('${ps.code}')" style="background:none;border:0;color:#fff;text-decoration:underline;cursor:pointer;font-size:11.5px;">${open ? "Hide Notes" : `Notes (${ps.notes.length})`}</button></div>${open ? `<div style="display:flex;flex-direction:column;gap:5px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.08);">${ps.notes.map((nt) => `<div style="padding:7px 9px;border-radius:8px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.85);">${nt}</div>`).join("")}</div>` : ""}</div>`; }).join("")}</div>`;
+          // Apple Wallet PKPass Passes
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:12px;padding-top:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span class="btdt-mono" style="color:#f64838;">APPLE WALLET BOARDING PASSES</span>
+                <button onclick="openBookingSheet('${quickMatch.id}')" style="background:none;border:0;color:#fff;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">+ New Pass</button>
+              </div>
+
+              ${state.passes.map((ps) => {
+                const pu = S.universities.find((x) => x.id === ps.uniId) || u, open = state.expandedPass === ps.code;
+                return `
+                  <div class="btdt-card-accent" style="display:flex;flex-direction:column;gap:11px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <span class="btdt-mono" style="color:#f64838;font-size:11px;">PASS ${ps.code}</span>
+                      <span class="btdt-pill ${ps.status === "Confirmed" ? "btdt-pill-green" : ""}">${ps.status}</span>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                        <img src="./media/unis/${pu.id}.svg" class="uni-logo-pill" alt="${pu.shortName}" />
+                        <div style="min-width:0;">
+                          <div style="font-size:14.5px;font-weight:600;color:#fff;">${ps.mentorName}</div>
+                          <div style="font-size:11.5px;color:rgba(255,255,255,0.65);font-family:${pu.font || "inherit"};">${pu.shortName} · ${ps.pkg}</div>
+                        </div>
+                      </div>
+                      <strong class="btdt-mono" style="font-size:16px;color:#fff;">€${ps.total}</strong>
+                    </div>
+
+                    <div style="border-top:1px dashed rgba(255,255,255,0.22);margin:4px 0;"></div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;">
+                      <span style="color:rgba(255,255,255,0.65);">${ps.when}</span>
+                      <button onclick="togglePassExpand('${ps.code}')" style="background:none;border:0;color:#f64838;text-decoration:underline;cursor:pointer;font-size:11.5px;font-family:var(--btdt-mono);">
+                        ${open ? "Hide Receipts" : `Receipts (${ps.notes.length})`}
+                      </button>
+                    </div>
+
+                    ${open ? `
+                      <div style="display:flex;flex-direction:column;gap:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.1);">
+                        ${ps.notes.map((nt) => `
+                          <div style="padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.12);font-size:11.5px;color:rgba(255,255,255,0.88);">
+                            ✓ ${nt}
+                          </div>
+                        `).join("")}
+                      </div>
+                    ` : ""}
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
         }
 
         const tabs = [["home", "house_fill", "Home"], ["peers", "person_2_fill", "Peers"], ["chat", "chat_bubble_2_fill", "Chat"], ["kit", "briefcase_fill", "Kit"], ["passes", "ticket_fill", "Passes"]];
-        setPageHtml(`<div class="page btdt-app-page" data-name="student-app"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()">← iPhone</a></div><div class="title">BTDT · Student</div><div class="right"><a class="link" onclick="btdtBack('role_gate')">Switch</a></div></div></div><div class="toolbar toolbar-bottom tabbar tabbar-icons"><div class="toolbar-inner">${tabs.map(([id, ic, lbl]) => `<a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchStudentTab('${id}')" style="cursor:pointer;"><i class="f7-icons">${ic}</i><span class="tabbar-label">${lbl}</span></a>`).join("")}</div></div><div class="page-content">${bodyHtml}</div></div>`, false);
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="student-app">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="left">
+                  <a class="link" onclick="goHomeOS()" style="color:#f64838;font-size:13px;display:flex;align-items:center;gap:3px;">
+                    <i class="f7-icons" style="font-size:15px;">chevron_left</i>Home
+                  </a>
+                </div>
+                <div class="title" style="margin:0 auto;">
+                  <div class="ios-role-pill">
+                    <button class="active">Student</button>
+                    <button onclick="switchToMentorWorkspace()">Mentor</button>
+                  </div>
+                </div>
+                <div class="right">
+                  <a class="link" onclick="btdtBack('student_onboard')" style="color:rgba(255,255,255,0.65);font-size:12px;">Route</a>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar toolbar-bottom tabbar tabbar-icons">
+              <div class="toolbar-inner">
+                ${tabs.map(([id, ic, lbl]) => `
+                  <a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchStudentTab('${id}')" style="cursor:pointer;">
+                    <i class="f7-icons">${ic}</i>
+                    <span class="tabbar-label">${lbl}</span>
+                  </a>
+                `).join("")}
+              </div>
+            </div>
+            <div class="page-content">${bodyHtml}</div>
+          </div>
+        `, false);
       }
 
       function renderMentorApp() {
         const u = getUniObj(), tab = state.mentorTab;
         let bodyHtml = "";
         if (tab === "queue") {
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;"><div class="btdt-card-accent"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><img src="./media/unis/${u.id}.svg" class="uni-logo-pill" alt="${u.shortName}" /><span class="btdt-pill" style="background:#f64838;color:#fff;">MENTOR STUDIO</span></div><div style="font-family:var(--btdt-display);font-size:15px;font-weight:600;color:#fff;">${state.mentorEduEmail}</div><div class="btdt-mono" style="color:${state.mentorIdUploaded ? "#4ade80" : "rgba(255,255,255,0.72)"};margin-top:3px;">Student ID Scan: ${state.mentorIdUploaded ? "Preview Staged" : "Pending Upload Preview"}</div></div>${state.mentorQueue.map((req) => `<div class="btdt-card" style="display:flex;flex-direction:column;gap:7px;"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div style="font-size:14px;font-weight:600;color:#fff;">${req.name}</div><div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${req.route}</div></div><strong class="btdt-mono" style="color:#f64838;">${req.tier}</strong></div><p style="font-size:12px;color:rgba(255,255,255,0.8);margin:0;">“${req.topic}”</p><div style="display:flex;gap:8px;padding-top:4px;">${req.status === "pending" ? `<button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','accepted')">Accept Request</button><button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','declined')">Decline</button>` : `<span class="btdt-pill ${req.status === "accepted" ? "btdt-pill-green" : ""}">${req.status}</span>`}</div></div>`).join("")}</div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;">
+              <div class="btdt-card-accent">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <img src="./media/unis/${u.id}.svg" class="uni-logo-pill" alt="${u.shortName}" />
+                  <span class="btdt-pill" style="background:#f64838;color:#fff;">MENTOR STUDIO</span>
+                </div>
+                <div style="font-family:var(--btdt-display);font-size:15px;font-weight:600;color:#fff;">${state.mentorEduEmail}</div>
+                <div class="btdt-mono" style="color:${state.mentorIdUploaded ? "#4ade80" : "rgba(255,255,255,0.72)"};margin-top:3px;">
+                  Student ID Check: ${state.mentorIdUploaded ? "✓ Verified Preview Staged" : "Pending ID Upload"}
+                </div>
+              </div>
+              ${state.mentorQueue.map((req) => `
+                <div class="btdt-card" style="display:flex;flex-direction:column;gap:7px;">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                    <div>
+                      <div style="font-size:14px;font-weight:600;color:#fff;">${req.name}</div>
+                      <div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${req.route}</div>
+                    </div>
+                    <strong class="btdt-mono" style="color:#f64838;">${req.tier}</strong>
+                  </div>
+                  <p style="font-size:12px;color:rgba(255,255,255,0.8);margin:0;">“${req.topic}”</p>
+                  <div style="display:flex;gap:8px;padding-top:4px;">
+                    ${req.status === "pending" ? `
+                      <button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','accepted')">Accept Request</button>
+                      <button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','declined')">Decline</button>
+                    ` : `<span class="btdt-pill ${req.status === "accepted" ? "btdt-pill-green" : ""}">${req.status}</span>`}
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `;
         } else if (tab === "chats") {
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-mono" style="color:#f64838;">MENTEE CONVERSATIONS</div><div class="btdt-card" style="display:flex;gap:10px;align-items:center;"><img src="./media/avatar-3.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" /><div><div style="font-size:13.5px;font-weight:600;color:#fff;">Priya Deshmukh</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Can I share my transcript format draft?”</div></div></div><div class="btdt-card" style="display:flex;gap:10px;align-items:center;"><img src="./media/avatar-5.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" /><div><div style="font-size:13.5px;font-weight:600;color:#fff;">Karthik Nair</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Which dorm hall is closest to U6?”</div></div></div></div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;">
+              <div class="btdt-mono" style="color:#f64838;">MENTEE CONVERSATIONS</div>
+              <div class="btdt-card" style="display:flex;gap:10px;align-items:center;">
+                <img src="./media/avatar-3.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:#fff;">Priya Deshmukh</div>
+                  <div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Can I share my transcript format draft?”</div>
+                </div>
+              </div>
+              <div class="btdt-card" style="display:flex;gap:10px;align-items:center;">
+                <img src="./media/avatar-5.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+                <div>
+                  <div style="font-size:13.5px;font-weight:600;color:#fff;">Karthik Nair</div>
+                  <div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Which dorm hall is closest to campus?”</div>
+                </div>
+              </div>
+            </div>
+          `;
         } else if (tab === "sessions") {
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-card-accent"><div class="btdt-mono" style="color:#f64838;">COMPLETED SESSIONS</div><div style="font-family:var(--btdt-display);font-size:32px;font-weight:600;color:#fff;margin:2px 0;">€460.00</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">24 students mentored · ${u.shortName}</div></div>${state.passes.map((ps) => `<div class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:13px;font-weight:600;">${ps.code} · ${ps.pkg}</div><div style="font-size:11px;color:rgba(255,255,255,0.58);">${ps.status}</div></div><strong class="btdt-mono">€${ps.total}</strong></div>`).join("")}</div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;">
+              <div class="btdt-card-accent">
+                <div class="btdt-mono" style="color:#f64838;">COMPLETED SESSIONS</div>
+                <div style="font-family:var(--btdt-display);font-size:32px;font-weight:600;color:#fff;margin:2px 0;">€460.00</div>
+                <div style="font-size:11.5px;color:rgba(255,255,255,0.68);">24 students mentored · ${u.shortName}</div>
+              </div>
+              ${state.passes.map((ps) => `
+                <div class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;">
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">${ps.code} · ${ps.pkg}</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.58);">${ps.status}</div>
+                  </div>
+                  <strong class="btdt-mono">€${ps.total}</strong>
+                </div>
+              `).join("")}
+            </div>
+          `;
         } else if (tab === "hours") {
-          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-mono" style="color:#f64838;">AVAILABILITY &amp; PICKUP TOGGLES</div>${[["monThu", "Mon–Thu Evenings (18:00–21:00)", "Text & quick calls open"], ["friSat", "Fri–Sat Deep-Dive Slots", "60-min paperwork prep"], ["arrivalGreet", "Airport Meet & Greet (+€40)", "Student covers transit fares"]].map(([k, t, s]) => `<label class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;"><div><div style="font-size:13px;font-weight:600;">${t}</div><div style="font-size:11px;color:rgba(255,255,255,0.6);">${s}</div></div><input type="checkbox" ${state.availability[k] ? "checked" : ""} onchange="toggleAvail('${k}')" style="width:18px;height:18px;accent-color:#f64838;" /></label>`).join("")}</div>`;
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;">
+              <div class="btdt-mono" style="color:#f64838;">AVAILABILITY &amp; PICKUP TOGGLES</div>
+              ${[["monThu", "Mon–Thu Evenings (18:00–21:00)", "Text & quick calls open"], ["friSat", "Fri–Sat Deep-Dive Slots", "60-min paperwork prep"], ["arrivalGreet", "Airport Meet & Greet (+€40)", "Student covers transit fares"]].map(([k, t, s]) => `
+                <label class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;">
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">${t}</div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.6);">${s}</div>
+                  </div>
+                  <input type="checkbox" ${state.availability[k] ? "checked" : ""} onchange="toggleAvail('${k}')" style="width:18px;height:18px;accent-color:#f64838;" />
+                </label>
+              `).join("")}
+            </div>
+          `;
         } else {
-          bodyHtml = `<div class="btdt-card" style="text-align:center;margin-top:12px;padding:20px;"><div class="btdt-mono" style="color:#f64838;">PUBLIC AURA RATING</div><div style="font-family:var(--btdt-display);font-size:48px;font-weight:600;color:#fff;line-height:1.1;margin:8px 0;">99<span style="font-size:20px;color:#f64838;">/100</span></div><div style="font-size:12.5px;color:rgba(255,255,255,0.75);">24 Verified Sessions · 0 Negative Reviews · ~14m Reply</div></div>`;
+          bodyHtml = `
+            <div class="btdt-card" style="text-align:center;margin-top:12px;padding:20px;">
+              <div class="btdt-mono" style="color:#f64838;">PUBLIC AURA RATING</div>
+              <div style="font-family:var(--btdt-display);font-size:48px;font-weight:600;color:#fff;line-height:1.1;margin:8px 0;">99<span style="font-size:20px;color:#f64838;">/100</span></div>
+              <div style="font-size:12.5px;color:rgba(255,255,255,0.75);">24 Verified Sessions · 0 Negative Reviews · ~14m Reply</div>
+            </div>
+          `;
         }
 
         const mTabs = [["queue", "tray_full_fill", "Queue"], ["chats", "chat_bubble_2_fill", "Chats"], ["sessions", "calendar_today", "Sessions"], ["hours", "clock_fill", "Hours"], ["aura", "rosette", "Aura"]];
-        setPageHtml(`<div class="page btdt-app-page" data-name="mentor-app"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()">← iPhone</a></div><div class="title">Mentor Studio</div><div class="right"><a class="link" onclick="btdtBack('role_gate')">Switch</a></div></div></div><div class="toolbar toolbar-bottom tabbar tabbar-icons"><div class="toolbar-inner">${mTabs.map(([id, ic, lbl]) => `<a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchMentorTab('${id}')" style="cursor:pointer;"><i class="f7-icons">${ic}</i><span class="tabbar-label">${lbl}</span></a>`).join("")}</div></div><div class="page-content">${bodyHtml}</div></div>`, false);
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="mentor-app">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="left">
+                  <a class="link" onclick="goHomeOS()" style="color:#f64838;font-size:13px;display:flex;align-items:center;gap:3px;">
+                    <i class="f7-icons" style="font-size:15px;">chevron_left</i>Home
+                  </a>
+                </div>
+                <div class="title" style="margin:0 auto;">
+                  <div class="ios-role-pill">
+                    <button onclick="switchToStudentWorkspace()">Student</button>
+                    <button class="active">Mentor</button>
+                  </div>
+                </div>
+                <div class="right">
+                  <a class="link" onclick="btdtBack('mentor_verify')" style="color:rgba(255,255,255,0.65);font-size:12px;">Verify</a>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar toolbar-bottom tabbar tabbar-icons">
+              <div class="toolbar-inner">
+                ${mTabs.map(([id, ic, lbl]) => `
+                  <a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchMentorTab('${id}')" style="cursor:pointer;">
+                    <i class="f7-icons">${ic}</i>
+                    <span class="tabbar-label">${lbl}</span>
+                  </a>
+                `).join("")}
+              </div>
+            </div>
+            <div class="page-content">${bodyHtml}</div>
+          </div>
+        `, false);
       }
+
+      window.switchToStudentWorkspace = function() {
+        state.role = "student";
+        state.btdtStage = "student_app";
+        state.studentTab = "home";
+        state.currentApp = "btdt";
+        renderBtdtCurrentStage();
+      };
+      window.switchToMentorWorkspace = function() {
+        state.role = "mentor";
+        state.btdtStage = "mentor_app";
+        state.mentorTab = "queue";
+        state.currentApp = "btdt";
+        renderBtdtCurrentStage();
+      };
 
       window.BTDT_IOS = {
         bootToLockScreen: () => window.bootToLockScreen(),
@@ -1892,7 +2319,8 @@
               else if (screen === "arrival" || screen === "kit") window.BTDT_IOS.openStudentScreen("kit");
               else if (screen === "wallet" || screen === "passes") window.BTDT_IOS.openStudentScreen("passes");
               else if (screen === "auth") window.launchBtdtApp("auth");
-              else window.launchBtdtApp();
+              else if (screen === "mentor") window.BTDT_IOS.openMentorScreen("queue");
+              else window.BTDT_IOS.openStudentScreen("home");
             });
           });
         },
@@ -1902,15 +2330,29 @@
         openAuth: () => { window.unlockPhoneOS(); window.launchBtdtApp("auth"); },
         openStudentScreen: (tab = "home") => {
           cancelPendingBootAndUnlock();
-          window.unlockPhoneOS();
+          state.isLocked = false;
+          if (lockScreen) lockScreen.classList.add("hidden-os");
+          if (bootOverlay) bootOverlay.classList.add("done");
+          if (btdtSplash) btdtSplash.classList.remove("visible");
+          if (activeAppShell) activeAppShell.classList.add("visible");
           const map = { home: "home", peers: "peers", chat: "chat", arrival: "kit", kit: "kit", wallet: "passes", passes: "passes" };
-          state.role = "student"; state.btdtStage = "student_app"; state.studentTab = map[tab] || "home"; state.currentApp = "btdt";
+          state.role = "student";
+          state.btdtStage = "student_app";
+          state.studentTab = map[tab] || "home";
+          state.currentApp = "btdt";
           renderBtdtCurrentStage();
         },
         openMentorScreen: (tab = "queue") => {
           cancelPendingBootAndUnlock();
-          window.unlockPhoneOS();
-          state.role = "mentor"; state.btdtStage = "mentor_app"; state.mentorTab = tab; state.currentApp = "btdt";
+          state.isLocked = false;
+          if (lockScreen) lockScreen.classList.add("hidden-os");
+          if (bootOverlay) bootOverlay.classList.add("done");
+          if (btdtSplash) btdtSplash.classList.remove("visible");
+          if (activeAppShell) activeAppShell.classList.add("visible");
+          state.role = "mentor";
+          state.btdtStage = "mentor_app";
+          state.mentorTab = tab;
+          state.currentApp = "btdt";
           renderBtdtCurrentStage();
         },
         openUtilityApp: (name) => { cancelPendingBootAndUnlock(); window.unlockPhoneOS(); window.openUtilityApp(name); },
