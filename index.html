@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTDT — Been There, Done That | Global Peer Mentorship</title>
+
+    <!-- Typography System + Live Font Switcher Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Crimson+Pro:wght@500;600&family=EB+Garamond:wght@500;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Libre+Baskerville:wght@400;700&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@500;600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#050101',
+                        surface: '#080505',
+                        charcoal: '#151515',
+                        crimzon: '#f64838',
+                        crimzonDeep: '#6c1819',
+                        silver: '#d8d8d8'
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        /* ================================================================== */
+        /* 1. EXACT CRIMZON DESIGN TOKENS & DYNAMIC FONT VARIABLES            */
+        /* ================================================================== */
+        :root {
+            --bg: #050101;
+            --bg-surface: #080505;
+            --accent: #f64838;
+            --accent-tint: rgba(246, 72, 56, 0.15);
+            --accent-deep: #6c1819;
+            --border-card: rgba(255, 255, 255, 0.1);
+            --border-rail: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: #d8d8d8;
+            --ease-crimzon: cubic-bezier(0.16, 1, 0.3, 1);
+
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --tracking-h1: -0.055em;
+            --tracking-h2: -0.03em;
+        }
+
+        [data-font-theme="syne"] {
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --tracking-h1: -0.04em;
+            --tracking-h2: -0.025em;
+        }
+
+        [data-font-theme="outfit"] {
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --tracking-h1: -0.045em;
+            --tracking-h2: -0.025em;
+        }
+
+        [data-font-theme="inter"] {
+            --font-display: 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --tracking-h1: -0.06em;
+            --tracking-h2: -0.02em;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            touch-action: pan-y;
+        }
+
+        .crimzon-h1 {
+            font-family: var(--font-display);
+            font-size: clamp(34px, 4.6vw, 68px);
+            font-weight: 500;
+            line-height: 1.04;
+            letter-spacing: var(--tracking-h1);
+            color: #ffffff;
+        }
+
+        .crimzon-h2 {
+            font-family: var(--font-display);
+            font-size: clamp(24px, 2.8vw, 38px);
+            font-weight: 400;
+            line-height: 1.18;
+            letter-spacing: var(--tracking-h2);
+            color: #ffffff;
+            text-wrap: balance;
+        }
+
+        .crimzon-eyebrow {
+            font-family: var(--font-body);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+        }
+
+        .crimzon-body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: -0.02em;
+            color: var(--text-secondary);
+        }
+
+        .crimzon-meta {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .vertical-rails {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1200px;
+            transform: translate3d(-50%, 0, 0);
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+        }
+        .vertical-rail-line { width: 1px; height: 100%; background-color: #ffffff; opacity: 0.2; }
+        @media (max-width: 1200px) { .vertical-rails { display: none; } }
+
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.08;
+            background-image: url("/media/grain.png");
+            background-repeat: repeat;
+            background-size: 192px 192px;
+        }
+
+        .card-grain {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.08;
+            background-image: url("/media/grain.png");
+            background-repeat: repeat;
+            background-size: 192px 192px;
+        }
+
+        .crimzon-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+        @media (max-width: 1024px) { .crimzon-container { padding: 0 32px; } }
+        @media (max-width: 640px) { .crimzon-container { padding: 0 16px; } }
+
+        .btn-fill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background-color: #ffffff;
+            color: #080505;
+            border-radius: 10px;
+            padding: 12px 18px 12px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 24px;
+            border: 1px solid #ffffff;
+            cursor: pointer;
+            will-change: transform, box-shadow;
+            transition: transform 0.28s var(--ease-crimzon), box-shadow 0.35s var(--ease-crimzon);
+        }
+        .btn-fill:hover {
+            transform: translate3d(0, -1px, 0);
+            box-shadow: 0 0 32px -4px rgba(246, 72, 56, 0.45), 0 8px 20px -8px rgba(0, 0, 0, 0.65);
+        }
+        .btn-fill:active { transform: translate3d(0, 0, 0) scale3d(0.985, 0.985, 1); }
+        .btn-fill .arrow-svg { transition: transform 0.32s var(--ease-crimzon); will-change: transform; }
+        .btn-fill:hover .arrow-svg { transform: translate3d(4px, 0, 0); }
+
+        .btn-hollow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background-color: transparent;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 24px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            will-change: transform, background-color, border-color;
+            transition: transform 0.28s var(--ease-crimzon), background-color 0.25s ease, border-color 0.25s ease;
+        }
+        .btn-hollow:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translate3d(0, -1px, 0);
+        }
+
+        .hero-bg-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+            -webkit-mask-image: linear-gradient(#000000 65%, rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(#000000 65%, rgba(0, 0, 0, 0) 100%);
+        }
+        .hero-parallax { position: absolute; inset: -4%; will-change: transform; }
+        .hero-fallback-beam {
+            position: absolute; top: -10%; left: 50%; width: 3px; height: 92%;
+            transform: translate3d(-50%, 0, 0);
+            background: linear-gradient(180deg, rgba(246,72,56,0) 0%, #f64838 28%, #ff8577 52%, #f64838 78%, rgba(246,72,56,0) 100%);
+            box-shadow: 0 0 32px 8px rgba(246, 72, 56, 0.8), 0 0 110px 30px rgba(246, 72, 56, 0.35);
+        }
+        .hero-fallback-glow {
+            position: absolute; top: 10%; left: 50%; width: 920px; height: 600px;
+            transform: translate3d(-50%, 0, 0);
+            background: radial-gradient(ellipse at 50% 45%, rgba(246, 72, 56, 0.32) 0%, rgba(108, 24, 25, 0.42) 38%, transparent 74%);
+            filter: blur(55px);
+        }
+
+        .hero-word {
+            display: inline-block; opacity: 0; filter: blur(3px);
+            transform: translate3d(0, 18px, 0); will-change: transform, opacity;
+            animation: heroReveal 1.55s var(--ease-crimzon) forwards;
+        }
+        @keyframes heroReveal {
+            0%   { opacity: 0; filter: blur(3px); transform: translate3d(0, 18px, 0); }
+            100% { opacity: 1; filter: blur(0px); transform: translate3d(0, 0, 0); }
+        }
+        @keyframes heroContentReveal {
+            0%   { opacity: 0; transform: translate3d(0, 16px, 0); }
+            100% { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+
+        .reveal {
+            opacity: 0; transform: translate3d(0, 18px, 0); will-change: transform, opacity;
+            transition: opacity 1.15s var(--ease-crimzon), transform 1.15s var(--ease-crimzon);
+        }
+        .crimzon-eyebrow.reveal {
+            transition-duration: 1.2s;
+        }
+        .crimzon-h2.reveal {
+            transform: translate3d(0, 22px, 0);
+            transition-duration: 1.4s;
+        }
+        .reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        .marquee-wrap {
+            overflow: hidden; opacity: 0.96;
+            -webkit-mask-image: linear-gradient(270deg, rgba(0,0,0,0) 0%, #000 18%, #000 82%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(270deg, rgba(0,0,0,0) 0%, #000 18%, #000 82%, rgba(0,0,0,0) 100%);
+        }
+        .marquee-track { display: flex; width: max-content; gap: 64px; will-change: transform; animation: tickerLoop 78s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes tickerLoop { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+
+        .showcase-panel {
+            position: absolute; inset: 0; opacity: 0; pointer-events: none;
+            transform: translate3d(0, 8px, 0) scale3d(0.988, 0.988, 1);
+            will-change: opacity, transform;
+            transition: opacity 0.48s var(--ease-crimzon), transform 0.52s var(--ease-crimzon);
+        }
+        .showcase-panel.active { opacity: 1; pointer-events: auto; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+
+        .bento-top-mask {
+            -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 39%);
+            mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, #000000 39%);
+        }
+
+        .crimzon-switch {
+            width: 36px; height: 20px; border-radius: 4px; background-color: #737373; padding: 0 3px;
+            display: inline-flex; align-items: center; cursor: pointer;
+            transition: background-color 0.25s var(--ease-crimzon);
+        }
+        .crimzon-switch[aria-checked="true"] { background-color: var(--accent); }
+        .crimzon-switch-knob {
+            width: 14px; height: 14px; border-radius: 3px; background-color: #ffffff;
+            will-change: transform; transform: translate3d(0, 0, 0);
+            transition: transform 0.28s var(--ease-crimzon);
+        }
+        .crimzon-switch[aria-checked="true"] .crimzon-switch-knob { transform: translate3d(16px, 0, 0); }
+
+        .pricing-orb {
+            position: absolute; top: 50%; left: 50%; width: 467px; height: 234px;
+            transform: translate3d(-50%, -50%, 0);
+            background: linear-gradient(124deg, rgba(163, 103, 103, 0.96) 0%, rgba(189, 109, 109, 0.4) 47%, #f64838 100%);
+            filter: blur(100px); border-radius: 260px; pointer-events: none; z-index: 1;
+            will-change: transform; animation: orbDrift 10s ease-in-out infinite alternate;
+        }
+        @keyframes orbDrift { 0% { transform: translate3d(-52%, -52%, 0) scale(1); } 100% { transform: translate3d(-48%, -46%, 0) scale(1.08); } }
+
+        .faq-grid { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.38s var(--ease-crimzon); }
+        .faq-item.open .faq-grid { grid-template-rows: 1fr; }
+        .faq-inner { overflow: hidden; }
+        .faq-icon { transition: transform 0.32s var(--ease-crimzon); will-change: transform; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+        .crimzon-card {
+            background-color: rgba(10, 5, 5, 0.74);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-card);
+            transition: border-color 0.28s var(--ease-crimzon), background-color 0.28s var(--ease-crimzon), transform 0.3s var(--ease-crimzon);
+            will-change: transform;
+        }
+        .crimzon-card-hover:hover {
+            border-color: rgba(246, 72, 56, 0.55);
+            background-color: rgba(255, 255, 255, 0.025);
+            transform: translate3d(0, -2px, 0);
+        }
+
+        .iso-pill {
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono); font-size: 10px; line-height: 1;
+            padding: 3px 5px; border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.9); letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0;
+        }
+
+        .pkg-radio:checked + .pkg-box {
+            border-color: #f64838; background-color: rgba(246, 72, 56, 0.09);
+            box-shadow: 0 0 0 1px rgba(246, 72, 56, 0.45);
+        }
+
+        select option { background-color: #0b0707; color: #ffffff; }
+        .view-enter { animation: viewFadeIn 0.72s var(--ease-crimzon) forwards; will-change: opacity, transform; }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translate3d(0, 16px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+        @keyframes cardStaggerIn { from { opacity: 0; transform: translate3d(0, 18px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+        .card-stagger { opacity: 0; animation: cardStaggerIn 0.95s var(--ease-crimzon) forwards; will-change: transform, opacity; }
+        @keyframes modalPopIn { from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.985); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+        .modal-animate { animation: modalPopIn 0.44s var(--ease-crimzon) forwards; will-change: transform, opacity; }
+        @keyframes sheetUp { from { transform: translate3d(0, 100%, 0); } to { transform: translate3d(0, 0, 0); } }
+        .phone-sheet { animation: sheetUp 0.34s var(--ease-crimzon) forwards; will-change: transform; }
+        .gpu-layer { transform: translate3d(0, 0, 0); will-change: transform; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="selection:bg-crimzon/30 selection:text-white">
+
+    <!-- FULL-HEIGHT 1200PX VERTICAL ARCHITECTURAL RAILS -->
+    <div class="vertical-rails" aria-hidden="true">
+        <div class="vertical-rail-line"></div>
+        <div class="vertical-rail-line"></div>
+    </div>
+
+    <!-- GLOBAL FILM GRAIN OVERLAY -->
+    <div class="film-grain" aria-hidden="true"></div>
+
+    <!-- TOAST FEEDBACK -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[120] hidden opacity-0 translate-y-2 transition-all duration-300">
+        <div class="bg-[#0e0808] border border-white/20 text-white px-4 py-3 rounded-[10px] shadow-2xl flex items-center gap-3 max-w-sm">
+            <span class="w-2 h-2 rounded-full bg-crimzon shrink-0"></span>
+            <p id="toastText" class="text-[13px] text-white/90 leading-snug"></p>
+        </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- FIXED NAVBAR (EXACT CRIMZON GLASS BAR + APP DEMO + JOIN MENTOR)    -->
+    <!-- ================================================================== -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-white/20" style="background: rgba(5, 1, 1, 0.65); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px);">
+        <div class="crimzon-container py-[14px] md:py-[18px] flex items-center justify-between gap-3">
+
+            <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left shrink-0 group">
+                <span class="w-7 h-7 rounded-[7px] border border-white/25 bg-white/[0.04] flex items-center justify-center group-hover:border-crimzon/70 transition-colors">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5.5 17C7 10 11.8 7 18 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+                        <circle cx="5.5" cy="17" r="2.2" fill="#ffffff"/>
+                        <circle cx="18" cy="7" r="2.8" fill="#f64838"/>
+                    </svg>
+                </span>
+                <span style="font-family: var(--font-display);" class="text-[19px] font-medium tracking-[-0.04em] text-white">BTDT<span class="text-crimzon">.</span></span>
+            </button>
+
+            <nav class="hidden lg:flex items-center gap-[26px]" aria-label="Main Navigation">
+                <button onclick="goToSection('product')" class="crimzon-meta text-white/90 hover:text-white transition-colors">Product</button>
+                <button onclick="goToSection('features')" class="crimzon-meta text-white/90 hover:text-white transition-colors">Features</button>
+                <button onclick="openDirectoryView()" class="crimzon-meta text-white/90 hover:text-white transition-colors">Peers</button>
+                <button onclick="openStoryView()" class="crimzon-meta text-white/90 hover:text-white transition-colors">Our Story</button>
+                <button onclick="goToSection('pricing')" class="crimzon-meta text-white/90 hover:text-white transition-colors">Pricing</button>
+                <button onclick="openAppDemo('os_home')" class="crimzon-meta px-3 py-1 rounded-full border border-crimzon/50 bg-crimzon/15 text-white hover:bg-crimzon/25 transition-colors">App Demo</button>
+
+                <div class="relative" id="campusesDropdownGroup">
+                    <button onclick="toggleCampusesDropdown(event)" class="crimzon-meta text-white/90 hover:text-white transition-colors inline-flex items-center gap-1.5">
+                        <span>Campuses</span>
+                        <svg class="w-3.5 h-3.5 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                    </button>
+
+                    <div id="campusesDropdownMenu" data-lenis-prevent class="hidden absolute right-0 top-full mt-4 w-[360px] bg-[#0a0606]/95 backdrop-blur-xl border border-white/15 rounded-[12px] p-3 shadow-2xl z-50">
+                        <div class="flex items-center justify-between px-2 pb-2 mb-2 border-b border-white/10">
+                            <span class="font-mono text-[10px] uppercase tracking-wider text-white/50">Active Campuses (30)</span>
+                            <button onclick="closeCampusesDropdown(); openModal('enrollUniModal')" class="font-mono text-[10px] text-crimzon hover:underline">+ Enroll Uni</button>
+                        </div>
+
+                        <div id="navCampusesList" class="grid grid-cols-1 gap-1 max-h-[240px] overflow-y-auto pr-1"></div>
+
+                        <div class="mt-2.5 pt-2.5 border-t border-white/10 space-y-1">
+                            <button onclick="closeCampusesDropdown(); goToSection('arrival-kit')" class="w-full text-left px-2.5 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between">
+                                <span class="text-[12.5px] text-white/90">Arrival Kit</span>
+                                <span class="font-mono text-[9px] uppercase px-1.5 py-0.5 rounded bg-crimzon/15 text-crimzon border border-crimzon/40">Soon</span>
+                            </button>
+                            <button onclick="closeCampusesDropdown(); openModal('checklistModal')" class="w-full text-left px-2.5 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between">
+                                <span class="text-[12.5px] text-white/90">Free Arrival Checklist</span>
+                                <span class="font-mono text-[10px] text-white/45">4-Field</span>
+                            </button>
+                            <button onclick="closeCampusesDropdown(); openModal('joinMentorModal')" class="w-full text-left px-2.5 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between">
+                                <span class="text-[12.5px] text-white/90">Join as a Mentor</span>
+                                <span class="font-mono text-[10px] text-crimzon">Earn €20–€120</span>
+                            </button>
+                        </div>
+
+                        <div class="mt-2.5 pt-2.5 border-t border-white/10 px-2">
+                            <p class="font-mono text-[9px] uppercase tracking-wider text-white/45 mb-1.5">Typography Theme</p>
+                            <div class="grid grid-cols-4 gap-1 font-mono text-[10px]">
+                                <button onclick="setFontTheme('space')" data-font-btn="space" class="font-switch-btn px-1.5 py-1 rounded border border-crimzon text-white bg-crimzon/15">Space</button>
+                                <button onclick="setFontTheme('syne')" data-font-btn="syne" class="font-switch-btn px-1.5 py-1 rounded border border-white/15 text-white/60 hover:text-white">Syne</button>
+                                <button onclick="setFontTheme('outfit')" data-font-btn="outfit" class="font-switch-btn px-1.5 py-1 rounded border border-white/15 text-white/60 hover:text-white">Outfit</button>
+                                <button onclick="setFontTheme('inter')" data-font-btn="inter" class="font-switch-btn px-1.5 py-1 rounded border border-white/15 text-white/60 hover:text-white">Inter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openAppDemo('os_home')" class="lg:hidden crimzon-meta px-3 py-1 rounded-full border border-crimzon/50 bg-crimzon/15 text-white text-[12px]">App Demo</button>
+                <button onclick="openModal('joinMentorModal')" class="btn-hollow hidden sm:inline-flex text-[14px] border border-white/15">Join as a Mentor</button>
+                <button onclick="toggleMobileNav()" aria-label="Toggle Menu" class="lg:hidden w-9 h-9 rounded-[8px] border border-white/15 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileNav" class="hidden lg:hidden bg-[#080505]/95 backdrop-blur-xl border-t border-white/15 px-5 py-4">
+            <div class="grid grid-cols-2 gap-2 text-[14px]">
+                <button onclick="toggleMobileNav(); goToSection('product')" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Product</button>
+                <button onclick="toggleMobileNav(); openDirectoryView()" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Enrolled Peers</button>
+                <button onclick="toggleMobileNav(); openStoryView()" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Founder's Story</button>
+                <button onclick="toggleMobileNav(); openAppDemo('chat')" class="text-left px-3 py-2.5 rounded-[8px] bg-crimzon/15 text-crimzon border border-crimzon/40">Live App Demo</button>
+                <button onclick="toggleMobileNav(); goToSection('pricing')" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Pricing</button>
+                <button onclick="toggleMobileNav(); openModal('joinMentorModal')" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Join as a Mentor</button>
+                <button onclick="toggleMobileNav(); openModal('checklistModal')" class="text-left px-3 py-2.5 rounded-[8px] bg-white/[0.03] text-white/90">Free Checklist</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 1: LANDING PAGE (EXACT CRIMZON ARCHITECTURE + UNCLUTTERED)    -->
+    <!-- ================================================================== -->
+    <main id="landingView" class="relative z-[4]">
+
+        <!-- SECTION 1: HERO (FITS ONE SCREEN ON MOBILE, LAPTOP, DESKTOP) -->
+        <section class="relative min-h-[100svh] flex flex-col items-center justify-center pt-[92px] pb-[78px] md:pt-[102px] md:pb-[74px] overflow-hidden">
+            <div class="hero-bg-layer">
+                <div id="heroParallax" class="hero-parallax">
+                    <img src="/media/hero-bg.webp" alt="Crimzon eclipse atmosphere" class="w-full h-full object-cover object-center opacity-100">
+                </div>
+            </div>
+
+            <div class="relative z-[7] w-full max-w-[780px] mx-auto px-4 md:px-5 text-center flex flex-col items-center gap-[22px] md:gap-[26px]">
+                <div class="flex flex-col items-center gap-[16px] md:gap-[20px]">
+                    <div class="inline-flex items-center justify-center gap-2 rounded-[40px] px-[14px] py-[6px]"
+                         style="backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(246, 72, 56, 0.15); border: 1px solid rgba(255, 255, 255, 0.8);">
+                        <span class="crimzon-meta text-white leading-none">Introducing BTDT</span>
+                    </div>
+
+                    <h1 id="heroH1" class="crimzon-h1 text-center"></h1>
+
+                    <p class="crimzon-body text-center max-w-[540px]" style="animation: heroContentReveal 1.5s var(--ease-crimzon) 0.55s both; will-change: transform, opacity;">
+                        Never land alone in a new country. Get honest written answers from verified seniors who share your home country, language, and target university.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-[16px]" style="animation: heroContentReveal 1.35s var(--ease-crimzon) 0.78s both; will-change: transform, opacity;">
+                    <button onclick="goToSection('find-match')" class="btn-fill">
+                        <span>Find Your Match</span>
+                        <svg class="arrow-svg w-[14px] h-[14px]" viewBox="0 0 13.5 13.5" fill="none">
+                            <path d="M 6.253 1.331 C 6.527 1.056 6.972 1.056 7.247 1.331 L 12.169 6.253 C 12.443 6.527 12.443 6.973 12.169 7.247 L 7.247 12.169 C 6.972 12.444 6.527 12.444 6.253 12.169 C 5.978 11.894 5.978 11.449 6.253 11.175 L 9.974 7.453 L 1.828 7.453 C 1.44 7.453 1.125 7.138 1.125 6.75 C 1.125 6.362 1.44 6.047 1.828 6.047 L 9.974 6.047 L 6.253 2.325 C 5.978 2.051 5.978 1.605 6.253 1.331 Z" fill="#151515"/>
+                        </svg>
+                    </button>
+                    <button onclick="openAppDemo('os_home')" class="btn-hollow border border-white/25 px-5 py-3">
+                        <span>Interactive App Demo</span>
+                    </button>
+                    <button onclick="openModal('checklistModal')" class="btn-hollow">
+                        <span>Free Arrival Checklist</span>
+                    </button>
+                </div>
+
+                <!-- 3-Step Core Promise Strip -->
+                <div class="w-full max-w-[740px] pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left" style="animation: heroContentReveal 1.35s var(--ease-crimzon) 0.95s both; will-change: transform, opacity;">
+                    <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
+                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">01 · SHARED ROOTS</p>
+                        <p class="text-[12px] text-white/75">Ask freely in your language with a senior from home</p>
+                    </div>
+                    <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
+                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">02 · VERIFIED PEERS</p>
+                        <p class="text-[12px] text-white/75">Verified by Student ID or Enrollment Documents</p>
+                    </div>
+                    <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
+                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">03 · CONCRETE ANSWERS</p>
+                        <p class="text-[12px] text-white/75">Personal arrival checklists and real people helping you step-by-step</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ACTIVE CAMPUSES MARQUEE -->
+        <section class="py-[44px] md:py-[52px] overflow-hidden">
+            <div class="crimzon-container flex flex-col items-center gap-[20px]">
+                <p class="text-[18px] leading-[24px] tracking-[-0.02em] text-white text-center max-w-[560px] reveal">
+                    Trusted by incoming students across 30 global universities
+                </p>
+                <div class="w-full marquee-wrap">
+                    <div id="campusMarqueeTrack" class="marquee-track py-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CONCRETE BENCHMARK STATS BAR -->
+        <section class="border-y border-white/20 py-[56px]">
+            <div class="crimzon-container flex flex-col md:flex-row items-center justify-between gap-10 md:gap-[20px]">
+                <div class="md:flex-1 reveal">
+                    <p class="text-[18px] leading-[24px] tracking-[-0.02em] text-white/85 max-w-[380px]">
+                        Fixed €20–€120 sessions instead of €2,000+ middleman retainers — verified answers before you fly.
+                    </p>
+                </div>
+                <div class="w-full md:flex-1 grid grid-cols-2 sm:grid-cols-3 gap-x-[24px] md:gap-x-[40px] gap-y-6">
+                    <div class="border-l border-white/20 pl-[14px] py-1 flex flex-col gap-[8px] reveal">
+                        <h2 class="crimzon-h2">€20–€120</h2>
+                        <p class="text-[12px] leading-[16px] uppercase tracking-[0.04em] text-white">TRANSPARENT FIXED TIERS</p>
+                    </div>
+                    <div class="border-l border-white/20 pl-[14px] py-1 flex flex-col gap-[8px] reveal" style="transition-delay: 80ms;">
+                        <h2 class="crimzon-h2">&lt; 2h</h2>
+                        <p class="text-[12px] leading-[16px] uppercase tracking-[0.04em] text-white">VERIFIED REPLY WINDOW</p>
+                    </div>
+                    <div class="border-l border-white/20 pl-[14px] py-1 flex flex-col gap-[8px] reveal col-span-2 sm:col-span-1" style="transition-delay: 160ms;">
+                        <h2 class="crimzon-h2">840+</h2>
+                        <p class="text-[12px] leading-[16px] uppercase tracking-[0.04em] text-white">COUNTRY-TO-CAMPUS TRACKS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CONCISE FRAMED PROBLEM STATEMENT -->
+        <section class="relative border-b border-white/20 py-[64px] md:py-[76px] overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none" style="-webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 88%); mask-image: radial-gradient(ellipse at center, #000 40%, transparent 88%);" aria-hidden="true">
+                <img src="/media/cta-bg.png" alt="" class="w-full h-full object-cover object-center opacity-55">
+            </div>
+            <div class="crimzon-container relative z-[5]">
+                <div class="crimzon-card rounded-[16px] border border-white/15 bg-black/55 backdrop-blur-xl px-6 py-9 md:px-12 md:py-12 flex flex-col items-center text-center gap-[18px] reveal">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-crimzon/50 bg-crimzon/15">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+                        <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-white">Peer truth over internet guesswork</span>
+                    </div>
+                    <h2 class="crimzon-h2 max-w-[92%] md:max-w-[82%] reveal" style="transition-delay: 80ms;">
+                        Get real answers on housing, daily costs, and campus life straight from alumni and seniors from your home country already studying at your university.
+                    </h2>
+                </div>
+
+                <!-- Concise Founder's Note Bridge (Seamless Ethos · Pathos · Logos storytelling) -->
+                <div class="mt-5 crimzon-card rounded-[14px] border border-white/15 bg-[#090404]/90 backdrop-blur-xl px-6 py-6 md:px-9 md:py-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6 reveal" style="transition-delay: 120ms;">
+                    <div class="space-y-3 max-w-[740px]">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-mono text-[10.5px] uppercase tracking-[0.1em] text-crimzon">Founder's Note · Why BTDT Exists</span>
+                            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/[0.05] text-white/65 border border-white/10">Built By Students Who Moved First</span>
+                        </div>
+                        <blockquote style="font-family: var(--font-display);" class="text-[18px] md:text-[21px] leading-[1.38] tracking-[-0.02em] text-white font-medium">
+                            “Your acceptance letter should feel like pure pride — not staring at your ceiling at 2 AM wondering who to trust before you fly. I’m building BTDT so you always have one honest senior from home waiting on the other side.”
+                        </blockquote>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-white/65 font-mono">
+                            <span>— Founder, BTDT</span>
+                            <span>· Verified by Student ID or Enrollment Documents · Unfiltered reviews · Clear €20–€120 sessions</span>
+                        </div>
+                    </div>
+                    <button onclick="openStoryView()" class="btn-hollow border border-crimzon/50 bg-crimzon/10 hover:bg-crimzon/20 text-white px-5 py-3 text-[13.5px] font-medium shrink-0 inline-flex items-center gap-2 self-start lg:self-center">
+                        <span>Read Our Story</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: "WHAT BTDT DOES" — 3 FOCUSED TABS ONLY + LIVE CAMPUS SEARCH -->
+        <section id="product" class="py-[48px] md:py-[56px] scroll-mt-16">
+            <div class="max-w-[1200px] mx-auto">
+
+                <div class="px-4 md:px-[60px] flex flex-col gap-[12px] mb-[24px]">
+                    <p class="crimzon-eyebrow reveal">What BTDT does</p>
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <h2 class="crimzon-h2 flex-1 reveal">One network. Every step of the move.</h2>
+                        <p class="crimzon-body md:max-w-[40%] reveal" style="transition-delay: 70ms;">
+                            Housing reality, local arrival tasks, and academic prep from students already living there.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ONLY 3 Focused Tabs (Redundant Countryman Match tab removed) -->
+                <div class="px-4 md:px-[60px] py-[14px] flex items-center justify-between gap-6 overflow-x-auto no-scrollbar">
+                    <button onclick="switchShowcaseTab(0)" id="stab-0" class="text-[15px] md:text-[16px] tracking-[-0.02em] text-crimzon transition-colors whitespace-nowrap">Pre-Arrival Paperwork</button>
+                    <button onclick="switchShowcaseTab(1)" id="stab-1" class="text-[15px] md:text-[16px] tracking-[-0.02em] text-white/80 hover:text-white transition-colors whitespace-nowrap">Arrival Kit &amp; Perks</button>
+                    <button onclick="switchShowcaseTab(2)" id="stab-2" class="text-[15px] md:text-[16px] tracking-[-0.02em] text-white/80 hover:text-white transition-colors whitespace-nowrap">Aura &amp; Pass Ledger</button>
+                </div>
+
+                <!-- Full-Width 1200px Showcase Canvas (Fits One Screen cleanly) -->
+                <div class="relative w-full min-h-[390px] lg:min-h-[415px] border-y border-white/20 overflow-hidden bg-[#060202] flex items-center justify-center p-4 md:p-6">
+                    <div class="absolute inset-0 pointer-events-none">
+                        <img id="showcaseBgImg" src="/media/hero-bg.webp" alt="Crimzon atmospheric canvas" class="w-full h-full object-cover object-center opacity-85 transition-opacity duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-b from-[#050101]/35 via-transparent to-[#050101]/70"></div>
+                    </div>
+
+                    <div class="relative z-10 w-full max-w-[1040px] rounded-[14px] border border-white/15 bg-[#0A0808]/90 backdrop-blur-xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[365px]">
+
+                        <!-- Left App Sidebar with LIVE Search campus... Input -->
+                        <div class="hidden lg:flex lg:col-span-3 border-r border-white/10 p-5 flex-col justify-between bg-black/35">
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <svg class="w-3.5 h-3.5 text-white/50 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/></svg>
+                                    <input id="workspaceCampusSearch" oninput="renderWorkspaceSidebarCampuses()" onkeydown="if(event.key==='Enter'){ const first=document.querySelector('#workspaceCampusList button'); if(first) first.click(); }" type="text" placeholder="Search campus..." class="w-full pl-8 pr-3 py-2 rounded-[8px] border border-white/15 bg-white/[0.03] text-[12px] text-white placeholder:text-white/40 focus:outline-none focus:border-crimzon">
+                                </div>
+
+                                <div class="space-y-1 text-[13px]">
+                                    <button onclick="switchShowcaseTab(0)" data-snav="0" class="snav-btn w-full text-left px-3 py-2 rounded-[8px] flex items-center gap-2.5 bg-crimzon/15 text-white border border-crimzon/30">
+                                        <svg class="w-4 h-4 text-crimzon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        <span>Arrival Prep</span>
+                                    </button>
+                                    <button onclick="switchShowcaseTab(1)" data-snav="1" class="snav-btn w-full text-left px-3 py-2 rounded-[8px] flex items-center gap-2.5 text-white/65 hover:text-white">
+                                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                                        <span>Arrival Kit</span>
+                                    </button>
+                                    <button onclick="switchShowcaseTab(2)" data-snav="2" class="snav-btn w-full text-left px-3 py-2 rounded-[8px] flex items-center gap-2.5 text-white/65 hover:text-white">
+                                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        <span>Aura &amp; Passes</span>
+                                    </button>
+                                </div>
+
+                                <div class="pt-3 border-t border-white/10 space-y-2">
+                                    <p class="font-mono text-[10px] uppercase tracking-wider text-white/40 px-2">Active Campuses</p>
+                                    <div id="workspaceCampusList" class="space-y-1 px-1 max-h-[165px] overflow-y-auto no-scrollbar"></div>
+                                </div>
+                            </div>
+
+                            <button onclick="openAppDemo('chat')" class="pt-3 border-t border-white/10 flex items-center justify-between text-left hover:text-crimzon transition-colors">
+                                <span class="text-[12px] text-white/85">Open Live App Demo →</span>
+                            </button>
+                        </div>
+
+                        <!-- Center Dynamic Panel (3 Focused Tabs) -->
+                        <div class="lg:col-span-6 relative min-h-[360px] border-r border-white/10">
+
+                            <!-- TAB 0: PEER PREP & DO'S/DON'TS -->
+                            <div id="spanel-0" class="showcase-panel active p-6 md:p-7 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <p class="text-[12px] text-white/50">Workspace / <span class="text-white">€100 Deep-Dive Paperwork &amp; Prep</span></p>
+                                    <h3 style="font-family: var(--font-display);" class="text-[22px] font-medium tracking-[-0.03em] text-white">Clear answers on university packets, leases, and budgets</h3>
+                                    <div class="space-y-2.5 text-[12px] leading-relaxed">
+                                        <div class="p-3 rounded-[9px] border border-white/10 bg-white/[0.025]">
+                                            <p class="font-mono text-[10px] uppercase text-crimzon mb-1">01 · Academic &amp; Portal Packet</p>
+                                            <p class="text-white/85">“Here is how I formatted my registrar seal and grading scale sheet for university enrollment.”</p>
+                                        </div>
+                                        <div class="p-3 rounded-[9px] border border-crimzon/45 bg-crimzon/[0.08]">
+                                            <p class="font-mono text-[10px] uppercase text-white mb-1">02 · Application Order &amp; Common Mistakes</p>
+                                            <p class="text-white/90">“Exact portal sequencing tips and document formatting mistakes to avoid from seniors who completed your intake.”</p>
+                                        </div>
+                                        <div class="p-3 rounded-[9px] border border-white/10 bg-white/[0.025]">
+                                            <p class="font-mono text-[10px] uppercase text-white/55 mb-1">03 · Housing &amp; Lease Check</p>
+                                            <p class="text-white/80">“Compare campus dorm waitlists against realistic neighborhood rents before wiring any deposit.”</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/50">
+                                    <span>60–70 min peer chat</span>
+                                    <button onclick="openAppDemo('chat')" class="text-crimzon hover:underline">Try in Live Chat Demo →</button>
+                                </div>
+                            </div>
+
+                            <!-- TAB 1: ARRIVAL KIT & PERKS -->
+                            <div id="spanel-1" class="showcase-panel p-6 md:p-7 flex flex-col justify-between">
+                                <div class="space-y-5">
+                                    <p class="text-[12px] text-white/50">Workspace / <span class="text-white">Arrival Kit &amp; Landing Pack</span></p>
+                                    <div>
+                                        <h3 style="font-family: var(--font-display);" class="text-[24px] font-medium tracking-[-0.03em] text-white">Weeks 1–2 Local Setup Tracker</h3>
+                                        <p class="text-[12.5px] text-white/55 mt-1">eSIMs, cross-border banking, city registration &amp; airport escort</p>
+                                    </div>
+                                    <div class="space-y-2.5 text-[12.5px]">
+                                        <div class="p-3 rounded-[9px] border border-white/10 bg-white/[0.02] flex items-center justify-between">
+                                            <span class="text-white">Airalo / Saily Student eSIM</span>
+                                            <span class="font-mono text-[10px] text-white/60">COMING SOON</span>
+                                        </div>
+                                        <div class="p-3 rounded-[9px] border border-white/10 bg-white/[0.02] flex items-center justify-between">
+                                            <span class="text-white">Revolut / Wise Student Banking</span>
+                                            <span class="font-mono text-[10px] text-white/60">COMING SOON</span>
+                                        </div>
+                                        <div class="p-3 rounded-[9px] border border-crimzon bg-crimzon/[0.12] flex items-center justify-between">
+                                            <span class="text-white font-medium">City Registration, Tax ID &amp; Transit Setup</span>
+                                            <span class="font-mono text-[10px] text-crimzon">€100–€120 PACK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex items-center gap-3">
+                                    <button onclick="openAppDemo('arrival')" class="px-5 py-2.5 rounded-full bg-crimzon text-white text-[13px] font-medium">Try Interactive Arrival Kit</button>
+                                </div>
+                            </div>
+
+                            <!-- TAB 2: AURA & PASS LEDGER -->
+                            <div id="spanel-2" class="showcase-panel p-6 md:p-7 flex flex-col justify-between">
+                                <div class="space-y-5">
+                                    <p class="text-[12px] text-white/50">Workspace / <span class="text-white">Aura &amp; Session Ledger</span></p>
+                                    <div>
+                                        <h3 style="font-family: var(--font-display);" class="text-[24px] font-medium tracking-[-0.03em] text-white">Aura Read — Verified Accountability</h3>
+                                        <p class="text-[12.5px] text-white/55 mt-1">Synthesized from 42 completed student sessions</p>
+                                    </div>
+                                    <ul class="space-y-2.5 text-[13px] text-white/80">
+                                        <li class="flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-crimzon mt-1.5 shrink-0"></span><span>97/100 Aura across Accuracy, Speed &amp; Clarity</span></li>
+                                        <li class="flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-crimzon mt-1.5 shrink-0"></span><span>Negative feedback stays 100% public with mentor replies</span></li>
+                                        <li class="flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-crimzon mt-1.5 shrink-0"></span><span>Digital #BTDT-XXXX Boarding Pass syncs every saved note</span></li>
+                                    </ul>
+                                </div>
+                                <div class="pt-4 border-t border-white/10 flex flex-wrap items-center gap-3">
+                                    <button onclick="openDirectoryView()" class="px-5 py-2.5 rounded-full bg-crimzon text-white text-[13px] font-medium">Inspect Mentor Profiles</button>
+                                    <button onclick="openAppDemo('wallet')" class="px-5 py-2.5 rounded-full border border-white/25 text-white/90 text-[13px]">Open Pass Wallet</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right App Sidebar -->
+                        <div class="hidden lg:flex lg:col-span-3 p-5 flex-col justify-between bg-black/25">
+                            <div class="space-y-4">
+                                <p class="text-[13px] text-white/75">BTDT Insights</p>
+                                <div class="p-4 rounded-[10px] border border-crimzon/70 bg-crimzon/[0.08] shadow-[0_0_28px_-8px_rgba(246,72,56,0.65)] space-y-2">
+                                    <p class="text-[13px] font-medium text-white">BTDT recommends</p>
+                                    <p id="workspaceRecText" class="text-[12px] text-white/75 leading-relaxed">
+                                        Drop a transcript, lease draft, or course list in chat for line-by-line notes from your senior.
+                                    </p>
+                                </div>
+                                <div class="p-3.5 rounded-[10px] border border-white/10 bg-white/[0.02] space-y-1.5">
+                                    <p class="font-mono text-[10px] uppercase text-white/45">Session Guarantee</p>
+                                    <p class="text-[12px] text-white/85">Verified &lt; 2h response window on active routes.</p>
+                                </div>
+                            </div>
+                            <p class="font-mono text-[10px] text-white/40">840+ verified peers · 14 languages</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4-Column Bottom Benefits Strip -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b border-white/20">
+                    <div class="p-5 md:p-6 border-b sm:border-b-0 sm:border-r border-white/20 flex flex-col gap-4 reveal">
+                        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        <div class="space-y-1">
+                            <p class="text-[15.5px] text-white tracking-[-0.02em]">Matched in minutes</p>
+                            <p class="crimzon-meta text-silver text-[13px] leading-snug">Filter by home country, native language, and target university.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 md:p-6 border-b lg:border-b-0 lg:border-r border-white/20 flex flex-col gap-4 reveal" style="transition-delay: 60ms;">
+                        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/></svg>
+                        <div class="space-y-1">
+                            <p class="text-[15.5px] text-white tracking-[-0.02em]">Verified countrymen</p>
+                            <p class="crimzon-meta text-silver text-[13px] leading-snug">Current seniors &amp; alumni who completed your same move.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 md:p-6 border-b sm:border-b-0 sm:border-r border-white/20 flex flex-col gap-4 reveal" style="transition-delay: 120ms;">
+                        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18"/></svg>
+                        <div class="space-y-1">
+                            <p class="text-[15.5px] text-white tracking-[-0.02em]">Text-first receipts</p>
+                            <p class="crimzon-meta text-silver text-[13px] leading-snug">Structured written checklists and exact links you can keep forever.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 md:p-6 flex flex-col gap-4 reveal" style="transition-delay: 180ms;">
+                        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <div class="space-y-1">
+                            <p class="text-[15.5px] text-white tracking-[-0.02em]">Digital session pass</p>
+                            <p class="crimzon-meta text-silver text-[13px] leading-snug">Instant #BTDT-XXXX pass synced with all mentor recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: FEATURES (3 UNIFIED CONCRETE CARDS, ALL GREEN ACTIVE INDICATORS) -->
+        <section id="features" class="border-b border-white/20 py-[52px] md:py-[64px] scroll-mt-16">
+            <div class="crimzon-container">
+                <div class="space-y-2.5 mb-[32px]">
+                    <p class="crimzon-eyebrow reveal">Features</p>
+                    <h2 class="crimzon-h2 max-w-full md:max-w-[65%] reveal">Built for concrete answers before you fly</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-[20px]">
+                    <!-- Card 1 -->
+                    <div class="crimzon-card flex flex-col justify-between overflow-hidden relative reveal">
+                        <div class="w-full relative overflow-hidden bento-top-mask bg-[#080303]">
+                            <img src="/media/hero-bg.webp" alt="" class="absolute inset-0 w-full h-full object-cover object-center opacity-75">
+                            <div class="relative z-10 p-6 space-y-2.5">
+                                <div class="flex items-center justify-between mb-1"><span class="text-[13px] font-medium text-white">Pre-Arrival Intelligence</span><span class="font-mono text-[10px] text-[#4ade80]">INCLUDED</span></div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Academic Files</p><p class="text-[13px] text-white">Transcript Seal &amp; Portal Steps</p></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Financial Prep</p><p class="text-[13px] text-white">Blocked Account &amp; Proof of Funds</p></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Housing Reality</p><p class="text-[13px] text-white">Dorm Waitlists &amp; Lease Checks</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-4 space-y-2 border-t border-white/10 bg-black/40">
+                            <p class="text-[18px] text-white tracking-[-0.02em]">Route-Specific Clarity</p>
+                            <p class="crimzon-meta text-white/80">Actionable campus checklists, rent reality, and deposit safety shared directly in chat.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="crimzon-card flex flex-col justify-between overflow-hidden relative reveal" style="transition-delay: 80ms;">
+                        <div class="w-full relative overflow-hidden bento-top-mask bg-[#080303]">
+                            <img src="/media/cta-bg.png" alt="" class="absolute inset-0 w-full h-full object-cover object-center opacity-75">
+                            <div class="relative z-10 p-6 space-y-2.5">
+                                <div class="flex items-center justify-between mb-1"><span class="text-[13px] font-medium text-white">Mentor Verification</span><span class="font-mono text-[10px] text-[#4ade80]">VERIFIED</span></div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span><div><p class="text-[10px] text-white/55">Identity Check</p><p class="text-[13px] text-white">Student ID or Enrollment Documents</p></div></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md space-y-2">
+                                    <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span><span class="text-[13px] text-white">Aura Accountability</span></div><span class="font-mono text-[12px] text-[#4ade80]">98/100</span></div>
+                                    <div class="h-1.5 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-[#4ade80] w-[98%]"></div></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Unfiltered Reviews</p><p class="text-[13px] text-white">0 Hidden Critiques · Replies &lt; 2h</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-4 space-y-2 border-t border-white/10 bg-black/40">
+                            <p class="text-[18px] text-white tracking-[-0.02em]">Aura &amp; Public Ledger</p>
+                            <p class="crimzon-meta text-white/80">Transparent scores across accuracy and speed, with every student review visible publicly.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div onclick="openAppDemo('os_home')" class="crimzon-card crimzon-card-hover cursor-pointer flex flex-col justify-between overflow-hidden relative reveal" style="transition-delay: 160ms;">
+                        <div class="w-full relative overflow-hidden bento-top-mask bg-[#080303]">
+                            <img src="/media/cta-bg.png" alt="" class="absolute inset-0 w-full h-full object-cover object-bottom opacity-75">
+                            <div class="relative z-10 p-6 space-y-2.5">
+                                <div class="flex items-center justify-between mb-1"><span class="text-[13px] font-medium text-white">Safe In-App Workspace</span><span class="font-mono text-[10px] text-[#4ade80]">PROTECTED</span></div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Anti-Scam Chat Guard</p><p class="text-[13px] text-white">Blocks Phone, Email &amp; Off-Platform Links</p></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span>
+                                    <div><p class="text-[10px] text-white/55">Week-1 Landing Setup</p><p class="text-[13px] text-white">eSIM, Student Banking &amp; City Reg</p></div>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/75 backdrop-blur-md flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full bg-[#4ade80] shrink-0"></span><span class="text-[13px] text-white">Digital Boarding Pass Wallet</span></div>
+                                    <span class="font-mono text-[10px] text-crimzon shrink-0">Try Demo →</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-4 space-y-2 border-t border-white/10 bg-black/40">
+                            <p class="text-[18px] text-white tracking-[-0.02em]">Protected Day-1 Readiness</p>
+                            <p class="crimzon-meta text-white/80">Keep notes, arrival checklists, and moderated chats stored cleanly inside BTDT.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: UNCLUTTERED 3-INPUT FIND YOUR MATCH CARD (REPLACES RAW 280-PEER WALL) -->
+        <section id="find-match" class="relative border-b border-white/20 py-[52px] md:py-[64px] scroll-mt-16 overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none" style="-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 78%, transparent 100%);" aria-hidden="true">
+                <img src="/media/hero-bg.webp" alt="" class="w-full h-full object-cover object-center opacity-55">
+            </div>
+            <div class="pricing-orb" style="top: 48%; opacity: 0.45;" aria-hidden="true"></div>
+            <div class="crimzon-container relative z-[5]">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                    <div class="space-y-3">
+                        <p class="crimzon-eyebrow reveal">Find Your Match</p>
+                        <h2 class="crimzon-h2 reveal">Search your exact country-to-campus route</h2>
+                    </div>
+                    <button onclick="openDirectoryView()" class="btn-hollow border border-white/20 px-4 py-2 text-[13px] shrink-0">
+                        Open Enrolled Peers Directory (840+) →
+                    </button>
+                </div>
+
+                <!-- Clean Centered 3-Input Route Matcher -->
+                <div class="border border-white/15 bg-[#0a0606]/90 p-5 md:p-6 rounded-[14px] space-y-5 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div>
+                            <label for="matchFromCountry" class="block font-mono text-[10px] uppercase tracking-wider text-white/45 mb-1 px-1">1. Coming From</label>
+                            <select id="matchFromCountry" onchange="renderSuggestedRouteMatches()" class="w-full bg-[#0e0808] border border-white/15 hover:border-white/30 rounded-[8px] px-3 py-2.5 text-[13px] text-white focus:outline-none focus:border-crimzon"></select>
+                        </div>
+                        <div>
+                            <label for="matchDestCountry" class="block font-mono text-[10px] uppercase tracking-wider text-white/45 mb-1 px-1">2. Going To Country</label>
+                            <select id="matchDestCountry" onchange="syncMatcherUniversities()" class="w-full bg-[#0e0808] border border-white/15 hover:border-white/30 rounded-[8px] px-3 py-2.5 text-[13px] text-white focus:outline-none focus:border-crimzon"></select>
+                        </div>
+                        <div>
+                            <label for="matchTargetUni" class="block font-mono text-[10px] uppercase tracking-wider text-white/45 mb-1 px-1">3. Target University</label>
+                            <select id="matchTargetUni" onchange="renderSuggestedRouteMatches()" class="w-full bg-[#0e0808] border border-white/15 hover:border-white/30 rounded-[8px] px-3 py-2.5 text-[13px] text-white focus:outline-none focus:border-crimzon"></select>
+                        </div>
+                        <div>
+                            <label for="matchPersonQuery" class="block font-mono text-[10px] uppercase tracking-wider text-white/45 mb-1 px-1">Optional Person Name</label>
+                            <input id="matchPersonQuery" oninput="renderSuggestedRouteMatches()" type="text" placeholder="Search mentor name..." class="w-full bg-[#0e0808] border border-white/15 hover:border-white/30 rounded-[8px] px-3 py-2.5 text-[13px] text-white placeholder:text-white/35 focus:outline-none focus:border-crimzon">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+                        <span class="font-mono text-[11px] text-white/55">Every campus × home country track includes 1 Been There, Done That Mentor &amp; 1 Verified Alumni.</span>
+                        <div class="flex flex-wrap gap-2.5">
+                            <button onclick="openDirectoryFromMatcher()" class="btn-hollow border border-white/20 text-[13px] px-4 py-2">Browse Full Directory</button>
+                            <button onclick="renderSuggestedRouteMatches(); document.getElementById('suggestedRouteWrap').scrollIntoView({behavior:'smooth', block:'nearest'})" class="btn-fill text-[13px] py-2 px-5">Suggest Matches →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focused Suggested Matches Strip -->
+                <div id="suggestedRouteWrap" class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <p id="suggestedRouteLabel" class="font-mono text-[12px] text-white/80">Suggested For Your Route</p>
+                        <button onclick="openDirectoryFromMatcher()" class="font-mono text-[12px] text-crimzon hover:underline">See all matches in Directory →</button>
+                    </div>
+                    <div id="suggestedRouteGrid" class="grid grid-cols-1 md:grid-cols-3 gap-[20px]"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: HOW IT WORKS — COMPACT 3-COLUMN HORIZONTAL STEPS + DIRECT APP DEMO STRIP -->
+        <section id="how-it-works" class="relative border-b border-white/20 py-[52px] md:py-[64px] scroll-mt-16 overflow-hidden">
+            <div class="absolute inset-0 pointer-events-none" style="-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%);" aria-hidden="true">
+                <img src="/media/cta-bg.png" alt="" class="w-full h-full object-cover object-center opacity-45">
+            </div>
+            <div class="crimzon-container relative z-[5] space-y-10">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 reveal">
+                    <div class="space-y-3">
+                        <p class="crimzon-eyebrow">How it works</p>
+                        <h2 class="crimzon-h2">Up and running in three steps</h2>
+                        <p class="crimzon-body max-w-[460px]">Your entire relocation pocketed in one app — pick your countryman, book a text-first session, and try it live.</p>
+                    </div>
+                    <button onclick="openAppDemo('os_home')" class="btn-fill text-[13.5px] py-2.5 px-5 shrink-0">
+                        <span>Launch Live iPhone Demo →</span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-[20px]">
+                    <div class="crimzon-card p-[28px] flex flex-col justify-between gap-[24px] reveal">
+                        <p class="text-[40px] leading-none tracking-[-0.02em] text-crimzon/80 font-mono">01</p>
+                        <div class="space-y-2.5"><h3 class="text-[18px] leading-[24px] tracking-[-0.02em] text-white font-normal">Pick your countryman</h3><p class="crimzon-body text-[14px]">Filter verified seniors and alumni by your home country, native language, and exact destination university.</p></div>
+                    </div>
+                    <div class="crimzon-card p-[28px] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 80ms;">
+                        <p class="text-[40px] leading-none tracking-[-0.02em] text-crimzon/80 font-mono">02</p>
+                        <div class="space-y-2.5"><h3 class="text-[18px] leading-[24px] tracking-[-0.02em] text-white font-normal">Book a text-first session</h3><p class="crimzon-body text-[14px]">Choose a €20 reality check, €100 paperwork prep session, or €100–€120 landing pack with instant Boarding Pass confirmation.</p></div>
+                    </div>
+                    <div class="crimzon-card p-[28px] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 160ms;">
+                        <p class="text-[40px] leading-none tracking-[-0.02em] text-crimzon/80 font-mono">03</p>
+                        <div class="space-y-2.5"><h3 class="text-[18px] leading-[24px] tracking-[-0.02em] text-white font-normal">Keep every checklist saved</h3><p class="crimzon-body text-[14px]">Save dorm comparisons, campus portal links, and arrival steps permanently in chat — plus optional Airport Meet &amp; Greet.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: PRICING + ARRIVAL KIT REFERRAL HUB -->
+        <section id="pricing" class="border-b border-white/20 py-[52px] md:py-[64px] scroll-mt-16 overflow-hidden">
+            <div class="crimzon-container flex flex-col items-center gap-[32px] md:gap-[40px]">
+                <div class="text-center space-y-3 max-w-[600px]">
+                    <p class="crimzon-eyebrow reveal">Pricing</p>
+                    <h2 class="crimzon-h2 reveal">Simple pricing, no surprises</h2>
+                    <p class="crimzon-body reveal" style="transition-delay: 60ms;">One clear session fee instead of opaque consultancy fees — every written checklist stays yours forever.</p>
+                </div>
+
+                <div class="flex flex-col items-center gap-2 reveal">
+                    <div class="flex items-center gap-3">
+                        <span id="pLabelLeft" class="crimzon-meta text-white transition-colors">Text-First Only</span>
+                        <button id="airportSwitch" role="switch" aria-checked="false" onclick="togglePricingAirport()" class="crimzon-switch" aria-label="Toggle Airport Meet and Greet Add-on">
+                            <span class="crimzon-switch-knob"></span>
+                        </button>
+                        <span id="pLabelRight" class="crimzon-meta text-white/60 transition-colors">+ Airport Meet &amp; Greet (+€40)</span>
+                    </div>
+                    <p class="crimzon-meta text-white/65 text-center">Transparent fixed pricing · Incoming student pays all ride &amp; transit costs</p>
+                </div>
+
+                <div class="relative w-full grid grid-cols-1 lg:grid-cols-3 gap-[20px] items-stretch">
+                    <div class="pricing-orb" aria-hidden="true"></div>
+
+                    <!-- Tier 1: €20 -->
+                    <div class="relative z-10 crimzon-card p-[24px] flex flex-col justify-between gap-[32px] backdrop-blur-sm reveal">
+                        <div class="space-y-[36px]">
+                            <div class="space-y-1.5">
+                                <p class="crimzon-body">Base Counseling</p>
+                                <div class="flex items-baseline gap-1.5"><h2 id="price1" class="crimzon-h2">€20</h2><span class="text-[16px] text-white/75">/ 20 min</span></div>
+                                <p class="crimzon-body text-white pt-1">Quick reality check on courses &amp; dorms</p>
+                            </div>
+                            <div class="space-y-2.5">
+                                <p class="crimzon-meta text-white/75 uppercase">FEATURES</p>
+                                <ul class="space-y-2 crimzon-meta text-white/80">
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>20-min live structured text chat</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Course &amp; faculty honest breakdown</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Real rent &amp; monthly budget guide</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Permanent saved chat transcript</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-5"><div class="h-px w-full bg-white/20"></div><button onclick="pickTierAndBrowse(20)" class="btn-hollow w-full border border-white/15">Get started</button></div>
+                    </div>
+
+                    <!-- Tier 2: €100 -->
+                    <div class="relative z-10 border border-white/20 bg-black/55 backdrop-blur-md p-[24px] flex flex-col justify-between gap-[32px] reveal" style="transition-delay: 80ms;">
+                        <div class="space-y-[36px]">
+                            <div class="space-y-1.5">
+                                <p class="crimzon-body">Deep-Dive Paperwork &amp; Prep</p>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-baseline gap-1.5"><h2 id="price2" class="crimzon-h2">€100</h2><span class="text-[16px] text-white/75">/ 60–70 min</span></div>
+                                    <span class="text-[12px] font-medium px-2 py-1 rounded-[3px] border border-crimzon bg-crimzon/15 text-white">Popular</span>
+                                </div>
+                                <p class="crimzon-body text-white pt-1">60–70 min document checklist &amp; prep session</p>
+                            </div>
+                            <div class="space-y-2.5">
+                                <p class="crimzon-meta text-white/75 uppercase">FEATURES</p>
+                                <ul class="space-y-2 crimzon-meta text-white/80">
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Transcript &amp; university portal formatting</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Pre-departure packet order &amp; pitfalls to avoid</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Housing lease &amp; deposit safety review</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Native language chat + digital Boarding Pass</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-5"><div class="h-px w-full bg-white/20"></div><button onclick="pickTierAndBrowse(100)" class="btn-fill w-full"><span>Get started</span><svg class="arrow-svg w-[14px] h-[14px]" viewBox="0 0 13.5 13.5" fill="none"><path d="M 6.253 1.331 C 6.527 1.056 6.972 1.056 7.247 1.331 L 12.169 6.253 C 12.443 6.527 12.443 6.973 12.169 7.247 L 7.247 12.169 C 6.972 12.444 6.527 12.444 6.253 12.169 C 5.978 11.894 5.978 11.449 6.253 11.175 L 9.974 7.453 L 1.828 7.453 C 1.44 7.453 1.125 7.138 1.125 6.75 C 1.125 6.362 1.44 6.047 1.828 6.047 L 9.974 6.047 L 6.253 2.325 C 5.978 2.051 5.978 1.605 6.253 1.331 Z" fill="#151515"/></svg></button></div>
+                    </div>
+
+                    <!-- Tier 3: €100–€120 -->
+                    <div class="relative z-10 crimzon-card p-[24px] flex flex-col justify-between gap-[32px] backdrop-blur-sm reveal" style="transition-delay: 160ms;">
+                        <div class="space-y-[36px]">
+                            <div class="space-y-1.5">
+                                <p class="crimzon-body">Post-Arrival Landing Pack</p>
+                                <div class="flex items-baseline gap-1.5"><h2 id="price3" class="crimzon-h2">€100–€120</h2><span class="text-[16px] text-white/75">/ Weeks 1–2</span></div>
+                                <p class="crimzon-body text-white pt-1">Complete local setup after touchdown</p>
+                            </div>
+                            <div class="space-y-2.5">
+                                <p class="crimzon-meta text-white/75 uppercase">FEATURES</p>
+                                <ul class="space-y-2 crimzon-meta text-white/80">
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>City hall registration, tax ID &amp; residence permit steps</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Local bank account &amp; eSIM setup</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>14 days of dedicated mentor chat</span></li>
+                                    <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg><span>Optional +€40 Airport Meet &amp; Greet</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-5"><div class="h-px w-full bg-white/20"></div><button onclick="pickTierAndBrowse(120)" class="btn-hollow w-full border border-white/15">Get started</button></div>
+                    </div>
+                </div>
+
+                <!-- Arrival Kit (Coming Soon) 4-Card Referral Hub -->
+                <div id="arrival-kit" class="w-full pt-10 border-t border-white/15 space-y-6 scroll-mt-24">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div class="space-y-2">
+                            <p class="crimzon-eyebrow">Arrival Kit (Coming Soon)</p>
+                            <h3 class="crimzon-h2">Student eSIMs, banking, health coverage &amp; local landing setup</h3>
+                        </div>
+                        <button onclick="openModal('checklistModal')" class="btn-hollow border border-white/20 text-[13px] px-4 py-2 shrink-0">Free Arrival Checklist</button>
+                    </div>
+                    <div id="arrivalKitGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: TESTIMONIALS (EXACT 3x2 GRID + CIRCULAR PORTRAITS) -->
+        <section class="relative border-b border-white/20 py-[52px] md:py-[64px] overflow-hidden">
+            <div class="pricing-orb" style="top: 52%; opacity: 0.32;" aria-hidden="true"></div>
+            <div class="crimzon-container relative z-[5]">
+                <div class="space-y-2.5 mb-[32px]">
+                    <p class="crimzon-eyebrow reveal">Real Student Voices</p>
+                    <h2 class="crimzon-h2 reveal">How one honest chat changed arrival week</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-crimzon/15 border border-crimzon/40 text-crimzon">VERIFIED ID &amp; DOCS · €100 PREP</span><p class="crimzon-meta text-white">“Instead of panicking in random group chats at midnight, a senior at UWr Wrocław walked me through my admission forms, dorms, and Week-1 arrival in Hindi.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-1.jpg" alt="Arjun" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Arjun Rathore</p><p class="crimzon-meta text-silver leading-tight">IN · University of Wrocław</p></div></div></div>
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 60ms;"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-[#4ade80]/15 border border-[#4ade80]/40 text-[#4ade80]">WRITTEN CHECKLIST · DAY 1</span><p class="crimzon-meta text-white">“Landing in Germany felt intimidating until I pulled up my mentor’s saved checklist right inside the Munich city registration office.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-2.jpg" alt="Chinedu" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Chinedu Okafor</p><p class="crimzon-meta text-silver leading-tight">NG · TU Munich</p></div></div></div>
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 120ms;"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-crimzon/15 border border-crimzon/40 text-crimzon">SAVED €1,400 · €20 CHECK</span><p class="crimzon-meta text-white">“Talking to a Brazilian alumni in Portuguese stopped me from wiring a €1,400 fake Bologna room deposit. Best €20 reality check I ever spent.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-3.jpg" alt="Mariana" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Mariana Silva</p><p class="crimzon-meta text-silver leading-tight">BR · University of Bologna</p></div></div></div>
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-[#4ade80]/15 border border-[#4ade80]/40 text-[#4ade80]">0 HIDDEN REVIEWS · AURA</span><p class="crimzon-meta text-white">“Seeing real negative reviews with mentor replies made me trust BTDT immediately. My senior even met me at Dublin Airport with the +€40 add-on.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-4.jpg" alt="Elif" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Elif Yılmaz</p><p class="crimzon-meta text-silver leading-tight">TR · Trinity College Dublin</p></div></div></div>
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 60ms;"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-crimzon/15 border border-crimzon/40 text-crimzon">REPLY &lt; 2H · TORONTO</span><p class="crimzon-meta text-white">“Zero guesswork. My mentor from Ho Chi Minh City broke down real Toronto winter rent, tax numbers, and which electives drained GPA.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-5.jpg" alt="Minh" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Minh Nguyễn</p><p class="crimzon-meta text-silver leading-tight">VN · University of Toronto</p></div></div></div>
+                    <div class="relative overflow-hidden min-h-[220px] p-[24px] border border-white/10 bg-white/[0.02] flex flex-col justify-between gap-[24px] reveal" style="transition-delay: 120ms;"><div class="card-grain"></div><div class="relative z-10 space-y-3"><span class="inline-block font-mono text-[10px] px-2 py-0.5 rounded bg-[#4ade80]/15 border border-[#4ade80]/40 text-[#4ade80]">HOUSING CLARITY · UVA</span><p class="crimzon-meta text-white">“Navigating Amsterdam student lotteries and municipal registration felt calm once I spoke openly with a Korean senior at UvA.”</p></div><div class="relative z-10 flex items-center gap-3"><img src="/media/avatar-6.jpg" alt="Jisoo" class="w-10 h-10 rounded-full border border-white/20 object-cover shrink-0"><div><p class="crimzon-meta text-white leading-tight">Jisoo Kim</p><p class="crimzon-meta text-silver leading-tight">KR · University of Amsterdam</p></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 11: FAQ (2-COLUMN HORIZONTAL SPLIT) -->
+        <section id="faq" class="border-b border-white/20 py-[52px] md:py-[64px] scroll-mt-16">
+            <div class="crimzon-container flex flex-col lg:flex-row items-start gap-[28px] lg:gap-0">
+                <div class="w-full lg:flex-1 space-y-3 reveal">
+                    <p class="crimzon-eyebrow">FAQ</p>
+                    <h2 class="crimzon-h2 max-w-[320px]">Everything you need to know</h2>
+                </div>
+                <div class="w-full lg:flex-1 flex flex-col gap-[8px]">
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">Does BTDT provide visas or act as a visa agency?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">No. BTDT is strictly a peer-to-peer network connecting incoming students with Verified Alumni and Been There, Done That Mentors from their home country. Mentors share practical do's &amp; don'ts from lived experience — we never provide, process, or file visas. A dedicated guided document-walkthrough service is planned for the future.</p></div></div></div>
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">Why is BTDT text-first instead of video calls?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">Text-first sessions give you permanent written checklists, verified campus links, and do's &amp; don'ts notes you can reference anytime without relying on scattered forums. Audio/video calls are planned for v2.</p></div></div></div>
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">How are mentors verified and how is Aura calculated?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">Every peer is verified using their Student ID card, official enrollment documents, or Alumni Diploma. Aura (/100) aggregates Accuracy, Response Speed, and Clarity from completed paid sessions, and negative reviews are never hidden.</p></div></div></div>
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">How do bookings and Boarding Passes work?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">Pick a countryman, choose your text-first session (€20, €100, or €100–€120), and receive a digital Boarding Pass (#BTDT-XXXX) synced directly to your Wallet with all saved notes.</p></div></div></div>
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">What does the +€40 Airport Meet &amp; Greet include?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">Your mentor meets you at the arrivals terminal and escorts you to your dorm or apartment via local public transit, Uber, or Bolt. All transit and ride fares are paid directly by the incoming student.</p></div></div></div>
+                    <div class="faq-item border border-white/10 bg-white/[0.02] p-[24px] cursor-pointer hover:border-white/20 transition-colors" onclick="toggleFaq(this)"><div class="flex items-center justify-between gap-4"><p class="crimzon-body text-white">Can my university enroll or partner with BTDT?</p><svg class="faq-icon w-5 h-5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></div><div class="faq-grid"><div class="faq-inner"><p class="crimzon-body text-white/70 pt-5">Yes. Any university worldwide can join via Enroll University in our Directory or Footer, immediately opening chapters across all 14 home countries.</p></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 12: FINAL CTA BANNER -->
+        <section class="border-b border-white/20 py-[52px] md:py-[64px]">
+            <div class="crimzon-container">
+                <div class="relative border border-white/10 bg-[#080505] overflow-hidden flex flex-col lg:flex-row items-stretch reveal">
+                    <div class="absolute inset-0 bottom-[46px] pointer-events-none bento-top-mask opacity-85">
+                        <img src="/media/cta-bg.png" alt="Crimzon canyon portal" class="w-full h-full object-cover object-center">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#050101]/75 via-[#050101]/35 to-transparent"></div>
+                    </div>
+
+                    <div class="relative z-10 lg:flex-1 min-h-[360px] lg:h-[400px] p-8 lg:pl-[40px] lg:pr-6 flex flex-col justify-center gap-[32px]">
+                        <div class="space-y-[20px]">
+                            <h2 class="crimzon-h2">Land with clarity, not guesswork</h2>
+                            <p class="crimzon-body max-w-[440px]">Connect with a verified senior from home before you pack, save costly arrival mistakes, or test our live iPhone App Demo first.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4">
+                            <button onclick="openDirectoryView()" class="btn-fill"><span>Browse Enrolled Peers</span><svg class="arrow-svg w-[14px] h-[14px]" viewBox="0 0 13.5 13.5" fill="none"><path d="M 6.253 1.331 C 6.527 1.056 6.972 1.056 7.247 1.331 L 12.169 6.253 C 12.443 6.527 12.443 6.973 12.169 7.247 L 7.247 12.169 C 6.972 12.444 6.527 12.444 6.253 12.169 C 5.978 11.894 5.978 11.449 6.253 11.175 L 9.974 7.453 L 1.828 7.453 C 1.44 7.453 1.125 7.138 1.125 6.75 C 1.125 6.362 1.44 6.047 1.828 6.047 L 9.974 6.047 L 6.253 2.325 C 5.978 2.051 5.978 1.605 6.253 1.331 Z" fill="#151515"/></svg></button>
+                            <button onclick="openAppDemo('os_home')" class="btn-hollow border border-white/20 px-4 py-2.5 text-[14px]">Launch Interactive App Demo</button>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 lg:flex-1 p-6 lg:p-8 flex items-center justify-center">
+                        <div class="w-full rounded-[12px] border border-white/20 bg-black/65 backdrop-blur-xl p-5 shadow-2xl space-y-4">
+                            <div class="flex items-center justify-between gap-2 pb-3 border-b border-white/15 text-[12px] text-white/75">
+                                <span>Workspace / <strong class="text-white">Fall 2027 Arrival Plan</strong></span>
+                                <span class="font-mono text-[10px] text-[#4ade80] shrink-0">VERIFIED ROUTE</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px]">
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/50 space-y-1">
+                                    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><p class="text-white font-medium">Transcript &amp; Seal Check</p></div>
+                                    <p class="text-[11px] text-white/55">Saved formatting receipt</p>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/50 space-y-1">
+                                    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><p class="text-white font-medium">Campus Dorm vs. Rentals</p></div>
+                                    <p class="text-[11px] text-white/55">Real waitlists &amp; deposit guide</p>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/50 space-y-1">
+                                    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><p class="text-white font-medium">City ID &amp; Student Bank</p></div>
+                                    <p class="text-[11px] text-white/55">Week-1 local registration</p>
+                                </div>
+                                <div class="p-3 rounded-[9px] border border-white/15 bg-black/50 space-y-1">
+                                    <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><p class="text-white font-medium">Protected Safe Chat</p></div>
+                                    <p class="text-[11px] text-white/55">Auto-blocks external contact info</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 1B: FOUNDER'S STORY VIEW (EMOTIONAL BRAND CONNECTION)         -->
+    <!-- ================================================================== -->
+    <section id="storyView" class="hidden relative z-[4] pt-[110px] pb-[100px] min-h-screen view-enter overflow-hidden">
+        <div class="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+            <img src="/media/hero-bg.webp" alt="" class="w-full h-full object-cover object-center opacity-75">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050101]/30 via-[#050101]/20 to-[#050101]/85"></div>
+            <div class="pricing-orb" style="top: 32%; opacity: 0.55;"></div>
+        </div>
+
+        <div class="crimzon-container relative z-[5] max-w-[960px]">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-white/20">
+                <div class="flex items-center gap-4">
+                    <button onclick="showLanding(true)" class="btn-hollow border border-white/20 px-4 py-2 text-[13px]">← Back to Home</button>
+                    <div>
+                        <p class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-crimzon">Founder's Story · The Promise Behind BTDT</p>
+                        <h1 id="storyHeadline" style="font-family: var(--font-display);" class="text-[28px] md:text-[36px] font-medium text-white leading-tight">Why I’m Building BTDT</h1>
+                    </div>
+                </div>
+                <button onclick="openDirectoryView()" class="btn-fill text-[13px] py-2 px-4">Explore 840+ Peers →</button>
+            </div>
+
+            <!-- Personal Founder Letter (Ethos + Pathos Narrative) -->
+            <div class="crimzon-card p-7 md:p-10 mb-8 space-y-5 bg-[#080404]/90 border-white/15">
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-full border border-crimzon/50 bg-crimzon/15 flex items-center justify-center font-mono text-[12px] text-white">BTDT</span>
+                        <div>
+                            <p class="text-[15px] font-medium text-white">A Note From the Founder</p>
+                            <p class="text-[12px] text-white/55 font-mono">So no student has to cross a border guessing</p>
+                        </div>
+                    </div>
+                    <span class="iso-pill">BEEN THERE, DONE THAT</span>
+                </div>
+
+                <div class="space-y-4 text-[15.5px] md:text-[16.5px] leading-[1.7] text-white/85">
+                    <p>
+                        When your family celebrates that admission email, nobody talks about what happens the very next night: opening twenty browser tabs, reading contradicting group-chat rumors, worrying whether a room deposit is real, and wondering if consultants are steering you toward whichever partner pays them.
+                    </p>
+                    <p>
+                        <strong class="text-white">I started BTDT because every student carries that quiet knot in their stomach — and the person who can untie it in ten minutes is already sitting in your future lecture hall.</strong> Another student from your home country, speaking your language, who turned in those exact university forms and walked through your exact arrival week just a semester ago.
+                    </p>
+                    <p class="text-white/75">
+                        You don’t need more hype or hidden commissions. You deserve honest answers from someone you can actually verify — before you pack a single bag.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Three Natural Brand Pillars (Trust · Belonging · Clarity — Ethos/Pathos/Logos under the hood) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                <article class="crimzon-card p-6 space-y-3 border-white/15 bg-[#090404]/85">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crimzon">01 · Never Land Alone</span>
+                        <span class="font-mono text-[10px] px-2 py-0.5 rounded border border-white/15 text-white/65">Day-1 Belonging</span>
+                    </div>
+                    <h2 style="font-family: var(--font-display);" class="text-[20px] font-medium text-white">Someone from home on campus</h2>
+                    <p class="text-[13.5px] leading-[1.6] text-white/75">
+                        Moving abroad carries your family’s hopes alongside real late-night doubt. Talking to a senior who shares your background turns nervous guesswork into calm readiness.
+                    </p>
+                </article>
+
+                <article class="crimzon-card p-6 space-y-3 border-white/15 bg-[#090404]/85">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crimzon">02 · Radical Honesty</span>
+                        <span class="font-mono text-[10px] px-2 py-0.5 rounded border border-[#4ade80]/40 text-[#4ade80]">Verified Seniors</span>
+                    </div>
+                    <h2 style="font-family: var(--font-display);" class="text-[20px] font-medium text-white">Real identity, zero deleted reviews</h2>
+                    <p class="text-[13.5px] leading-[1.6] text-white/75">
+                        Every mentor is verified by Student ID or official enrollment documents. Both praise and tough critiques stay visible on their public Aura ledger with open mentor replies.
+                    </p>
+                </article>
+
+                <article class="crimzon-card p-6 space-y-3 border-white/15 bg-[#090404]/85">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-crimzon">03 · Clear &amp; Concrete</span>
+                        <span class="font-mono text-[10px] px-2 py-0.5 rounded border border-white/15 text-white/65">Written Proof</span>
+                    </div>
+                    <h2 style="font-family: var(--font-display);" class="text-[20px] font-medium text-white">Fixed €20–€120 sessions you keep</h2>
+                    <p class="text-[13.5px] leading-[1.6] text-white/75">
+                        Replace €2,000+ middleman retainers with transparent written sessions across 30 universities, 840+ country-to-campus tracks, and &lt; 2h verified reply times.
+                    </p>
+                </article>
+            </div>
+
+            <!-- Next Step Actions -->
+            <div class="crimzon-card p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5 border-crimzon/40 bg-crimzon/[0.06]">
+                <div class="space-y-1">
+                    <h3 style="font-family: var(--font-display);" class="text-[20px] font-medium text-white">See what it feels like before you fly</h3>
+                    <p class="text-[13.5px] text-white/75">Step inside the interactive iPhone App Demo or meet verified seniors on your campus route.</p>
+                </div>
+                <div class="flex flex-wrap gap-3 shrink-0">
+                    <button onclick="openAppDemo('chat')" class="btn-fill text-[13px] py-2.5 px-5">Try iPhone App Demo</button>
+                    <button onclick="openModal('joinMentorModal')" class="btn-hollow border border-white/25 text-[13px] py-2.5 px-4">Join as a Mentor</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 2: SEPARATE ENROLLED PEERS DIRECTORY VIEW                     -->
+    <!-- ================================================================== -->
+    <section id="directoryView" class="hidden relative z-[4] pt-[110px] pb-[100px] min-h-screen view-enter overflow-hidden">
+        <!-- Fixed Full-Viewport Crimzon Eclipse Atmosphere -->
+        <div class="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+            <img src="/media/hero-bg.webp" alt="" class="w-full h-full object-cover object-center opacity-75">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050101]/25 via-transparent to-[#050101]/80"></div>
+            <div class="pricing-orb" style="top: 38%; opacity: 0.55;"></div>
+        </div>
+
+        <div class="crimzon-container relative z-[5]">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-8 mb-6 border-b border-white/20">
+                <div class="flex items-center gap-4">
+                    <button onclick="showLanding(true)" class="btn-hollow border border-white/20 px-4 py-2 text-[13px]">← Back to Home</button>
+                    <div>
+                        <h1 id="dirHeadline" style="font-family: var(--font-display);" class="text-[26px] font-medium text-white">Enrolled Peers Directory</h1>
+                        <p id="dirPeerCountBadge" class="font-mono text-[12px] text-white/55">840+ verified peers</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2.5">
+                    <button onclick="openModal('enrollUniModal')" class="btn-hollow border border-white/20 text-[13px] px-4 py-2">+ Enroll University</button>
+                    <button onclick="openModal('joinMentorModal')" class="btn-fill text-[13px] py-2 px-4">+ Join as a Mentor</button>
+                </div>
+            </div>
+
+            <div id="dirCampusLogoPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-4"></div>
+
+            <div id="dirUniHeroBanner" class="hidden mb-6"></div>
+
+            <div class="border border-white/10 bg-white/[0.015] p-3 mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                <div>
+                    <label class="block font-mono text-[10px] uppercase text-white/45 mb-1 px-1">Coming From</label>
+                    <select id="dirFilterCountry" onchange="renderDirectoryPeers()" class="w-full bg-[#0a0606] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white"></select>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] uppercase text-white/45 mb-1 px-1">Going To Country</label>
+                    <select id="dirFilterDest" onchange="renderDirectoryPeers()" class="w-full bg-[#0a0606] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white"></select>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] uppercase text-white/45 mb-1 px-1">University</label>
+                    <select id="dirFilterUni" onchange="renderDirectoryPeers()" class="w-full bg-[#0a0606] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white"></select>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] uppercase text-white/45 mb-1 px-1">Role</label>
+                    <select id="dirFilterRole" onchange="renderDirectoryPeers()" class="w-full bg-[#0a0606] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white">
+                        <option value="all">All Roles</option>
+                        <option value="Been There, Done That Mentor">Been There, Done That Mentor</option>
+                        <option value="Verified Alumni">Verified Alumni</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-mono text-[10px] uppercase text-white/45 mb-1 px-1">Search</label>
+                    <input id="dirFilterQuery" oninput="renderDirectoryPeers()" type="text" placeholder="Name, language, housing, visa..." class="w-full bg-[#0a0606] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white placeholder:text-white/35">
+                </div>
+            </div>
+
+            <div id="dirPeersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[20px]"></div>
+
+            <div class="mt-10 flex items-center justify-center gap-4">
+                <button id="dirLoadMoreBtn" onclick="loadMoreDirPeers()" class="btn-hollow border border-white/20 px-5 py-2.5 text-[14px]">Load More Peers</button>
+                <button onclick="resetDirectoryFilters()" class="crimzon-meta text-white/55 hover:text-crimzon underline underline-offset-4">Reset Filters</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 3: DEDICATED FULL-PAGE MENTOR PROFILE VIEW                    -->
+    <!-- ================================================================== -->
+    <section id="mentorProfileView" class="hidden relative z-[4] pt-[110px] pb-[100px] min-h-screen view-enter overflow-hidden">
+        <!-- Fixed Full-Viewport Crimzon Canyon Portal Atmosphere -->
+        <div class="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+            <img src="/media/cta-bg.png" alt="" class="w-full h-full object-cover object-center opacity-75">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050101]/25 via-transparent to-[#050101]/80"></div>
+            <div class="pricing-orb" style="top: 36%; opacity: 0.52;"></div>
+        </div>
+
+        <div class="crimzon-container relative z-[5]">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-white/20">
+                <button onclick="openDirectoryView()" class="btn-hollow border border-white/20 px-4 py-2 text-[13px]">← Back to Directory</button>
+                <span id="profileBreadcrumb" class="font-mono text-[12px] text-white/55"></span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div id="profileMainCol" class="lg:col-span-7 space-y-6"></div>
+
+                <aside class="lg:col-span-5 lg:sticky lg:top-[104px] card-stagger" style="animation-delay:140ms;">
+                    <div class="border border-white/15 bg-[#0a0606]/95 backdrop-blur-xl p-6 space-y-5 relative overflow-hidden">
+                        <div class="absolute -top-20 -right-20 w-48 h-48 bg-crimzon/20 blur-[65px] rounded-full pointer-events-none"></div>
+                        <div class="relative z-10 flex items-center justify-between pb-4 border-b border-white/15">
+                            <div>
+                                <p class="font-mono text-[11px] uppercase text-crimzon">Text-First Session Booking</p>
+                                <h3 id="bookingMentorTitle" style="font-family: var(--font-display);" class="text-[20px] font-medium text-white mt-0.5">Book Session</h3>
+                            </div>
+                            <span id="bookingMentorAura" class="font-mono text-[12px] px-2.5 py-1 rounded-[6px] border border-crimzon/50 bg-crimzon/15 text-crimzon"></span>
+                        </div>
+                        <form id="profileBookingForm" class="relative z-10 space-y-4">
+                            <div class="space-y-2.5">
+                                <label class="block cursor-pointer"><input type="radio" name="bookTier" value="20" data-name="Base Counseling (20 min)" checked onchange="updateBookingTotal()" class="pkg-radio sr-only"><div class="pkg-box border border-white/15 bg-white/[0.02] p-3.5 rounded-[10px] transition-all flex items-start justify-between gap-3"><div><p class="text-[14px] font-medium text-white">Base Counseling</p><p class="text-[12px] text-white/60 mt-0.5">20-min live text chat · Course, dorm &amp; budget</p></div><span class="font-mono text-[15px] font-medium text-white shrink-0">€20</span></div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="bookTier" value="100" data-name="Deep-Dive Paperwork & Prep (60–70 min)" onchange="updateBookingTotal()" class="pkg-radio sr-only"><div class="pkg-box border border-white/15 bg-white/[0.02] p-3.5 rounded-[10px] transition-all flex items-start justify-between gap-3"><div><p class="text-[14px] font-medium text-white">Deep-Dive Paperwork &amp; Prep</p><p class="text-[12px] text-white/60 mt-0.5">60–70 min peer do's/don'ts + packet checklist</p></div><span class="font-mono text-[15px] font-medium text-crimzon shrink-0">€100</span></div></label>
+                                <label class="block cursor-pointer"><input type="radio" name="bookTier" value="120" data-name="Post-Arrival Pack (Weeks 1–2)" onchange="updateBookingTotal()" class="pkg-radio sr-only"><div class="pkg-box border border-white/15 bg-white/[0.02] p-3.5 rounded-[10px] transition-all flex items-start justify-between gap-3"><div><p class="text-[14px] font-medium text-white">Post-Arrival Pack</p><p class="text-[12px] text-white/60 mt-0.5">Weeks 1–2 local docs, bank, eSIM &amp; setup</p></div><span class="font-mono text-[15px] font-medium text-white shrink-0">€120</span></div></label>
+                            </div>
+                            <label class="flex items-start gap-3 p-3.5 rounded-[10px] border border-white/15 bg-white/[0.02] cursor-pointer">
+                                <input id="bookAirportAddon" type="checkbox" onchange="updateBookingTotal()" class="mt-1 w-4 h-4 accent-[#f64838] rounded shrink-0">
+                                <span class="text-[12.5px] text-white/85 leading-relaxed"><strong class="text-white">+ Airport Meet &amp; Greet (+€40)</strong> — mentor meets you at arrivals; incoming student pays all ride &amp; transit costs.</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div><label class="block font-mono text-[10px] uppercase text-white/50 mb-1">Chat Language</label><select id="bookLang" class="w-full bg-[#0e0909] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white"></select></div>
+                                <div><label class="block font-mono text-[10px] uppercase text-white/50 mb-1">Your Email</label><input id="bookEmail" type="email" required placeholder="you@email.com" class="w-full bg-[#0e0909] border border-white/15 rounded-[8px] px-3 py-2 text-[13px] text-white placeholder:text-white/35"></div>
+                            </div>
+                            <div class="pt-4 border-t border-white/15 space-y-3">
+                                <div class="flex items-center justify-between"><span class="font-mono text-[12px] uppercase text-white/60">Session Total</span><span id="bookLiveTotal" class="font-mono text-[26px] font-medium text-white">€20</span></div>
+                                <button type="submit" class="btn-fill w-full"><span>Book Text Session &amp; Issue Pass</span></button>
+                            </div>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- VIEW 4: INTERACTIVE IPHONE 18 PRO MAX APP DEMO + PROGRAM DETAILS   -->
+    <!-- ================================================================== -->
+    <section id="appDemoView" class="hidden relative z-[4] min-h-[100dvh] lg:h-[100dvh] px-4 pt-16 pb-8 lg:py-0 flex items-center justify-center view-enter overflow-y-auto lg:overflow-hidden">
+        <!-- Ambient Crimzon Backdrop -->
+        <div class="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+            <img src="/media/hero-bg.webp" alt="" class="w-full h-full object-cover object-center opacity-65">
+            <div class="absolute inset-0 bg-[#050101]/72"></div>
+        </div>
+
+        <button onclick="showLanding(true)" class="fixed top-3 left-3 sm:top-5 sm:left-5 z-30 btn-hollow border border-white/20 bg-black/80 backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 text-[12px] sm:text-[13px]">← Back to Home</button>
+
+        <div class="relative z-[5] w-full max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            <!-- Left Column: Zoomed-Out Apple iPhone 18 Pro Max Hardware Frame -->
+            <div class="lg:col-span-5 flex items-center justify-center order-1">
+                <div id="iphone18pmWrap" class="relative z-[5]" style="width:320px; height:653px; will-change:transform;">
+                    <div id="iphone18pmChassis" class="absolute top-0 left-0 origin-top-left" style="width:490px; height:1000px; transform:translate3d(0,0,0) scale(0.653); will-change:transform;">
+                        <div class="absolute overflow-hidden bg-black" style="left:25px; top:22px; width:440px; height:956px; border-radius:62px;">
+                            <iframe id="iosDemoFrame" src="/ios-phone.html?v=20261126x" class="w-full h-full border-0 bg-black" title="BTDT iPhone 18 Pro Max"></iframe>
+                        </div>
+                        <img src="/media/ios27/bezel_iphone18promax_black_v2.png" alt="iPhone 18 Pro Max Hardware Frame" class="absolute inset-0 w-full h-full object-cover pointer-events-none select-none z-20" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Program Overview & Interactive Demo Controls -->
+            <div class="lg:col-span-7 space-y-5 order-2">
+                <div class="space-y-2.5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-crimzon/50 bg-crimzon/15">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+                        <span class="font-mono text-[10.5px] uppercase tracking-wider text-white">BTDT Interactive iOS Demo</span>
+                    </div>
+                    <h2 class="crimzon-h2">Your relocation workspace before takeoff</h2>
+                    <p class="crimzon-body text-[14.5px] leading-relaxed">
+                        Test how incoming international students match with verified countrymen on campus, review paperwork checklists, and chat inside an anti-scam moderated workspace.
+                    </p>
+                </div>
+
+                <!-- Program Details Highlights -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12.5px]">
+                    <div class="crimzon-card p-3.5 space-y-1">
+                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><strong class="text-white">Fixed Session Tiers</strong></div>
+                        <p class="text-white/70 leading-snug">€20 Quick Check (20m), €100 Deep-Dive Prep (60–70m), €100–€120 Landing Pack (+€40 Airport Meet).</p>
+                    </div>
+                    <div class="crimzon-card p-3.5 space-y-1">
+                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#4ade80]"></span><strong class="text-white">Auto-Delete Safety Guard</strong></div>
+                        <p class="text-white/70 leading-snug">Chat blocks &amp; removes phone numbers, emails, and off-platform links. Mentors verify via Student ID or enrollment documents.</p>
+                    </div>
+                </div>
+
+                <!-- Quick Jump Pills into Phone Demo -->
+                <div class="space-y-2">
+                    <p class="font-mono text-[10px] uppercase tracking-wider text-white/50">Jump Directly Inside Phone</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="routeIosDemoScreen('os_home')" data-demo-tab="os_home" class="px-3 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/15 text-white text-[12px] font-medium cursor-pointer transition-colors">Reboot Lock Screen</button>
+                        <button onclick="switchStudentDemoScreen('chat')" data-demo-tab="chat" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Student Chat</button>
+                        <button onclick="switchStudentDemoScreen('kit')" data-demo-tab="kit" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Arrival Kit</button>
+                        <button onclick="switchStudentDemoScreen('wallet')" data-demo-tab="passes" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Pass Wallet</button>
+                        <button onclick="setDemoMode('mentor')" data-demo-tab="requests" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Mentor Studio</button>
+                    </div>
+                </div>
+
+                <!-- Live Telemetry Card Populated by renderAppDemo() -->
+                <div id="demoSideInspector"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- FOOTER                                                             -->
+    <!-- ================================================================== -->
+    <footer id="siteFooter" class="relative z-[4] bg-[#050101]">
+        <div class="crimzon-container py-[48px] flex flex-col md:flex-row items-start justify-between gap-12">
+            <div class="max-w-[320px] space-y-3">
+                <button onclick="showLanding(true)" class="flex items-center gap-2.5 text-left">
+                    <span class="w-7 h-7 rounded-[7px] border border-white/25 bg-white/[0.04] flex items-center justify-center">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/><circle cx="5.5" cy="17" r="2.2" fill="#ffffff"/><circle cx="18" cy="7" r="2.8" fill="#f64838"/></svg>
+                    </span>
+                    <span style="font-family: var(--font-display);" class="text-[19px] font-medium tracking-[-0.04em] text-white">BTDT<span class="text-crimzon">.</span></span>
+                </button>
+                <p class="crimzon-body">The peer network that’s been there before you.</p>
+            </div>
+            <div class="flex flex-wrap gap-14 md:gap-[60px]">
+                <div class="flex flex-col gap-3">
+                    <p class="text-[16px] font-medium text-white">Navigation</p>
+                    <button onclick="goToSection('product')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Product</button>
+                    <button onclick="openStoryView()" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Founder's Story</button>
+                    <button onclick="openDirectoryView()" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Enrolled Peers</button>
+                    <button onclick="openAppDemo('chat')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Live App Demo</button>
+                    <button onclick="goToSection('pricing')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Pricing</button>
+                    <button onclick="goToSection('faq')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">FAQ</button>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <p class="text-[16px] font-medium text-white">Contribute</p>
+                    <button onclick="openModal('joinMentorModal')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Join as a Mentor</button>
+                    <button onclick="openModal('enrollUniModal')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">+ Enroll University</button>
+                    <button onclick="openModal('checklistModal')" class="crimzon-meta text-white/80 hover:text-crimzon text-left transition-colors">Free Arrival Checklist</button>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/20">
+            <div class="crimzon-container py-[24px] flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="crimzon-meta text-silver">© 2026 BTDT (Been There, Done That). All rights reserved.</p>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-white/15 bg-white/[0.02] font-mono text-[10px]">
+                        <span class="text-white/45 px-1.5">FONT</span>
+                        <button onclick="setFontTheme('space')" data-font-btn="space" class="font-switch-btn px-2 py-0.5 rounded-full bg-crimzon/20 text-white border border-crimzon/50">Space</button>
+                        <button onclick="setFontTheme('syne')" data-font-btn="syne" class="font-switch-btn px-2 py-0.5 rounded-full text-white/60 hover:text-white border border-transparent">Syne</button>
+                        <button onclick="setFontTheme('outfit')" data-font-btn="outfit" class="font-switch-btn px-2 py-0.5 rounded-full text-white/60 hover:text-white border border-transparent">Outfit</button>
+                        <button onclick="setFontTheme('inter')" data-font-btn="inter" class="font-switch-btn px-2 py-0.5 rounded-full text-white/60 hover:text-white border border-transparent">Inter</button>
+                    </div>
+                    <button onclick="openGDPRModal()" class="font-mono text-[11px] text-white/65 hover:text-white underline underline-offset-4">Privacy &amp; GDPR</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PRIVACY PILL + FIRST-SCREEN EU GDPR BANNER -->
+    <button id="privacyPill" onclick="openGDPRModal()" class="hidden fixed bottom-5 left-5 z-[60] px-3.5 py-2 rounded-full border border-white/20 bg-[#0b0707]/90 backdrop-blur-md text-[11px] font-mono text-white/80 hover:text-white hover:border-crimzon transition-colors inline-flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-crimzon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Privacy</span>
+    </button>
+
+    <div id="gdprBanner" data-lenis-prevent role="dialog" aria-modal="true" aria-labelledby="gdprDialogTitle" class="fixed inset-0 z-[75] flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
+        <div class="w-full max-w-[460px] max-h-[92vh] overflow-y-auto rounded-[16px] border border-white/20 bg-[#0a0505] shadow-[0_24px_80px_rgba(0,0,0,0.85)] p-6 md:p-7 space-y-5 modal-animate">
+            <!-- Centered Brand Header -->
+            <div class="text-center space-y-1.5">
+                <div class="inline-flex items-center justify-center gap-2">
+                    <span class="w-7 h-7 rounded-[7px] border border-white/25 bg-white/[0.04] flex items-center justify-center">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/><circle cx="5.5" cy="17" r="2.2" fill="#ffffff"/><circle cx="18" cy="7" r="2.8" fill="#f64838"/></svg>
+                    </span>
+                    <span style="font-family: var(--font-display);" class="text-[22px] font-semibold tracking-[-0.04em] text-white">BTDT<span class="text-crimzon">.</span></span>
+                </div>
+                <p class="text-[11.5px] font-mono text-white/55">Been There, Done That · Global Peer Mentorship</p>
+            </div>
+
+            <!-- Main Consent Question -->
+            <h2 id="gdprDialogTitle" style="font-family: var(--font-display);" class="text-[18px] md:text-[19px] font-medium leading-[1.32] tracking-[-0.02em] text-white text-center">
+                BTDT asks for your consent to use your personal data for the following purposes:
+            </h2>
+
+            <!-- Bulleted Purposes -->
+            <div class="space-y-3 pt-1">
+                <div class="flex items-start gap-3">
+                    <span class="w-8 h-8 rounded-full border border-crimzon/40 bg-crimzon/15 flex items-center justify-center shrink-0 text-crimzon">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </span>
+                    <p class="text-[13px] leading-[1.45] text-white/85 pt-0.5">Peer route matching, anti-scam chat moderation, and optional campus analytics &amp; arrival offers</p>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <span class="w-8 h-8 rounded-full border border-white/20 bg-white/[0.04] flex items-center justify-center shrink-0 text-white/85">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                    </span>
+                    <p class="text-[13px] leading-[1.45] text-white/85 pt-0.5">Store and/or access session preferences &amp; Boarding Passes on a device</p>
+                </div>
+
+                <button type="button" onclick="toggleGdprLearnMore()" aria-expanded="false" id="gdprLearnMoreBtn" class="flex items-center gap-3 text-left w-full group pt-0.5 cursor-pointer">
+                    <span class="w-8 h-8 rounded-full border border-white/15 bg-white/[0.03] group-hover:border-crimzon/50 flex items-center justify-center shrink-0 text-white/75 transition-colors">
+                        <svg id="gdprLearnChevron" class="w-4 h-4 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+                    </span>
+                    <span class="text-[13px] font-medium text-white/90 group-hover:text-white underline underline-offset-4 decoration-white/25">Learn more about how your data is handled</span>
+                </button>
+
+                <div id="gdprLearnMoreBody" class="hidden rounded-[10px] border border-white/15 bg-white/[0.03] p-3.5 text-[12px] leading-[1.55] text-white/70 space-y-2">
+                    <p><strong class="text-white">Strictly Necessary:</strong> Keeps your matched university route, session notes, and anti-scam personal contact filter active.</p>
+                    <p><strong class="text-white">Optional Preferences:</strong> Campus Demand Analytics and Arrival Kit partner offers stay off unless you opt in below or inside <button type="button" onclick="openGDPRModal()" class="text-crimzon underline">Manage options</button>.</p>
+                </div>
+            </div>
+
+            <!-- Explanatory Disclosure Copy -->
+            <div class="space-y-2.5 text-[12px] leading-[1.55] text-white/60 border-t border-white/10 pt-3.5">
+                <p>Your personal data will be processed and session information (such as essential preferences and saved route filters) may be stored on your device only for peer matching and platform safety. Off-platform phone/email sharing inside chat is blocked automatically.</p>
+                <p>You can object to optional analytics or partner offers by clicking <strong class="text-white/85 font-medium">Manage options</strong> or <strong class="text-white/85 font-medium">Reject</strong>, and change or withdraw consent anytime via the bottom-left <strong class="text-white/85 font-medium">Privacy</strong> button.</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                <button onclick="openGDPRModal()" class="px-3.5 py-2.5 rounded-[999px] border border-white/25 bg-white/[0.04] hover:bg-white/[0.1] text-[12.5px] font-medium text-white transition-colors cursor-pointer">Manage options</button>
+                <button onclick="saveGDPR('reject')" class="px-3.5 py-2.5 rounded-[999px] border border-white/25 bg-white/[0.04] hover:bg-white/[0.1] text-[12.5px] font-medium text-white transition-colors cursor-pointer">Reject</button>
+                <button onclick="saveGDPR('accept')" class="px-3.5 py-2.5 rounded-[999px] bg-crimzon hover:bg-[#ff5c4d] text-[12.5px] font-semibold text-white transition-colors shadow-[0_0_24px_rgba(246,72,56,0.35)] cursor-pointer">Consent</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <!-- 1. BOARDING PASS MODAL -->
+    <div id="boardingPassModal" data-lenis-prevent class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
+        <div class="w-full max-w-md border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl my-8">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-crimzon">Session Boarding Pass</span>
+                <button onclick="closeModal('boardingPassModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <div class="p-6 space-y-5 text-center">
+                <div class="flex items-center justify-center gap-3">
+                    <div id="bpCrest" class="w-10 h-10 rounded-[9px] border border-white/20 bg-white/[0.04] flex items-center justify-center text-white"></div>
+                    <div class="text-left"><h3 style="font-family: var(--font-display);" class="text-[22px] font-medium text-white leading-tight">Session Confirmed</h3><p class="text-[12px] text-white/60">Synced to App Demo Wallet</p></div>
+                </div>
+                <div class="border border-white/15 bg-white/[0.02] rounded-[10px] p-4 text-left font-mono text-[12px] space-y-2.5">
+                    <div class="flex justify-between"><span class="text-white/50">REFERENCE</span><strong id="bpRef" class="text-crimzon"></strong></div>
+                    <div class="flex justify-between"><span class="text-white/50">MENTOR</span><strong id="bpMentor" class="text-white"></strong></div>
+                    <div class="flex justify-between"><span class="text-white/50">CAMPUS</span><strong id="bpCampus" class="text-white"></strong></div>
+                    <div class="flex justify-between"><span class="text-white/50">LANGUAGE</span><strong id="bpLang" class="text-white"></strong></div>
+                    <div class="border-t border-dashed border-white/20 pt-2.5 flex justify-between gap-4"><span class="text-white/50">PACKAGE</span><strong id="bpPkg" class="text-white text-right"></strong></div>
+                    <div class="flex justify-between"><span class="text-white/50">SESSION TOTAL</span><strong id="bpTotal" class="text-white text-[14px]"></strong></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button onclick="closeModal('boardingPassModal')" class="btn-hollow border border-white/20">Close</button>
+                    <button onclick="closeModal('boardingPassModal'); openAppDemo('wallet')" class="btn-fill">Open in App Wallet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. JOIN AS A MENTOR MODAL -->
+    <div id="joinMentorModal" data-lenis-prevent class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
+        <div class="w-full max-w-lg border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl my-8">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-crimzon">Become a Verified Mentor</span>
+                <button onclick="closeModal('joinMentorModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <form id="joinMentorForm" class="p-6 space-y-3.5">
+                <p class="crimzon-meta text-white/75">Earn on text-first sessions: <strong class="text-white">€20</strong> Base Counseling · <strong class="text-white">€100</strong> Deep-Dive Prep · <strong class="text-white">€100–€120</strong> Landing Pack.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input id="jmName" type="text" required placeholder="Full Name" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                    <select id="jmRole" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"><option>Been There, Done That Mentor</option><option>Verified Alumni</option></select>
+                    <select id="jmCountry" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"></select>
+                    <select id="jmUni" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"></select>
+                    <input id="jmProgram" type="text" placeholder="Program (e.g. MSc Robotics)" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                    <input id="jmLanguages" type="text" placeholder="Languages (e.g. Hindi, English)" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                </div>
+                <textarea id="jmStory" rows="3" placeholder="Share how you handled housing, campus onboarding, and your first two weeks..." class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35"></textarea>
+                <div class="p-3 rounded-[9px] border border-crimzon/50 bg-crimzon/[0.12] space-y-2">
+                    <p class="font-mono text-[10.5px] uppercase text-crimzon">Strict Mentor Conduct Warning</p>
+                    <p class="text-[12px] text-white/85 leading-relaxed">Never share your personal contact details or ask incoming students for theirs. Off-platform solicitation violates BTDT safety rules — violators will be <strong class="text-white">penalized, removed, and reported to their university</strong>.</p>
+                    <label class="flex items-start gap-2.5 cursor-pointer pt-1">
+                        <input id="jmPolicyAgree" type="checkbox" required class="mt-0.5 w-4 h-4 accent-[#f64838] rounded shrink-0">
+                        <span class="text-[12px] text-white font-medium leading-snug">I agree not to share or request personal contact details and understand violations carry penalties &amp; university reporting.</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-fill w-full">Publish Live Mentor Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. CHECKLIST MODAL -->
+    <div id="checklistModal" data-lenis-prevent class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
+        <div class="w-full max-w-lg border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl my-8">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-crimzon">Free Arrival Checklist</span>
+                <button onclick="closeModal('checklistModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="crimzon-meta text-white/75">Generate your personalized country-to-campus checklist covering documents to organize, housing reality, and Week-1 setup.</p>
+                <form id="checklistForm" class="space-y-3.5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input id="clEmail" type="email" required placeholder="Your email address" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                        <select id="clCountry" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"></select>
+                        <select id="clUni" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"></select>
+                        <select id="clIntake" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white"><option>Spring 2027</option><option>Fall 2027</option><option>Spring 2028</option></select>
+                    </div>
+                    <label class="flex items-start gap-2.5 p-3 rounded-[8px] border border-white/10 bg-white/[0.02] cursor-pointer">
+                        <input id="clOptIn" type="checkbox" class="mt-0.5 w-4 h-4 accent-[#f64838] rounded shrink-0">
+                        <span class="text-[12px] text-white/70 leading-relaxed">Optional (GDPR Opt-In): Send me student-vetted eSIM (Airalo/Saily), banking (Revolut/Wise), and housing offers for my destination.</span>
+                    </label>
+                    <button type="submit" class="btn-fill w-full">Unlock Survival Checklist</button>
+                </form>
+                <div id="clResult" class="hidden pt-4 border-t border-white/15"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ENROLL UNIVERSITY MODAL -->
+    <div id="enrollUniModal" data-lenis-prevent class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
+        <div class="w-full max-w-md border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl my-8">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-crimzon">Enroll University</span>
+                <button onclick="closeModal('enrollUniModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <form id="enrollUniForm" class="p-6 space-y-3.5">
+                <p class="crimzon-meta text-white/70">Add any university globally. It joins with a custom monogram crest and auto-seeds 28 verified peers across all 14 home countries.</p>
+                <input id="euName" type="text" required placeholder="University Name (e.g. ETH Zurich)" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                <div class="grid grid-cols-3 gap-2">
+                    <input id="euCity" type="text" required placeholder="City" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                    <input id="euCountryName" type="text" required placeholder="Country" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                    <input id="euIso" type="text" required maxlength="2" placeholder="ISO (CH)" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                </div>
+                <input id="euTopic" type="text" placeholder="Local Registration / Dorm Topic (optional)" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                <button type="submit" class="btn-fill w-full">Enroll Campus &amp; Seed 28 Peers</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. WAITLIST & GDPR MODALS -->
+    <div id="waitlistModal" data-lenis-prevent class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="w-full max-w-md border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-crimzon">Early Access Waitlist</span>
+                <button onclick="closeModal('waitlistModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <form id="waitlistForm" class="p-6 space-y-4">
+                <p class="crimzon-meta text-white/75">Join priority access for <strong id="waitlistTarget" class="text-white"></strong>.</p>
+                <input id="wlEmail" type="email" required placeholder="your@email.com" class="w-full bg-[#110b0b] border border-white/15 rounded-[8px] px-3.5 py-2.5 text-[13px] text-white placeholder:text-white/35">
+                <button type="submit" class="btn-fill w-full">Notify Me at Launch</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="gdprModal" data-lenis-prevent class="fixed inset-0 z-[95] hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="w-full max-w-md border border-white/20 bg-[#0a0606] rounded-[14px] overflow-hidden shadow-2xl">
+            <div class="px-6 py-4 border-b border-white/15 flex items-center justify-between bg-white/[0.02]">
+                <span class="font-mono text-[11px] uppercase text-white">Privacy &amp; Consent Settings</span>
+                <button onclick="closeModal('gdprModal')" class="text-white/60 hover:text-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="p-3.5 rounded-[10px] border border-white/15 bg-white/[0.03] flex items-center justify-between gap-3"><div><p class="text-[13px] font-medium text-white">Strictly Necessary</p><p class="text-[11px] text-white/55">Peer matching, chat &amp; session passes.</p></div><span class="font-mono text-[10px] text-white/80">ALWAYS ON</span></div>
+                <label class="p-3.5 rounded-[10px] border border-white/15 bg-white/[0.02] flex items-center justify-between gap-3 cursor-pointer"><div><p class="text-[13px] font-medium text-white">Analytics &amp; Campus Demand</p><p class="text-[11px] text-white/55">Helps us open new university chapters.</p></div><input id="gdprAnalytics" type="checkbox" class="w-4 h-4 accent-[#f64838] rounded"></label>
+                <label class="p-3.5 rounded-[10px] border border-white/15 bg-white/[0.02] flex items-center justify-between gap-3 cursor-pointer"><div><p class="text-[13px] font-medium text-white">Arrival Kit Partner Offers</p><p class="text-[11px] text-white/55">Student perks for eSIMs, banking &amp; housing.</p></div><input id="gdprPerks" type="checkbox" class="w-4 h-4 accent-[#f64838] rounded"></label>
+                <div class="grid grid-cols-2 gap-3 pt-1"><button onclick="saveGDPR('reject')" class="btn-hollow border border-white/20 text-[13px] py-2.5">Reject Optional</button><button onclick="saveGDPR('custom')" class="btn-fill text-[13px] py-2.5">Save Preferences</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/peers-data.js?v=20261126af"></script>
+    <script src="/app-logic.js?v=20261126af"></script>
+</body>
+</html>

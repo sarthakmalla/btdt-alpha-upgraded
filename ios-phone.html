@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>BTDT iOS 27 Phone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/vendor/f7/framework7-bundle.min.css" />
+  <link rel="stylesheet" href="/vendor/f7/framework7-icons.css" />
+  <style>
+    :root {
+      --f7-theme-color: #f64838;
+      --f7-theme-color-rgb: 246, 72, 56;
+      --f7-theme-color-shade: #d93526;
+      --f7-theme-color-tint: #ff695b;
+      --f7-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+
+      /* BTDT Crimzon Brand Tokens */
+      --btdt-bg: #050101;
+      --btdt-accent: #f64838;
+      --btdt-display: 'Space Grotesk', sans-serif;
+      --btdt-body: 'Plus Jakarta Sans', sans-serif;
+      --btdt-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+    html, body, #app {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: var(--f7-font-family);
+      user-select: none;
+    }
+
+    /* Authentic iOS 27 Top Status Bar (Matches Figma node 2971:29538 exact dimensions) */
+    .ios-statusbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 62px;
+      padding: 3px 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9500;
+      pointer-events: none;
+      color: #ffffff;
+      transition: color 0.2s ease, filter 0.2s ease;
+    }
+    .ios-statusbar.dark-text {
+      color: #000000;
+    }
+    .ios-statusbar.dark-text .ios-bar-pill { background: #000000; }
+    .ios-statusbar.dark-text .ios-status-svg { filter: invert(1); }
+
+    .ios-time-wrap {
+      flex: 1 0 0;
+      height: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 10px;
+    }
+    .ios-time {
+      font-size: 17.5px;
+      font-weight: 600;
+      line-height: 22px;
+      letter-spacing: -0.02em;
+    }
+    .ios-di-capsule {
+      position: fixed;
+      top: 14.67px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      width: 94px;
+      height: 35.67px;
+      border-radius: 100px;
+      background: transparent;
+      z-index: 9600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 11px;
+      cursor: pointer;
+      pointer-events: auto;
+      overflow: hidden;
+      will-change: transform, width, opacity, background-color;
+      transition: width 0.36s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+      border: 0.75px solid transparent;
+    }
+    .ios-di-capsule:active {
+      transform: translate3d(-50%, 0, 0) scale(0.96);
+    }
+    .ios-di-capsule.expanded {
+      width: 244px;
+      height: 35.67px;
+      padding: 0 12px;
+      background: #000000;
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(246, 72, 56, 0.38);
+    }
+    .ios-statusbar.di-expanded .ios-time-wrap,
+    .ios-statusbar.di-expanded .ios-levels-wrap {
+      opacity: 0;
+      transition: opacity 0.16s ease;
+    }
+    .ios-di-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .ios-di-capsule.expanded .ios-di-content {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .ios-di-spacer {
+      width: 100px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+    .ios-levels-wrap {
+      flex: 1 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-right: 10px;
+    }
+    .ios-cell-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.33px;
+      padding-top: 1.33px;
+    }
+    .ios-bar-pill {
+      width: 3.33px;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    /* Authentic iOS Home Bar Indicator */
+    .ios-home-indicator-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      z-index: 9500;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+    }
+    .ios-home-pill {
+      width: 144px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+      transition: transform 0.14s ease;
+    }
+    .ios-home-indicator-wrap.dark-bar .ios-home-pill {
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: none;
+    }
+    .ios-home-indicator-wrap:active .ios-home-pill { transform: scaleX(0.92); }
+
+    /* Apple 0.5s Power-On Boot Screen */
+    .apple-boot {
+      position: fixed;
+      inset: 0;
+      z-index: 9900;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      pointer-events: auto;
+      will-change: opacity, transform;
+      transition: opacity 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .apple-boot.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Interactive iOS 27 Lock Screen (440x956 Pro Max, 144Hz GPU swipe-up) */
+    .ios-lockscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: #141210 url('/media/ios27/wallpaper_default.png') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 74px 24px 18px;
+      color: #ffffff;
+      touch-action: none;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0) scale(1);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.26s ease;
+    }
+    .ios-lockscreen.dark-wallpaper {
+      background-image: url('/media/ios27/wallpaper_dark.png');
+    }
+    .ios-lockscreen.dragging {
+      transition: none !important;
+    }
+    .ios-lockscreen.unlocked {
+      transform: translate3d(0, -104%, 0) scale(0.96);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .ls-torch-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 85%, rgba(255, 240, 200, 0.36), transparent 60%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .ls-torch-glow.on { opacity: 1; }
+    .ls-clock-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .ls-padlock {
+      font-size: 16px;
+      margin-bottom: 6px;
+      opacity: 0.92;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ls-date {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      color: rgba(255, 255, 255, 0.92);
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    }
+    .ls-time {
+      font-size: 102px;
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      margin-top: 4px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.58) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.42);
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.28));
+    }
+    .ls-widgets {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 14px;
+      padding: 8px 16px;
+      border-radius: 22px;
+      background: rgba(20, 20, 24, 0.28);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.75px solid rgba(255, 255, 255, 0.24);
+    }
+    .ls-notif-card {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: 24px;
+      background: rgba(22, 16, 16, 0.56);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 0.75px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .ls-bottom-row {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 12px 16px;
+    }
+    .ls-quick-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 0.75px solid rgba(255, 255, 255, 0.34);
+      background: rgba(30, 30, 34, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+    }
+    .ls-quick-btn:active { transform: scale(0.88); }
+    .ls-quick-btn.active { background: rgba(255, 255, 255, 0.88); color: #111; }
+    .ls-swipe-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px 14px;
+    }
+    .ls-swipe-label {
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.86);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+      animation: swipeFloat 1.8s ease-in-out infinite;
+    }
+    @keyframes swipeFloat {
+      0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.82; }
+      50%      { transform: translate3d(0, -4px, 0); opacity: 1; }
+    }
+
+    /* iOS 27 SpringBoard Home Screen (iPhone 18 Pro Max 440x956) */
+    .springboard {
+      position: fixed;
+      inset: 0;
+      background: #1a1816 url('/media/ios27/wallpaper_default.png') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 66px;
+      z-index: 100;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0) scale(1);
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.34s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.25s ease;
+    }
+    .springboard.dark-wallpaper {
+      background-image: url('/media/ios27/wallpaper_dark.png');
+    }
+    .springboard.locked-behind {
+      transform: translate3d(0, 0, 0) scale(0.94);
+    }
+    .springboard.hidden-os {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, 0, 0) scale(1.06);
+    }
+
+    .os-icons-canvas {
+      flex: 1 0 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 22px 32px 0;
+      min-height: 0;
+    }
+    .os-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .os-slot-empty {
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
+    }
+    .os-app-btn {
+      width: 68px;
+      background: none;
+      border: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .os-app-btn:active .os-icon-frame {
+      transform: scale(0.89);
+      filter: brightness(0.84);
+    }
+    .os-icon-frame {
+      width: 68px;
+      height: 68px;
+      position: relative;
+      will-change: transform;
+      transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), filter 0.16s ease;
+    }
+    .os-icon-img {
+      width: 68px;
+      height: 68px;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .os-btdt-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 16px;
+      background: linear-gradient(155deg, #f64838 0%, #a5160e 55%, #190505 100%);
+      border: 0.75px solid rgba(255,255,255,0.34);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.42);
+    }
+    .os-btdt-label {
+      font-family: var(--btdt-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: #fff;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .os-app-label {
+      width: 78px;
+      height: 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 0px 2px 14px rgba(0,0,0,0.85);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 14px;
+    }
+    .ios-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 100px;
+      background: #ff383c;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      z-index: 2;
+    }
+
+    /* Exact iOS 27 Liquid Glass Search Field + Dock from Figma */
+    .ios27-search {
+      width: auto !important;
+      flex: 0 0 auto;
+      height: 30px;
+      padding: 7px 14px;
+      border-radius: 100px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 0;
+      cursor: pointer;
+      background: rgba(153, 153, 153, 0.33);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow: 1.25px 0px 0px -0.75px rgba(255,255,255,0.55), -1.25px 0px 0px -0.75px rgba(255,255,255,0.55), 0px 0px 0px 0.5px rgba(255,255,255,0.45), 0px 8px 15px 0px rgba(0,0,0,0.12);
+    }
+    .ios27-dock-wrap {
+      width: 100%;
+      padding: 12px 18px 30px;
+      flex-shrink: 0;
+    }
+    .ios27-dock {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(153, 153, 153, 0.33);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow: 1.25px 0px 0px -0.75px rgba(255,255,255,0.6), -1.25px 0px 0px -0.75px rgba(255,255,255,0.6), 0px 0px 0px 0.5px rgba(255,255,255,0.45), 0px 10px 24px 0px rgba(0,0,0,0.18);
+    }
+
+    /* Active App Layer (144Hz GPU Spring Launch) */
+    .active-app-shell {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: #000;
+      display: none;
+      flex-direction: column;
+      will-change: transform, opacity;
+    }
+    .active-app-shell.visible {
+      display: flex;
+      animation: iosAppLaunch 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes iosAppLaunch {
+      from { opacity: 0.35; transform: translate3d(0, 12px, 0) scale(0.91); border-radius: 44px; }
+      to   { opacity: 1;    transform: translate3d(0, 0, 0)    scale(1);    border-radius: 0; }
+    }
+
+    /* Apple Calculator View */
+    .calc-view {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 68px 18px 36px;
+      color: #fff;
+    }
+    .calc-top-bar {
+      position: absolute;
+      top: 66px;
+      left: 18px;
+      right: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .calc-display-wrap { padding: 0 8px 16px; text-align: right; }
+    .calc-expr { font-size: 18px; color: rgba(255,255,255,0.45); min-height: 24px; }
+    .calc-val { font-size: 68px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .calc-btn {
+      height: 76px; border-radius: 999px; border: 0; font-size: 29px; color: #fff; background: #333; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .calc-btn:active { filter: brightness(1.3); }
+    .calc-btn.fn { background: #a5a5a5; color: #000; font-size: 24px; font-weight: 500; }
+    .calc-btn.op { background: #ff9f0a; color: #fff; font-size: 31px; font-weight: 500; }
+    .calc-btn.zero { grid-column: span 2; justify-content: flex-start; padding-left: 32px; }
+
+    /* Framework7 View & Status Bar Clearance */
+    #app, .view, .page { width: 100%; height: 100%; margin: 0; }
+    .page-content { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .ios .navbar { height: 104px !important; }
+    .ios .navbar-inner { top: 58px !important; height: 46px !important; align-items: center !important; }
+    .ios .navbar ~ .page-content { padding-top: 106px !important; }
+    .ios .toolbar-bottom { padding-bottom: 20px !important; height: 78px !important; }
+    .ios .toolbar-bottom ~ .page-content { padding-bottom: 86px !important; }
+
+    /* BTDT Dark Crimzon App Theme */
+    .btdt-app-page {
+      background: radial-gradient(circle at 80% 8%, rgba(246, 72, 56, 0.14), transparent 44%),
+                  radial-gradient(circle at 12% 90%, rgba(108, 24, 25, 0.22), transparent 52%),
+                  #050101 !important;
+      color: #ffffff !important;
+      font-family: var(--btdt-body) !important;
+    }
+    .btdt-app-page .navbar-bg {
+      background: rgba(10, 4, 4, 0.88) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btdt-app-page .navbar-inner,
+    .btdt-app-page .navbar .title {
+      color: #ffffff !important;
+      font-family: var(--btdt-display);
+      letter-spacing: -0.02em;
+    }
+    .btdt-app-page .navbar .link {
+      color: #f64838 !important;
+      font-family: var(--btdt-mono);
+      font-size: 12px;
+    }
+    .btdt-app-page .toolbar-bottom {
+      background: rgba(10, 4, 4, 0.94) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+    .btdt-app-page .toolbar-bottom .tab-link {
+      color: rgba(255, 255, 255, 0.5) !important;
+      font-family: var(--btdt-body);
+    }
+    .btdt-app-page .toolbar-bottom .tab-link-active { color: #f64838 !important; }
+    .btdt-app-page .page-content { padding-left: 16px; padding-right: 16px; }
+
+    .btdt-h2 {
+      font-family: var(--btdt-display);
+      font-size: 23px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.18;
+      animation: appCardFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes appCardFade {
+      from { opacity: 0; transform: translate3d(0, 10px, 0); }
+      to   { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    .btdt-mono { font-family: var(--btdt-mono); font-size: 10.5px; letter-spacing: 0.04em; }
+    .btdt-card {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.035);
+      padding: 13px;
+    }
+    .btdt-card-accent {
+      border-radius: 15px;
+      border: 1px solid rgba(246, 72, 56, 0.5);
+      background: linear-gradient(155deg, rgba(246, 72, 56, 0.2), #150707 58%, #070303 100%);
+      padding: 14px;
+    }
+    .btdt-pill {
+      display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+      border-radius: 6px; border: 1px solid rgba(246, 72, 56, 0.45);
+      background: rgba(246, 72, 56, 0.14); color: #ff7e72;
+      font-family: var(--btdt-mono); font-size: 10px; text-transform: uppercase;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btdt-pill-green { border-color: rgba(74, 222, 128, 0.35); background: rgba(34, 197, 94, 0.14); color: #4ade80; }
+    .btdt-btn-fill {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 0;
+      background: #f64838; color: #ffffff; font-family: var(--btdt-body);
+      font-size: 13.5px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(246, 72, 56, 0.28);
+    }
+    .btdt-btn-fill:active { transform: scale(0.98); opacity: 0.9; }
+    .btdt-btn-outline {
+      width: 100%; padding: 11px 14px; border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.03); color: #ffffff;
+      font-family: var(--btdt-body); font-size: 13px; font-weight: 500; cursor: pointer;
+    }
+    .btdt-input, .btdt-select {
+      width: 100%; margin-top: 5px; padding: 11px 12px; border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16); background: #0d0505;
+      color: #ffffff; font-family: var(--btdt-body); font-size: 13.5px; outline: none;
+    }
+    .btdt-input:focus, .btdt-select:focus { border-color: #f64838; }
+    .btdt-seg {
+      display: grid; grid-template-columns: 1fr 1fr; padding: 4px;
+      border-radius: 11px; border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04); gap: 4px;
+    }
+    .btdt-seg button {
+      border: 0; padding: 9px; border-radius: 8px;
+      font-family: var(--btdt-body); font-size: 13px; font-weight: 600;
+      cursor: pointer; color: rgba(255, 255, 255, 0.65); background: transparent;
+    }
+    .btdt-seg button.active { background: #f64838; color: #ffffff; }
+
+    /* BTDT Splash Screen */
+    .btdt-splash {
+      position: fixed; inset: 0; z-index: 4000;
+      background: radial-gradient(circle at 50% 35%, rgba(246,72,56,0.28) 0%, #160606 46%, #050101 100%);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; text-align: center; padding: 32px; cursor: pointer;
+    }
+    .btdt-splash.visible { display: flex; animation: fadeSplash 0.2s ease; }
+    @keyframes fadeSplash { from { opacity: 0.2; } to { opacity: 1; } }
+    .btdt-splash-mark {
+      width: 86px; height: 86px; border-radius: 22px;
+      background: linear-gradient(155deg, #f64838 0%, #99170f 70%, #2b0605 100%);
+      border: 1px solid rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 20px 55px rgba(246,72,56,0.45); margin-bottom: 18px;
+    }
+    .uni-logo-pill {
+      height: 28px; max-width: 72px; background: transparent;
+      padding: 0; object-fit: contain;
+      display: inline-block; vertical-align: middle;
+      filter: drop-shadow(0 1px 4px rgba(255,255,255,0.14));
+    }
+    .btdt-chat-stream {
+      display: flex;
+      flex-direction: column;
+      padding: 4px 0;
+    }
+    .btdt-msg {
+      width: fit-content;
+      max-width: 82%;
+      padding: 9px 13px;
+      border-radius: 17px;
+      font-size: 13.2px;
+      line-height: 1.42;
+      margin-bottom: 9px;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      animation: msgPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes msgPop {
+      from { opacity: 0; transform: translate3d(0, 6px, 0) scale(0.97); }
+      to   { opacity: 1; transform: translate3d(0, 0, 0)   scale(1); }
+    }
+    .btdt-msg.me { align-self: flex-end; background: #f64838; color: #ffffff; border-bottom-right-radius: 5px; }
+    .btdt-msg.me.deleting {
+      background: rgba(255, 59, 48, 0.25);
+      border: 1px dashed #ff453a;
+      color: #ffb4ae;
+      text-decoration: line-through;
+      animation: msgDeleteVanish 0.44s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes msgDeleteVanish {
+      0%   { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+      35%  { opacity: 0.9; transform: translate3d(-4px,0,0) scale(0.98); }
+      65%  { opacity: 0.65; transform: translate3d(4px,0,0) scale(0.95); }
+      100% { opacity: 0; transform: translate3d(0,-6px,0) scale(0.86); }
+    }
+    .btdt-msg.them { align-self: flex-start; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.13); color: rgba(255,255,255,0.94); border-bottom-left-radius: 5px; }
+    .btdt-msg.safety-alert { align-self: stretch; max-width: 100%; background: rgba(246,72,56,0.18); border: 1px solid rgba(255,69,58,0.65); color: #ffd4cf; border-radius: 12px; }
+    .id-scan-box {
+      border: 1.5px dashed rgba(246, 72, 56, 0.55); border-radius: 14px;
+      background: rgba(246, 72, 56, 0.06); padding: 16px; text-align: center; cursor: pointer;
+    }
+    .id-scan-box.uploaded { border-style: solid; border-color: #4ade80; background: rgba(34, 197, 94, 0.1); }
+    .btdt-sheet-backdrop {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(6px);
+      display: none; align-items: flex-end;
+    }
+    .btdt-sheet-backdrop.visible { display: flex; }
+    .btdt-sheet-card {
+      width: 100%; max-height: 82%; overflow-y: auto;
+      border-top-left-radius: 26px; border-top-right-radius: 26px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      background: #0d0606; padding: 16px 16px 32px;
+      color: #fff; font-family: var(--btdt-body);
+    }
+  </style>
+</head>
+<body>
+  <!-- Apple 0.5s OLED Power-On Boot Screen -->
+  <div id="appleBootOverlay" class="apple-boot">
+    <svg width="72" height="72" viewBox="0 0 384 512" fill="#ffffff" aria-label="Apple logo">
+      <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+    </svg>
+  </div>
+
+  <!-- Interactive Dynamic Island Live Activity Capsule (left/right wings clear the 94px center lens) -->
+  <div id="dynamicIslandCapsule" class="ios-di-capsule" onclick="onDynamicIslandTap()" title="Dynamic Island">
+    <div class="ios-di-content">
+      <span style="display:inline-flex;align-items:center;gap:5px;">
+        <span style="width:16px;height:16px;border-radius:5px;background:#f64838;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;">B</span>
+        <span style="font-size:10.5px;font-weight:700;letter-spacing:-0.02em;">BTDT</span>
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:5px;max-width:86px;">
+        <span id="diText" style="font-size:10.5px;color:rgba(255,255,255,0.86);overflow:hidden;text-overflow:ellipsis;">Ready</span>
+        <span id="diBadge" style="width:7px;height:7px;border-radius:50%;background:#30d158;box-shadow:0 0 8px #30d158;flex-shrink:0;"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Interactive iOS 27 Lock Screen (Swipe up to unlock) -->
+  <div id="iosLockScreen" class="ios-lockscreen">
+    <div id="lsTorchGlow" class="ls-torch-glow"></div>
+    <div class="ls-clock-wrap">
+      <i id="lsPadlock" class="f7-icons ls-padlock">lock_fill</i>
+      <div class="ls-date">Thursday, November 26</div>
+      <div class="ls-time">9:41</div>
+      <div class="ls-widgets">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;"><i class="f7-icons" style="font-size:16px;color:#ffd60a;">cloud_sun_fill</i><span>11° Munich</span></div>
+        <span style="width:1px;height:16px;background:rgba(255,255,255,0.28);"></span>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;"><span style="width:7px;height:7px;border-radius:50%;background:#30d158;"></span><span>28 TUM Peers</span></div>
+      </div>
+    </div>
+
+    <div style="width:100%;display:flex;flex-direction:column;gap:14px;">
+      <div class="ls-notif-card" onclick="unlockAndLaunchBtdt(event)">
+        <div style="width:40px;height:40px;border-radius:11px;background:linear-gradient(155deg,#f64838 0%,#99170f 75%,#2b0605 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:0.75px solid rgba(255,255,255,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/><circle cx="5.5" cy="17" r="2.2" fill="#fff"/><circle cx="18" cy="7" r="2.8" fill="#fff"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13.5px;font-weight:600;color:#fff;">BTDT · Aarav Sharma</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.6);">now</span>
+          </div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Checked your TUM transcript scan — tap or swipe up</div>
+        </div>
+      </div>
+
+      <div class="ls-bottom-row">
+        <button id="lsTorchBtn" class="ls-quick-btn" onclick="toggleLockTorch(event)" aria-label="Flashlight"><svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10v3.2l-2 2.8V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L7 5.2V2zm5 9.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/></svg></button>
+        <div class="ls-swipe-hint" onclick="unlockPhoneOS()">
+          <span class="ls-swipe-label">Swipe up to unlock</span>
+        </div>
+        <button class="ls-quick-btn" onclick="unlockAndLaunchUtility(event, 'camera')" aria-label="Camera"><i class="f7-icons" style="font-size:21px;">camera_fill</i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS 27 Top Status Bar (Matches Figma node 2971:29538) -->
+  <div id="iosStatusBar" class="ios-statusbar">
+    <div class="ios-time-wrap"><span class="ios-time">9:41</span></div>
+    <div id="dynamicIsland" class="ios-di-spacer"></div>
+    <div class="ios-levels-wrap">
+      <div class="ios-cell-bars">
+        <span class="ios-bar-pill" style="height:6.33px;"></span>
+        <span class="ios-bar-pill" style="height:8.67px;"></span>
+        <span class="ios-bar-pill" style="height:11px;"></span>
+        <span class="ios-bar-pill" style="height:13.67px;"></span>
+      </div>
+      <img class="ios-status-svg" src="/media/ios27/wifi.svg" width="19" height="14" alt="Wi-Fi" />
+      <img class="ios-status-svg" src="/media/ios27/battery.svg" width="29" height="14" alt="Battery" />
+    </div>
+  </div>
+
+  <!-- Apple iOS 27 SpringBoard Home Screen (Exact Figma node 12740:33918) -->
+  <div id="springBoard" class="springboard">
+    <div class="os-icons-canvas">
+      <!-- Row 1 -->
+      <div class="os-row">
+        <button class="os-app-btn" onclick="openUtilityApp('facetime')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/facetime.png" alt="FaceTime" /></span><span class="os-app-label">FaceTime</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('calendar')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/calendar.png" alt="Calendar" /></span><span class="os-app-label">Calendar</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('photos')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/photos.png" alt="Photos" /></span><span class="os-app-label">Photos</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('camera')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/camera.png" alt="Camera" /></span><span class="os-app-label">Camera</span></button>
+      </div>
+      <!-- Row 2 -->
+      <div class="os-row">
+        <button class="os-app-btn" onclick="openUtilityApp('mail')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/mail.png" alt="Mail" /><span id="badgeMail" class="ios-badge">2</span></span><span class="os-app-label">Mail</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('clock')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/clock.png" alt="Clock" /></span><span class="os-app-label">Clock</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('reminders')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/reminders.png" alt="Reminders" /></span><span class="os-app-label">Reminders</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('maps')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/maps.png" alt="Maps" /></span><span class="os-app-label">Maps</span></button>
+      </div>
+      <!-- Row 3 -->
+      <div class="os-row">
+        <button class="os-app-btn" onclick="openUtilityApp('notes')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/notes.png" alt="Notes" /></span><span class="os-app-label">Notes</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('calculator')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/calculator.png" alt="Calculator" /></span><span class="os-app-label">Calculator</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('appstore')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/appstore.png" alt="App Store" /></span><span class="os-app-label">App Store</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('weather')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/weather.png" alt="Weather" /></span><span class="os-app-label">Weather</span></button>
+      </div>
+      <!-- Row 4 -->
+      <div class="os-row">
+        <button class="os-app-btn" onclick="openUtilityApp('files')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/files.png" alt="Files" /></span><span class="os-app-label">Files</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('wallet')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/wallet.png" alt="Wallet" /></span><span class="os-app-label">Wallet</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('translate')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/translate.png" alt="Translate" /></span><span class="os-app-label">Translate</span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('settings')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/settings.png" alt="Settings" /></span><span class="os-app-label">Settings</span></button>
+      </div>
+      <!-- Row 5: BTDT App Icon -->
+      <div class="os-row">
+        <button class="os-app-btn" onclick="launchBtdtApp()">
+          <span class="os-icon-frame os-btdt-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/><circle cx="5.5" cy="17" r="2.2" fill="#fff"/><circle cx="18" cy="7" r="2.8" fill="#fff"/></svg>
+            <span class="os-btdt-label">BTDT</span>
+            <span id="badgeBtdt" class="ios-badge">1</span>
+          </span>
+          <span class="os-app-label" style="font-weight:600;">BTDT</span>
+        </button>
+        <div class="os-slot-empty"></div>
+        <div class="os-slot-empty"></div>
+        <div class="os-slot-empty"></div>
+      </div>
+    </div>
+
+    <!-- iOS 27 Liquid Glass Search Field -->
+    <button class="ios27-search" onclick="openSpotlightAlert()">
+      <i class="f7-icons" style="font-size:11px;">search</i>
+      <span>Search</span>
+    </button>
+
+    <!-- iOS 27 Liquid Glass Dock -->
+    <div class="ios27-dock-wrap">
+      <div class="ios27-dock">
+        <button class="os-app-btn" onclick="openUtilityApp('phone')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/phone.png" alt="Phone" /></span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('safari')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/safari.png" alt="Safari" /></span></button>
+        <button class="os-app-btn" onclick="openUtilityApp('messages')"><span class="os-icon-frame"><img class="os-icon-img" src="/media/ios27/messages.png" alt="Messages" /><span class="ios-badge">1</span></span></button>
+        <button class="os-app-btn" onclick="launchBtdtApp()">
+          <span class="os-icon-frame os-btdt-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/><circle cx="5.5" cy="17" r="2.2" fill="#fff"/><circle cx="18" cy="7" r="2.8" fill="#fff"/></svg>
+            <span class="os-btdt-label" style="font-size:12px;">BTDT</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BTDT Splash Screen ("Been there, done that") -->
+  <div id="btdtSplash" class="btdt-splash" onclick="finishSplashImmediately()">
+    <div class="btdt-splash-mark">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M5.5 17C7 10 11.8 7 18 7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M10.2 16.5L12.6 18.8L18.2 13.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/><circle cx="5.5" cy="17" r="2.2" fill="#fff"/><circle cx="18" cy="7" r="2.8" fill="#f64838"/></svg>
+    </div>
+    <p class="btdt-mono" style="color:#f64838;letter-spacing:0.22em;margin:0 0 6px;">BTDT</p>
+    <h1 style="font-family:var(--btdt-display);font-size:32px;font-weight:500;letter-spacing:-0.04em;margin:0;">Been there, done that.</h1>
+    <p style="font-family:var(--btdt-body);font-size:13.5px;color:rgba(255,255,255,0.68);margin:8px 0 26px;">Trusted students from your home country at campus.</p>
+    <div class="preloader color-white" style="width:22px;height:22px;"></div>
+  </div>
+
+  <!-- Active App Shell -->
+  <div id="activeAppShell" class="active-app-shell">
+    <div id="app" class="framework7-root"><div class="view view-main" id="mainView"></div></div>
+  </div>
+
+  <!-- Dark Modal Bottom Sheet -->
+  <div id="btdtSheet" class="btdt-sheet-backdrop" onclick="if(event.target===this) closeSheet();">
+    <div id="btdtSheetCard" class="btdt-sheet-card"></div>
+  </div>
+
+  <!-- Home Indicator -->
+  <button id="homeIndicatorBtn" class="ios-home-indicator-wrap" onclick="goHomeOS()" title="Return to Home Screen"><span class="ios-home-pill"></span></button>
+
+  <script src="/vendor/f7/framework7-bundle.min.js"></script>
+  <script src="/peers-data.js?v=20261126af"></script>
+  <script>
+    (function () {
+      const S = window.BTDT_SEED;
+
+      const state = {
+        currentApp: "os_home",
+        wallpaperMode: "default",
+        btdtStage: "auth",
+        authMode: "signup",
+        role: "student",
+        studentTab: "home",
+        mentorTab: "queue",
+        homeIso: "IN",
+        uniId: "tum",
+        intakeTerm: "Winter 2026",
+        userName: "Priya Deshmukh",
+        userEmail: "priya.deshmukh@gmail.com",
+        mentorEduEmail: "aarav.sharma@tum.de",
+        mentorIdUploaded: false,
+        mentorPolicyAccepted: false,
+        mentorPolicyWarn: false,
+        isLocked: true,
+        torchOn: false,
+        gibberishCount: 0,
+        activePeerId: null,
+        peerQuery: "",
+        unreadBtdt: 1,
+        unreadMail: 2,
+        selectedCalDay: 26,
+        calEvents: {
+          26: [
+            { time: "14:00", title: "TUM Orientation Q&A", sub: "With Aarav Sharma (Pune -> Munich)", color: "#f64838" },
+            { time: "17:30", title: "Transcript Format Check", sub: "Saved PDF checklist review", color: "#007aff" }
+          ],
+          27: [{ time: "10:30", title: "Garching U6 Transit Tour", sub: "MVV Student Pass tips", color: "#34c759" }]
+        },
+        mailList: [
+          { id: 1, from: "BTDT Network", subj: "Aarav S. replied to your TUM housing note", time: "9:34 AM", unread: true, body: "Hey Priya, checked the WG-Gesucht listing you sent. Open BTDT Chat to save the rental checklist to your Pass." },
+          { id: 2, from: "Admissions · TUM", subj: "Enrollment Checklist · Winter 2026", time: "Yesterday", unread: true, body: "Verified senior mentors on BTDT shared how previous Indian students formatted registrar transcripts before arrival." }
+        ],
+        selectedMailId: 1,
+        notes: [
+          { id: 1, title: "First 48 Hours in Munich", date: "Today · 9:12 AM", body: "1. Activate airport eSIM before landing\n2. Validate MVV student pass\n3. Bring enrollment printouts for City Hall registration" },
+          { id: 2, title: "Student Document Check", date: "Nov 24", body: "BTDT connects incoming peers with Been There, Done That Mentors to prepare coursework & housing checklists cleanly." }
+        ],
+        selectedNoteId: 1,
+        chatMessages: [
+          { sender: "me", text: "Hi Aarav! Got my TU Munich admit from Pune. Attached my sem-5 transcript scan — does the registrar seal look right?", time: "14:02", pdfName: "Transcript_Audit_Scan.pdf", pdfSize: "1.4 MB · 3 pages" },
+          { sender: "them", text: "Checked your scan — your registrar stamp and grading scale on p.2 match TUM requirements. Pinned your checklist receipt below.", time: "14:04", receiptTitle: "Transcript Checklist Receipt", receiptDesc: "Registrar seal & grading scale formatting verified." }
+        ],
+        kitDone: { esim: true, funds: false, health: false, rail: false },
+        mentorQueue: [
+          { id: "mq1", name: "Priya Deshmukh", route: "Pune (IN) -> TU Munich", tier: "€100 Deep-Dive", topic: "Academic packet & dorm waitlist reality", status: "pending" },
+          { id: "mq2", name: "Karthik Nair", route: "Kochi (IN) -> TU Munich", tier: "€20 Quick Check", topic: "Comparing residence halls vs shared flats", status: "pending" },
+          { id: "mq3", name: "Kabir Sen", route: "Delhi (IN) -> TU Munich", tier: "€120 Landing Pack", topic: "First 14 days arrival walkthrough", status: "accepted" }
+        ],
+        availability: { monThu: true, friSat: true, arrivalGreet: true },
+        passes: [
+          { code: "#BTDT-4821", mentorName: "Aarav Sharma", uniId: "tum", pkg: "Deep-Dive Paperwork & Prep", total: 100, status: "Confirmed", when: "Thu Nov 26 · 14:00 CET", notes: ["Transcript Registrar Seal OK", "Proof-of-Funds & Housing Reality Checklist"] },
+          { code: "#BTDT-5109", mentorName: "Diya Menon", uniId: "tum", pkg: "Base Counseling (20 min)", total: 20, status: "Completed", when: "Nov 18 · Saved Notes", notes: ["Garching U6 Line & Dorm Application Timeline"] }
+        ],
+        expandedPass: "#BTDT-4821",
+        calc: { display: "0", acc: null, op: null, resetNext: false }
+      };
+
+      const f7 = new Framework7({ el: "#app", name: "BTDT", theme: "ios" });
+      const statusBar = document.getElementById("iosStatusBar");
+      const homeInd = document.getElementById("homeIndicatorBtn");
+      const springBoard = document.getElementById("springBoard");
+      const activeAppShell = document.getElementById("activeAppShell");
+      const btdtSplash = document.getElementById("btdtSplash");
+      const sheetBackdrop = document.getElementById("btdtSheet");
+      const sheetCard = document.getElementById("btdtSheetCard");
+      const bootOverlay = document.getElementById("appleBootOverlay");
+      const lockScreen = document.getElementById("iosLockScreen");
+      const lsPadlock = document.getElementById("lsPadlock");
+      const lsTorchGlow = document.getElementById("lsTorchGlow");
+      const lsTorchBtn = document.getElementById("lsTorchBtn");
+      let splashTimer = null;
+      let bootTimer = null;
+      let unlockTimer = null;
+
+      function cancelPendingBootAndUnlock() {
+        if (bootTimer) { clearTimeout(bootTimer); bootTimer = null; }
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        if (unlockTimer) { clearTimeout(unlockTimer); unlockTimer = null; }
+        if (bootOverlay) bootOverlay.classList.add("done");
+      }
+
+      window.unlockPhoneOS = function (callback) {
+        if (bootTimer) { clearTimeout(bootTimer); bootTimer = null; }
+        if (unlockTimer) { clearTimeout(unlockTimer); unlockTimer = null; }
+        if (bootOverlay) bootOverlay.classList.add("done");
+        if (!state.isLocked) { if (callback) callback(); return; }
+        state.isLocked = false;
+        if (lsPadlock) lsPadlock.textContent = "lock_open_fill";
+        if (lockScreen) {
+          lockScreen.classList.remove("dragging");
+          lockScreen.style.transform = "";
+          lockScreen.style.opacity = "";
+          lockScreen.classList.add("unlocked");
+        }
+        springBoard.classList.remove("locked-behind");
+        springBoard.style.transform = "";
+        pulseDynamicIsland("Face ID · Unlocked", 1150);
+        syncParentInspector();
+        if (callback) {
+          unlockTimer = setTimeout(() => {
+            unlockTimer = null;
+            callback();
+          }, 190);
+        }
+      };
+
+      window.unlockAndLaunchBtdt = function (ev) {
+        if (ev) ev.stopPropagation();
+        window.unlockPhoneOS(() => window.launchBtdtApp("student_app"));
+      };
+
+      window.unlockAndLaunchUtility = function (ev, name) {
+        if (ev) ev.stopPropagation();
+        window.unlockPhoneOS(() => window.openUtilityApp(name));
+      };
+
+      window.toggleLockTorch = function (ev) {
+        if (ev) ev.stopPropagation();
+        state.torchOn = !state.torchOn;
+        if (lsTorchGlow) lsTorchGlow.classList.toggle("on", state.torchOn);
+        if (lsTorchBtn) {
+          lsTorchBtn.classList.toggle("active", state.torchOn);
+        }
+      };
+
+      window.bootToLockScreen = function (afterBootFn) {
+        if (bootTimer) { clearTimeout(bootTimer); bootTimer = null; }
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        if (unlockTimer) { clearTimeout(unlockTimer); unlockTimer = null; }
+        closeSheet();
+        state.isLocked = true;
+        state.currentApp = "os_home";
+        activeAppShell.classList.remove("visible");
+        btdtSplash.classList.remove("visible");
+        springBoard.classList.remove("hidden-os");
+        springBoard.classList.add("locked-behind");
+        setChromeTone(false);
+
+        if (lsPadlock) lsPadlock.textContent = "lock_fill";
+        if (lockScreen) {
+          lockScreen.classList.remove("unlocked", "dragging");
+          lockScreen.style.transform = "";
+          lockScreen.style.opacity = "";
+        }
+        if (bootOverlay) bootOverlay.classList.remove("done");
+        syncParentInspector();
+
+        bootTimer = setTimeout(() => {
+          bootTimer = null;
+          if (bootOverlay) bootOverlay.classList.add("done");
+          syncParentInspector();
+          if (afterBootFn) setTimeout(afterBootFn, 140);
+        }, 500);
+      };
+
+      // 144Hz GPU-composited pointer & trackpad swipe-up physics on Lock Screen
+      if (lockScreen) {
+        let dragging = false;
+        let startY = 0;
+        let curDy = 0;
+        let lastY = 0;
+        let lastT = 0;
+        let velY = 0;
+        let rafPending = false;
+
+        const paintDrag = () => {
+          rafPending = false;
+          if (!dragging) return;
+          const clamped = Math.min(0, Math.max(-420, curDy));
+          const prog = Math.min(1, -clamped / 240);
+          lockScreen.style.transform = `translate3d(0, ${clamped}px, 0) scale(${(1 - prog * 0.04).toFixed(4)})`;
+          lockScreen.style.opacity = String((1 - prog * 0.35).toFixed(3));
+          springBoard.style.transform = `translate3d(0, 0, 0) scale(${(0.94 + prog * 0.06).toFixed(4)})`;
+        };
+
+        lockScreen.addEventListener("pointerdown", (e) => {
+          if (e.target.closest("button") || e.target.closest(".ls-notif-card") || e.target.closest(".ls-swipe-hint")) return;
+          dragging = true;
+          startY = lastY = e.clientY;
+          curDy = 0;
+          velY = 0;
+          lastT = performance.now();
+          lockScreen.classList.add("dragging");
+          try { lockScreen.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+
+        lockScreen.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          const now = performance.now();
+          const dt = Math.max(4, now - lastT);
+          velY = (e.clientY - lastY) / dt;
+          lastY = e.clientY;
+          lastT = now;
+          curDy = e.clientY - startY;
+          if (!rafPending) { rafPending = true; requestAnimationFrame(paintDrag); }
+        });
+
+        const endSwipe = () => {
+          if (!dragging) return;
+          dragging = false;
+          lockScreen.classList.remove("dragging");
+          if (curDy < -85 || velY < -0.35) {
+            window.unlockPhoneOS();
+          } else {
+            lockScreen.style.transform = "";
+            lockScreen.style.opacity = "";
+            springBoard.style.transform = "";
+          }
+        };
+        lockScreen.addEventListener("pointerup", endSwipe);
+        lockScreen.addEventListener("pointercancel", endSwipe);
+        lockScreen.addEventListener("wheel", (e) => {
+          if (e.deltaY > 18 && state.isLocked) {
+            e.preventDefault();
+            window.unlockPhoneOS();
+          }
+        }, { passive: false });
+      }
+
+      function getUniObj() { return S.universities.find((u) => u.id === state.uniId) || S.universities[0]; }
+      function getHomeObj() { return S.homeCountries.find((c) => c.iso === state.homeIso) || S.homeCountries[0]; }
+      function getRoutePeers() {
+        const u = getUniObj();
+        const filtered = S.peers.filter((p) => p.homeIso === state.homeIso && p.university === u.name);
+        return filtered.length ? filtered : S.peers.filter((p) => p.university === u.name).slice(0, 8);
+      }
+
+      function syncParentInspector() {
+        const badgeB = document.getElementById("badgeBtdt");
+        if (badgeB) { badgeB.textContent = state.unreadBtdt; badgeB.style.display = state.unreadBtdt > 0 ? "flex" : "none"; }
+        const badgeM = document.getElementById("badgeMail");
+        if (badgeM) { badgeM.textContent = state.unreadMail; badgeM.style.display = state.unreadMail > 0 ? "flex" : "none"; }
+        if (window.parent && window.parent !== window) {
+          try { window.parent.postMessage({ type: "BTDT_IOS_STATE", state: { ...state, uniName: getUniObj().name } }, "*"); } catch (_) {}
+        }
+      }
+
+      function setChromeTone(isLightBg) {
+        statusBar.classList.toggle("dark-text", !!isLightBg);
+        homeInd.classList.toggle("dark-bar", !!isLightBg);
+      }
+
+      function setPageHtml(html, lightStatusBar = false) {
+        springBoard.classList.add("hidden-os");
+        btdtSplash.classList.remove("visible");
+        activeAppShell.classList.add("visible");
+        setChromeTone(lightStatusBar);
+        document.getElementById("mainView").innerHTML = html.replace('<div class="page"', '<div class="page page-current"');
+        syncParentInspector();
+      }
+
+      window.openSheet = function (innerHtml) {
+        sheetCard.innerHTML = `<div style="width:40px;height:4px;border-radius:99px;background:rgba(255,255,255,0.28);margin:0 auto 12px;"></div>` + innerHtml;
+        sheetBackdrop.classList.add("visible");
+      };
+      window.closeSheet = function () { sheetBackdrop.classList.remove("visible"); };
+
+      window.goHomeOS = function () {
+        if (state.isLocked) { window.unlockPhoneOS(); return; }
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        closeSheet();
+        state.currentApp = "os_home";
+        activeAppShell.classList.remove("visible");
+        btdtSplash.classList.remove("visible");
+        springBoard.classList.remove("hidden-os");
+        setChromeTone(false);
+        syncParentInspector();
+      };
+
+      const diCapsule = document.getElementById("dynamicIslandCapsule");
+      const diText = document.getElementById("diText");
+      let diTimer = null;
+
+      function getReplyMins(p) {
+        return p.replyMins || Math.max(9, 107 - (p.metrics?.speed || 95));
+      }
+
+      function pulseDynamicIsland(label, holdMs = 1500) {
+        if (!diCapsule) return;
+        if (diTimer) { clearTimeout(diTimer); diTimer = null; }
+        if (diText && label) diText.textContent = label;
+        diCapsule.classList.add("expanded");
+        statusBar.classList.add("di-expanded");
+        if (holdMs > 0) {
+          diTimer = setTimeout(() => {
+            diCapsule.classList.remove("expanded");
+            statusBar.classList.remove("di-expanded");
+            diTimer = null;
+          }, holdMs);
+        }
+      }
+
+      window.onDynamicIslandTap = function () {
+        if (!diCapsule) return;
+        if (diCapsule.classList.contains("expanded")) {
+          diCapsule.classList.remove("expanded");
+          statusBar.classList.remove("di-expanded");
+          if (state.currentApp === "os_home") window.launchBtdtApp();
+          else window.goHomeOS();
+        } else {
+          const msg = state.currentApp === "os_home" ? "Open" : "Live";
+          pulseDynamicIsland(msg, 2200);
+        }
+      };
+
+      window.openSpotlightAlert = function () {
+        f7.dialog.prompt("Search iPhone & BTDT campuses:", "Spotlight", (val) => {
+          if (!val) return;
+          const low = val.toLowerCase();
+          const m = S.universities.find((u) => u.name.toLowerCase().includes(low) || u.shortName.toLowerCase().includes(low) || u.city.toLowerCase().includes(low));
+          if (m) { state.uniId = m.id; window.launchBtdtApp("student_app"); state.studentTab = "peers"; renderBtdtCurrentStage(); }
+          else window.launchBtdtApp("student_app");
+        });
+      };
+
+      window.setWallpaperMode = function (mode) {
+        state.wallpaperMode = mode;
+        springBoard.classList.toggle("dark-wallpaper", mode === "dark");
+        if (lockScreen) lockScreen.classList.toggle("dark-wallpaper", mode === "dark");
+        renderSettings();
+      };
+
+      // Stock Utility Apps
+      window.openUtilityApp = function (appName) {
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        closeSheet();
+        state.currentApp = appName;
+        if (appName === "calculator") return renderCalculator();
+        if (appName === "calendar") return renderCalendar();
+        if (appName === "mail") return renderMail();
+        if (appName === "notes") return renderNotes();
+        if (appName === "settings") return renderSettings();
+        if (appName === "weather") {
+          const u = getUniObj();
+          return setPageHtml(`
+            <div class="page" data-name="weather" style="background:linear-gradient(180deg,#1a4887 0%,#2b62aa 60%,#0f2749 100%);color:#fff;">
+              <div class="navbar navbar-transparent text-color-white"><div class="navbar-bg" style="background:transparent;"></div><div class="navbar-inner"><div class="left"><a class="link text-color-white" onclick="goHomeOS()"><i class="f7-icons">chevron_left</i><span>Home</span></a></div><div class="title text-color-white">Weather</div></div></div>
+              <div class="page-content" style="padding:18px;"><div style="text-align:center;padding-top:16px;"><div style="font-size:30px;">${u.city}</div><div style="font-size:78px;font-weight:200;line-height:1;">11°</div><div style="font-size:16px;opacity:0.9;">Mostly Clear · H:14° L:5°</div></div></div>
+            </div>
+          `, false);
+        }
+        if (appName === "wallet") { state.studentTab = "passes"; return window.launchBtdtApp("student_app"); }
+
+        const labels = {
+          facetime: ["FaceTime", "Booked video & voice mentor sessions launch inside BTDT Passes."],
+          camera: ["Camera", "Scan Student IDs directly inside BTDT Mentor verification."],
+          clock: ["Clock", `${getUniObj().city} · Local Campus Time Synced`],
+          reminders: ["Reminders", "Pre-arrival reminders sync with your BTDT Arrival Kit."],
+          maps: ["Maps", "Campus transit directions open inside BTDT Arrival Kit."],
+          appstore: ["App Store", "BTDT 1.0 · Installed & Up to Date"],
+          files: ["Files", "Transcript & housing PDFs sync directly to BTDT Chat."],
+          translate: ["Translate", "Pair with native-language mentors inside BTDT directly."],
+          phone: ["Phone", "Voice & video calls unlock inside confirmed BTDT Passes."],
+          safari: ["Safari", "Viewing btdt.app university chapters."],
+          messages: ["Messages", "Peer replies appear inside BTDT Chat."],
+          photos: ["Photos", "Campus photos & Student ID previews stored locally."]
+        };
+        const [title, desc] = labels[appName] || ["iPhone", "Installed on iOS 27."];
+        f7.dialog.create({ title, text: desc, buttons: [{ text: "Home", onClick: () => goHomeOS() }, { text: "Open BTDT", bold: true, onClick: () => launchBtdtApp() }] }).open();
+      };
+
+      window.pressCalc = function (k) {
+        const c = state.calc;
+        if (k === "AC") { c.display = "0"; c.acc = null; c.op = null; c.resetNext = false; }
+        else if (k === "+/-") { if (c.display !== "0") c.display = c.display.startsWith("-") ? c.display.slice(1) : "-" + c.display; }
+        else if (k === "%") { c.display = String(Number(c.display) / 100).slice(0, 9); }
+        else if (["÷", "×", "-", "+"].includes(k)) { c.acc = Number(c.display); c.op = k; c.resetNext = true; }
+        else if (k === "=") {
+          if (c.op && c.acc !== null) {
+            const cur = Number(c.display);
+            let res = c.op === "+" ? c.acc + cur : c.op === "-" ? c.acc - cur : c.op === "×" ? c.acc * cur : cur === 0 ? "Error" : c.acc / cur;
+            c.display = typeof res === "number" ? String(Number(res.toFixed(6))).slice(0, 10) : res;
+            c.acc = null; c.op = null; c.resetNext = true;
+          }
+        } else if (k === ".") {
+          if (c.resetNext) { c.display = "0."; c.resetNext = false; } else if (!c.display.includes(".")) c.display += ".";
+        } else {
+          if (c.resetNext || c.display === "0") { c.display = k; c.resetNext = false; } else if (c.display.length < 9) c.display += k;
+        }
+        renderCalculator();
+      };
+
+      function renderCalculator() {
+        const c = state.calc;
+        const keys = [["AC","fn"],["+/-","fn"],["%","fn"],["÷","op"],["7","n"],["8","n"],["9","n"],["×","op"],["4","n"],["5","n"],["6","n"],["-","op"],["1","n"],["2","n"],["3","n"],["+","op"],["0","zero"],[".","n"],["=","op"]];
+        setPageHtml(`<div class="calc-view"><div class="calc-top-bar"><button onclick="goHomeOS()" style="background:none;border:0;color:#ff9f0a;font-size:16px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:3px;"><i class="f7-icons" style="font-size:17px;">chevron_left</i> Home</button><span style="font-size:13px;color:rgba(255,255,255,0.45);">Calculator</span></div><div class="calc-display-wrap"><div class="calc-expr">${c.acc !== null && c.op ? `${c.acc} ${c.op}` : ""}</div><div class="calc-val">${c.display}</div></div><div class="calc-keys">${keys.map(([lbl, kind]) => `<button class="${kind === "zero" ? "calc-btn zero" : kind === "op" ? "calc-btn op" : kind === "fn" ? "calc-btn fn" : "calc-btn"}" onclick="pressCalc('${lbl}')">${lbl}</button>`).join("")}</div></div>`, false);
+      }
+
+      window.selectCalDay = function (d) { state.selectedCalDay = d; renderCalendar(); };
+      window.addQuickCalEvent = function () {
+        f7.dialog.prompt("New reminder on Nov " + state.selectedCalDay + ":", "New Event", (txt) => {
+          if (!txt || !txt.trim()) return;
+          if (!state.calEvents[state.selectedCalDay]) state.calEvents[state.selectedCalDay] = [];
+          state.calEvents[state.selectedCalDay].push({ time: "15:00", title: txt.trim(), sub: "Saved on iPhone", color: "#f64838" });
+          renderCalendar();
+        });
+      };
+      function renderCalendar() {
+        const d = state.selectedCalDay, evs = state.calEvents[d] || [], days = Array.from({ length: 30 }, (_, i) => i + 1);
+        setPageHtml(`
+          <div class="page" data-name="calendar">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()"><i class="f7-icons">chevron_left</i><span>Home</span></a></div><div class="title">November 2026</div><div class="right"><a class="link" onclick="addQuickCalEvent()"><i class="f7-icons" style="color:#ff3b30;">plus</i></a></div></div></div>
+            <div class="page-content">
+              <div class="block" style="margin-top:12px;background:#fff;border-radius:14px;padding:12px;">
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;font-weight:600;color:#8e8e93;margin-bottom:8px;"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;">
+                  ${days.map((num) => { const isSel = num === d, hasEv = !!(state.calEvents[num]?.length); return `<button onclick="selectCalDay(${num})" style="border:0;height:38px;border-radius:50%;background:${isSel ? "#ff3b30" : "transparent"};color:${isSel ? "#fff" : "#1c1c1e"};font-size:14.5px;font-weight:${isSel ? "600" : "400"};position:relative;cursor:pointer;">${num}${hasEv ? `<span style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:${isSel ? "#fff" : "#ff3b30"};"></span>` : ""}</button>`; }).join("")}
+                </div>
+              </div>
+              <div class="block-title">Events · November ${d}</div>
+              <div class="list inset strong"><ul>${evs.length ? evs.map((e) => `<li class="item-content"><div class="item-media"><span style="width:4px;height:34px;border-radius:4px;background:${e.color};display:block;"></span></div><div class="item-inner"><div class="item-title"><div class="item-header">${e.time}</div>${e.title}<div class="item-footer">${e.sub}</div></div></div></li>`).join("") : `<li class="item-content"><div class="item-inner"><div class="item-title" style="color:#8e8e93;">No scheduled events.</div></div></li>`}</ul></div>
+            </div>
+          </div>
+        `, true);
+      }
+
+      window.openMailMsg = function (id) { state.selectedMailId = id; const m = state.mailList.find((x) => x.id === id); if (m && m.unread) { m.unread = false; state.unreadMail = state.mailList.filter((x) => x.unread).length; } renderMail(); };
+      function renderMail() {
+        const sel = state.mailList.find((x) => x.id === state.selectedMailId) || state.mailList[0];
+        setPageHtml(`
+          <div class="page" data-name="mail">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()"><i class="f7-icons">chevron_left</i><span>Home</span></a></div><div class="title">Inbox (${state.unreadMail})</div></div></div>
+            <div class="page-content">
+              <div class="list inset strong media-list"><ul>${state.mailList.map((m) => `<li><a class="item-link item-content" onclick="openMailMsg(${m.id})" style="cursor:pointer;"><div class="item-media"><span style="width:10px;height:10px;border-radius:50%;background:${m.unread ? "#007aff" : "transparent"};display:block;"></span></div><div class="item-inner"><div class="item-title-row"><div class="item-title" style="font-weight:600;">${m.from}</div><div class="item-after" style="font-size:12px;">${m.time}</div></div><div class="item-subtitle">${m.subj}</div></div></a></li>`).join("")}</ul></div>
+              <div class="card card-outline" style="margin:0 16px;"><div class="card-header" style="font-weight:600;">${sel.subj}</div><div class="card-content card-content-padding" style="font-size:14px;">${sel.body}</div><div class="card-footer"><button class="button button-small button-fill" onclick="launchBtdtApp('student_app')">Open in BTDT App</button></div></div>
+            </div>
+          </div>
+        `, true);
+      }
+
+      window.selectNote = function (id) { state.selectedNoteId = id; renderNotes(); };
+      window.addQuickNote = function () { f7.dialog.prompt("Note title:", "New Apple Note", (t) => { if (!t || !t.trim()) return; const id = Date.now(); state.notes.unshift({ id, title: t.trim(), date: "Just now", body: "Added on iPhone Notes." }); state.selectedNoteId = id; renderNotes(); }); };
+      function renderNotes() {
+        const n = state.notes.find((x) => x.id === state.selectedNoteId) || state.notes[0];
+        setPageHtml(`
+          <div class="page" data-name="notes">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()"><i class="f7-icons">chevron_left</i><span>Home</span></a></div><div class="title">Notes</div><div class="right"><a class="link" onclick="addQuickNote()"><i class="f7-icons" style="color:#ff9500;">square_pencil</i></a></div></div></div>
+            <div class="page-content">
+              <div class="list inset strong"><ul>${state.notes.map((i) => `<li><a class="item-link item-content" onclick="selectNote(${i.id})" style="cursor:pointer;"><div class="item-inner"><div class="item-title" style="font-weight:${i.id === n.id ? "700" : "500"};">${i.title}</div><div class="item-after" style="font-size:12px;">${i.date}</div></div></a></li>`).join("")}</ul></div>
+              <div class="block-title">${n.title}</div>
+              <div class="block block-strong inset" style="white-space:pre-line;font-size:14px;">${n.body}</div>
+            </div>
+          </div>
+        `, true);
+      }
+
+      function renderSettings() {
+        setPageHtml(`
+          <div class="page" data-name="settings">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()"><i class="f7-icons">chevron_left</i><span>Home</span></a></div><div class="title">Settings</div></div></div>
+            <div class="page-content">
+              <div class="list inset strong media-list"><ul><li class="item-content"><div class="item-media"><img src="/media/avatar-4.jpg" style="width:46px;height:46px;border-radius:50%;object-fit:cover;" /></div><div class="item-inner"><div class="item-title" style="font-weight:600;">${state.userName}</div><div class="item-subtitle">${state.userEmail} · Apple ID</div></div></li></ul></div>
+              <div class="block-title">iOS 27 Wallpaper</div>
+              <div class="list inset strong">
+                <ul>
+                  <li><a class="item-link item-content" onclick="setWallpaperMode('default')" style="cursor:pointer;"><div class="item-inner"><div class="item-title">iOS 27 Studio Waves (Default)</div><div class="item-after">${state.wallpaperMode === "default" ? "Active" : ""}</div></div></a></li>
+                  <li><a class="item-link item-content" onclick="setWallpaperMode('dark')" style="cursor:pointer;"><div class="item-inner"><div class="item-title">iOS 27 Midnight Dark</div><div class="item-after">${state.wallpaperMode === "dark" ? "Active" : ""}</div></div></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `, true);
+      }
+
+      // ========================
+      // BTDT CRIMZON IOS APP
+      // ========================
+      window.launchBtdtApp = function (directStage) {
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        closeSheet();
+        state.currentApp = "btdt";
+        state.unreadBtdt = 0;
+
+        if (directStage) {
+          pulseDynamicIsland("BTDT · Ready", 1200);
+          state.btdtStage = directStage;
+          renderBtdtCurrentStage();
+          return;
+        }
+        pulseDynamicIsland("Launching BTDT...", 1350);
+        springBoard.classList.add("hidden-os");
+        activeAppShell.classList.remove("visible");
+        btdtSplash.classList.add("visible");
+        setChromeTone(false);
+        syncParentInspector();
+        splashTimer = setTimeout(() => { finishSplashImmediately(); }, 1250);
+      };
+
+      window.finishSplashImmediately = function () {
+        if (splashTimer) { clearTimeout(splashTimer); splashTimer = null; }
+        btdtSplash.classList.remove("visible");
+        state.btdtStage = "auth";
+        renderBtdtCurrentStage();
+      };
+
+      window.btdtBack = function (stage) { closeSheet(); state.btdtStage = stage; renderBtdtCurrentStage(); };
+      window.setAuthMode = function (mode) { state.authMode = mode; renderBtdtCurrentStage(); };
+      window.submitAuthStep = function (e) {
+        if (e) e.preventDefault();
+        const nm = document.getElementById("f7AuthName")?.value.trim();
+        const em = document.getElementById("f7AuthEmail")?.value.trim();
+        if (nm) state.userName = nm;
+        if (em) state.userEmail = em;
+        state.btdtStage = "role_gate";
+        renderBtdtCurrentStage();
+      };
+      window.pickRole = function (role) { state.role = role; state.btdtStage = role === "mentor" ? "mentor_verify" : "student_onboard"; renderBtdtCurrentStage(); };
+      window.onStudentPickChange = function () {
+        state.homeIso = document.getElementById("f7HomeIso")?.value || state.homeIso;
+        state.uniId = document.getElementById("f7UniId")?.value || state.uniId;
+        state.intakeTerm = document.getElementById("f7IntakeTerm")?.value || state.intakeTerm;
+        renderBtdtCurrentStage();
+      };
+      window.enterStudentApp = function () { state.btdtStage = "student_app"; state.studentTab = "home"; renderBtdtCurrentStage(); };
+      window.toggleMentorIdPreview = function () { state.mentorIdUploaded = !state.mentorIdUploaded; renderBtdtCurrentStage(); };
+      window.toggleMentorPolicy = function () {
+        state.mentorPolicyAccepted = !state.mentorPolicyAccepted;
+        if (state.mentorPolicyAccepted) state.mentorPolicyWarn = false;
+        renderBtdtCurrentStage();
+      };
+      window.enterMentorApp = function () {
+        if (!state.mentorPolicyAccepted) {
+          state.mentorPolicyWarn = true;
+          renderBtdtCurrentStage();
+          return;
+        }
+        const eduEl = document.getElementById("f7MentorEdu");
+        if (eduEl && eduEl.value.trim()) state.mentorEduEmail = eduEl.value.trim();
+        state.btdtStage = "mentor_app";
+        state.mentorTab = "queue";
+        renderBtdtCurrentStage();
+      };
+      window.switchStudentTab = function (tab) { closeSheet(); state.studentTab = tab; renderBtdtCurrentStage(); };
+      window.switchMentorTab = function (tab) { closeSheet(); state.mentorTab = tab; renderBtdtCurrentStage(); };
+      window.filterPeers = function (q) {
+        state.peerQuery = q || "";
+        renderBtdtCurrentStage();
+        const inp = document.getElementById("btdtPeerSearch");
+        if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+      };
+
+      window.openPeerDetailSheet = function (peerId) {
+        const dp = S.peers.find((p) => p.id === peerId) || getRoutePeers()[0];
+        if (!dp) return;
+        state.activePeerId = dp.id;
+        const u = S.universities.find((x) => x.name === dp.university) || getUniObj();
+        openSheet(`
+          <div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1);">
+            <img src="${dp.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.25);" />
+            <div style="flex:1;min-width:0;"><div style="font-family:var(--btdt-display);font-size:16px;font-weight:600;color:#fff;">${dp.name}</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">${dp.role} · ${u.shortName} · ${dp.aura}/100 Aura</div></div>
+            <span class="btdt-pill">${dp.homeIso}</span>
+          </div>
+          <p style="font-size:12.5px;color:rgba(255,255,255,0.82);line-height:1.45;margin:12px 0;">“${dp.story}”</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;text-align:center;">
+            <div class="btdt-card" style="padding:8px;"><div class="btdt-mono" style="color:rgba(255,255,255,0.5);">ACCURACY</div><div style="font-size:14px;font-weight:600;margin-top:2px;">${dp.metrics.accuracy}%</div></div>
+            <div class="btdt-card" style="padding:8px;"><div class="btdt-mono" style="color:rgba(255,255,255,0.5);">SPEED</div><div style="font-size:14px;font-weight:600;margin-top:2px;">${dp.metrics.speed}%</div></div>
+            <div class="btdt-card" style="padding:8px;"><div class="btdt-mono" style="color:rgba(255,255,255,0.5);">SESSIONS</div><div style="font-size:14px;font-weight:600;margin-top:2px;">${dp.sessions}</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="btdt-btn-fill" onclick="closeSheet(); stateJumpChat('${dp.id}')">Start Chat</button>
+            <button class="btdt-btn-outline" onclick="openBookingSheet('${dp.id}')">Book Pass €20+</button>
+          </div>
+        `);
+      };
+
+      window.stateJumpChat = function (peerId) { state.activePeerId = peerId; state.studentTab = "chat"; renderBtdtCurrentStage(); };
+
+      window.openBookingSheet = function (peerId) {
+        const dp = S.peers.find((p) => p.id === peerId) || getRoutePeers()[0];
+        openSheet(`
+          <div class="btdt-mono" style="color:#f64838;margin-bottom:4px;">SESSION PASS · ${dp.name.toUpperCase()}</div>
+          <h3 class="btdt-h2" style="font-size:18px;margin-bottom:12px;">Pick mentoring depth</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btdt-btn-outline" style="text-align:left;display:flex;justify-content:space-between;" onclick="confirmPassBooking('${dp.id}','Base Counseling (20 min)',20)"><span>Base Counseling (20 min)</span><strong style="color:#f64838;">€20</strong></button>
+            <button class="btdt-btn-outline" style="text-align:left;display:flex;justify-content:space-between;border-color:#f64838;background:rgba(246,72,56,0.12);" onclick="confirmPassBooking('${dp.id}','Deep-Dive Paperwork & Prep',100)"><span>Deep-Dive Prep (60–70 min)</span><strong style="color:#f64838;">€100</strong></button>
+            <button class="btdt-btn-outline" style="text-align:left;display:flex;justify-content:space-between;" onclick="confirmPassBooking('${dp.id}','Landing Pack + Transit Help',120)"><span>Post-Arrival Landing Pack</span><strong style="color:#f64838;">€120</strong></button>
+            <button class="btdt-btn-outline" style="margin-top:4px;opacity:0.75;" onclick="closeSheet()">Cancel</button>
+          </div>
+        `);
+      };
+
+      window.confirmPassBooking = function (peerId, pkg, total) {
+        const dp = S.peers.find((p) => p.id === peerId) || getRoutePeers()[0];
+        const u = S.universities.find((x) => x.name === dp.university) || getUniObj();
+        const code = "#BTDT-" + Math.floor(6000 + Math.random() * 3500);
+        state.passes.unshift({ code, mentorName: dp.name, uniId: u.id, pkg, total, status: "Confirmed", when: "Tomorrow · 16:00 CET", notes: [`${dp.homeDoc} Formatting Checklist`, u.first14] });
+        state.expandedPass = code;
+        closeSheet(); state.studentTab = "passes"; renderBtdtCurrentStage();
+      };
+
+      window.showSavedPdfChecklist = function () {
+        openSheet(`
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span class="btdt-mono" style="color:#f64838;">DOCUMENT MARKUP VIEWER</span><span class="btdt-pill btdt-pill-green">PAGE 1–3</span></div>
+          <div style="background:#fff;color:#111;border-radius:12px;padding:12px;font-family:var(--btdt-mono);font-size:10.5px;line-height:1.45;">
+            <div style="display:flex;justify-content:space-between;font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:6px;"><span>UNIVERSITY REGISTRAR SEAL</span><span>STAMP OK</span></div>
+            <div>Registrar stamp visible on p.1, university grading scale attached on p.2.</div>
+            <div style="margin-top:8px;padding:7px;border-radius:7px;background:rgba(246,72,56,0.14);border:1px solid #f64838;color:#9b1c12;font-family:var(--btdt-body);font-weight:600;font-size:11px;">Senior Note: Seal &amp; grading table match campus intake requirements.</div>
+          </div>
+          <button class="btdt-btn-fill" style="margin-top:12px;" onclick="closeSheet()">Close Document Viewer</button>
+        `);
+      };
+
+      function isContactAttempt(t) {
+        if (/\d/.test(t)) return true;
+        if (/@/.test(t)) return true;
+        if (/[A-Z0-9._%+-]+\s*(?:@|at)\s*[A-Z0-9.-]+\.[A-Z]{2,}/i.test(t)) return true;
+        return /\b(whatsapp|whats app|wapp|telegram|tg|insta|instagram|snapchat|snap|signal|imessage|wechat|discord|viber|line|sms|phone|mobile|call me|text me|dm me|reach me|email|mail id|gmail|yahoo|outlook|hotmail|icloud|protonmail|personal contact|personal details|contact details|off platform)\b/i.test(t);
+      }
+
+      window.onChatInputLive = function (val) {
+        const box = document.getElementById("f7ChatLiveWarn");
+        if (!box) return;
+        const blocked = isContactAttempt(val || "");
+        box.style.display = blocked ? "block" : "none";
+      };
+
+      function isGibberishOrUnclear(raw) {
+        const clean = raw.trim();
+        if (!clean) return true;
+        const low = clean.toLowerCase();
+        const shortOk = new Set(["hi", "hey", "yo", "ok", "no", "ty", "thx", "sup", "wg", "sim", "id", "fee", "fees", "rent", "dorm", "visa", "job", "jobs", "food", "help", "bye"]);
+        const tokens = low.split(/\s+/).filter(Boolean);
+        if (tokens.length === 1 && shortOk.has(tokens[0].replace(/[!?.]+$/, ""))) return false;
+
+        const letters = low.replace(/[^a-z]/g, "");
+        if (letters.length === 0) return true;
+        if (letters.length === 1 && letters !== "i") return true;
+        if (/(.)\1{2,}/.test(letters)) return true;
+        if (/[bcdfghjklmnpqrstvwxyz]{5,}/.test(letters)) return true;
+        const vowels = (letters.match(/[aeiouy]/g) || []).length;
+        if (letters.length >= 4 && vowels / letters.length < 0.2) return true;
+        if (/^(asdf|qwer|zxcv|jkl|fgh|hjk|bnm|xcv)+$/i.test(letters)) return true;
+        return false;
+      }
+
+      function buildPeerReply(rawText, peer, uni) {
+        const clean = rawText.trim();
+        const t = clean.toLowerCase();
+
+        if (isContactAttempt(clean)) {
+          return {
+            isSafety: true,
+            text: `Quick safety reminder: I have to keep everything inside BTDT chat — please don't share phone numbers, WhatsApp, emails, or social handles, and never pay off-platform. BTDT cannot protect against scams outside verified app chat.`,
+            receiptTitle: `SAFETY POLICY · STAY ON BTDT`,
+            receiptDesc: `Do not share personal contact details or move chats/payments off-platform.`
+          };
+        }
+
+        if (isGibberishOrUnclear(clean)) {
+          state.gibberishCount = (state.gibberishCount || 0) + 1;
+          const prompts = [
+            `Haha think that slipped out as a keyboard mash! What would you like to know about ${uni.shortName} or settling in ${uni.city}?`,
+            `Looks like a typo or test message — feel free to ask me anything real about housing, transcripts, living costs, or classes here.`,
+            `Didn't quite catch that! You can ask about campus dorms, rent budget, arrival docs, or day-1 essentials in ${uni.city}.`
+          ];
+          return { text: prompts[(state.gibberishCount - 1) % prompts.length] };
+        }
+
+        if (/^(hi+|hey+|hello+|yo+|hola|namaste|sup|hii+|good morning|good afternoon|good evening)\b[!.\s?]*$/i.test(t)) {
+          return { text: `Hi! Good to hear from you. I moved from ${peer.homeCountry} to ${uni.city} for ${peer.program} — what questions do you have about ${uni.shortName}?` };
+        }
+        if (/\b(how are you|how r u|how's it going|whats up|what's up|how do you do)\b/i.test(t)) {
+          return { text: `Doing great, thanks! Just wrapped up campus classes in ${uni.city}. How is your move prep going so far?` };
+        }
+        if (/\b(who are you|are you a bot|real person|human|ai|chatgpt)\b/i.test(t)) {
+          return { text: `I'm ${peer.name}, a ${peer.role} from ${peer.hometown} studying ${peer.program} at ${uni.shortName}. Ask me about ${uni.city} campus life, dorms, or pre-arrival docs anytime!` };
+        }
+        if (/^(ok|okay|k|cool|great|thanks|thank you|thx|got it|nice|awesome|perfect|bye|see ya)[!.\s]*$/i.test(t)) {
+          return { text: `Anytime! Ping me here in verified BTDT chat whenever you need honest details about ${uni.city}.` };
+        }
+        if (/\b(rent|housing|dorm|wg|room|flat|apartment|stay|hostel|accommodation|scam|deposit|landlord)\b/i.test(t)) {
+          return {
+            text: `For ${uni.shortName}: ${uni.housing}. Campus residence halls are much cheaper than private flats, though waitlists are real. Watch out for rental scams too — never wire a deposit before seeing the room or verified lease, and keep all advisor chats right here inside BTDT.`,
+            receiptTitle: `${uni.shortName} Housing Reality`,
+            receiptDesc: uni.housing
+          };
+        }
+        if (/\b(transcript|seal|document|doc|pdf|certificate|notar|marksheet|degree|enroll|aps)\b/i.test(t)) {
+          return {
+            text: `On ${peer.homeDoc}: keep your registrar seal and official grading scale in one clear PDF scan before arrival so enrollment at ${uni.shortName} goes smoothly.`,
+            receiptTitle: `${peer.homeDoc} Note`,
+            receiptDesc: "Keep sealed academic scan + grading scale together."
+          };
+        }
+        if (/\b(visa|embassy|passport|consulate|residence permit|permit)\b/i.test(t)) {
+          return {
+            text: `Just to be clear: BTDT does not provide or process visas — official visa decisions stay solely with the embassy. Seniors like me only help you organize your campus and Week-1 arrival plan.`
+          };
+        }
+        if (/\b(cost|price|fee|fees|budget|euro|€|money|bank|month|spend|expense|blocked|revolut|wise)\b/i.test(t)) {
+          return {
+            text: `Month-1 budget in ${uni.city} usually covers your security deposit, transit pass, and groceries. Quick text Q&As on BTDT start at €20, or €100 for full pre-arrival document & housing walkthroughs.`
+          };
+        }
+        if (/\b(job|work|werkstudent|part time|part-time|intern|internship|salary|wage|earn)\b/i.test(t)) {
+          return {
+            text: `Most incoming students from ${peer.homeCountry} at ${uni.shortName} focus on settling into Semester 1 before picking up a campus research assistant or working-student role once local registration is done.`
+          };
+        }
+        if (/\b(class|course|prof|professor|exam|credit|ects|study|lecture|syllabus|hard|difficult)\b/i.test(t)) {
+          return {
+            text: `Academics in ${peer.program} at ${uni.shortName} move fast compared to home — past exams and study groups make a huge difference in Month 1.`
+          };
+        }
+        if (/\b(food|eat|cook|grocery|indian|halal|veg|vegan|mensa|canteen|language|german|deutsch|sim|phone|transit|bus|train|metro|rail|weather|cold|winter|city)\b/i.test(t)) {
+          return {
+            text: `In ${uni.city}: ${uni.first14}. Happy to share practical student spots for groceries, student canteens, and getting around in Week 1.`
+          };
+        }
+        return {
+          text: `Got it — happy to help with that for ${uni.shortName}! Having moved from ${peer.homeCountry} to ${uni.city}, my biggest tip is sorting campus docs and housing early (${uni.housing.toLowerCase()}). Which part do you want to break down first?`
+        };
+      }
+
+      window.sendChatReply = function (customText) {
+        const inp = document.getElementById("f7ChatInput");
+        const txt = customText || (inp ? inp.value.trim() : "");
+        if (!txt) return;
+        if (inp) inp.value = "";
+
+        if (isContactAttempt(txt)) {
+          const tempId = "del_" + Date.now();
+          state.chatMessages.push({
+            tempId,
+            sender: "me deleting",
+            text: "Personal contact details removed..."
+          });
+          state.chatTyping = false;
+          pulseDynamicIsland("Deleted · Unsafe", 1700);
+          renderBtdtCurrentStage();
+          scrollChatToBottom();
+
+          setTimeout(() => {
+            state.chatMessages = state.chatMessages.filter((m) => m.tempId !== tempId);
+            state.chatMessages.push({
+              sender: "safety-alert",
+              text: "Warning: Your message was automatically deleted. Do not send personal details here — phone numbers, off-platform messages/handles, and email IDs are strictly blocked.",
+              time: "Just now",
+              receiptTitle: "MESSAGE AUTO-DELETED · SAFETY GUARD",
+              receiptDesc: "Keep all conversations inside verified BTDT chat. BTDT is not responsible for scams or issues off-platform."
+            });
+            if (state.currentApp === "btdt" && state.btdtStage === "student_app" && state.studentTab === "chat") {
+              renderBtdtCurrentStage();
+              scrollChatToBottom();
+            }
+          }, 420);
+          return;
+        }
+
+        const peer = S.peers.find((p) => p.id === state.activePeerId) || getRoutePeers()[0] || S.peers[0];
+        const uni = getUniObj();
+        state.chatMessages.push({ sender: "me", text: txt, time: "Just now" });
+        state.chatTyping = true;
+        renderBtdtCurrentStage();
+        scrollChatToBottom();
+
+        setTimeout(() => {
+          state.chatTyping = false;
+          const replyObj = buildPeerReply(txt, peer, uni);
+          state.chatMessages.push({
+            sender: replyObj.isSafety ? "safety-alert" : "them",
+            text: replyObj.text,
+            time: "Just now",
+            receiptTitle: replyObj.receiptTitle,
+            receiptDesc: replyObj.receiptDesc
+          });
+          if (state.currentApp === "btdt" && state.btdtStage === "student_app" && state.studentTab === "chat") {
+            renderBtdtCurrentStage();
+            scrollChatToBottom();
+          }
+        }, 550);
+      };
+
+      function scrollChatToBottom() {
+        setTimeout(() => {
+          const pc = document.querySelector("#mainView .page-content");
+          if (pc) pc.scrollTop = pc.scrollHeight;
+        }, 20);
+      }
+
+      window.toggleKitCheck = function (key) { state.kitDone[key] = !state.kitDone[key]; renderBtdtCurrentStage(); };
+      window.togglePassExpand = function (code) { state.expandedPass = state.expandedPass === code ? null : code; renderBtdtCurrentStage(); };
+      window.handleMentorReq = function (reqId, status) { const r = state.mentorQueue.find((x) => x.id === reqId); if (r) r.status = status; renderBtdtCurrentStage(); };
+      window.toggleAvail = function (k) { state.availability[k] = !state.availability[k]; renderBtdtCurrentStage(); };
+
+      function renderBtdtCurrentStage() {
+        if (state.btdtStage === "auth") return renderBtdtAuth();
+        if (state.btdtStage === "role_gate") return renderBtdtRoleGate();
+        if (state.btdtStage === "student_onboard") return renderStudentOnboard();
+        if (state.btdtStage === "mentor_verify") return renderMentorVerify();
+        if (state.btdtStage === "student_app") return renderStudentApp();
+        if (state.btdtStage === "mentor_app") return renderMentorApp();
+      }
+
+      function renderBtdtAuth() {
+        const isSignUp = state.authMode === "signup";
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="btdt-auth">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()">← iPhone</a></div><div class="title">BTDT.</div><div class="right"><span class="btdt-mono" style="color:#f64838;">ACCOUNT</span></div></div></div>
+            <div class="page-content">
+              <div style="margin:14px 0 16px;"><h2 class="btdt-h2">${isSignUp ? "Create your BTDT account" : "Welcome back"}</h2><p style="font-size:13px;color:rgba(255,255,255,0.68);margin:5px 0 0;">Connect directly with seniors from your home country already at campus.</p></div>
+              <div class="btdt-seg" style="margin-bottom:14px;"><button class="${isSignUp ? "active" : ""}" onclick="setAuthMode('signup')">Sign Up</button><button class="${!isSignUp ? "active" : ""}" onclick="setAuthMode('login')">Log In</button></div>
+              <form onsubmit="submitAuthStep(event)" style="display:flex;flex-direction:column;gap:12px;">
+                ${isSignUp ? `<div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">FULL NAME</label><input id="f7AuthName" class="btdt-input" type="text" value="${state.userName}" required /></div>` : ""}
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">EMAIL ADDRESS</label><input id="f7AuthEmail" class="btdt-input" type="email" value="${state.userEmail}" required /></div>
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">PASSWORD</label><input class="btdt-input" type="password" value="••••••••••" required /></div>
+                <button type="submit" class="btdt-btn-fill" style="margin-top:4px;">${isSignUp ? "Sign Up & Choose Role →" : "Log In →"}</button>
+                <button type="button" class="btdt-btn-outline" onclick="submitAuthStep()"><i class="f7-icons" style="font-size:15px;margin-right:5px;">logo_apple</i> Continue with Apple</button>
+              </form>
+            </div>
+          </div>
+        `, false);
+      }
+
+      function renderBtdtRoleGate() {
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="role-gate">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="btdtBack('auth')">← Back</a></div><div class="title">Choose Role</div></div></div>
+            <div class="page-content">
+              <div style="margin:14px 0 16px;"><h2 class="btdt-h2">Are you a new incoming international student, or are you a mentor?</h2><p style="font-size:13px;color:rgba(255,255,255,0.68);margin:6px 0 0;">Each role opens a dedicated BTDT workspace.</p></div>
+              <div class="btdt-card-accent" onclick="pickRole('student')" style="cursor:pointer;margin-bottom:12px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="btdt-pill" style="background:#f64838;color:#fff;border-color:#f64838;">INCOMING STUDENT</span><span style="color:#fff;font-size:16px;">→</span></div><div style="font-family:var(--btdt-display);font-size:16px;font-weight:600;color:#fff;">I am moving abroad to study</div><p style="font-size:12.5px;color:rgba(255,255,255,0.74);margin:5px 0 0;line-height:1.4;">Pick your home country &amp; target campus to talk directly with seniors who already settled there.</p></div>
+              <div class="btdt-card" onclick="pickRole('mentor')" style="cursor:pointer;border-color:rgba(255,255,255,0.22);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="btdt-pill">MENTOR</span><span style="color:#fff;font-size:16px;">→</span></div><div style="font-family:var(--btdt-display);font-size:16px;font-weight:600;color:#fff;">Been There, Done That Mentor or alumni</div><p style="font-size:12.5px;color:rgba(255,255,255,0.72);margin:5px 0 0;line-height:1.4;">Verify your Student ID or enrollment documents during sign-up to guide incoming students from home.</p></div>
+            </div>
+          </div>
+        `, false);
+      }
+
+      function renderStudentOnboard() {
+        const u = getUniObj();
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="student-onboard">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="btdtBack('role_gate')">← Role</a></div><div class="title">Student Route</div></div></div>
+            <div class="page-content">
+              <div style="margin:14px 0 14px;"><h2 class="btdt-h2">Where are you headed?</h2><p style="font-size:13px;color:rgba(255,255,255,0.65);margin:4px 0 0;">Instant match with peers from your home country.</p></div>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px;">
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">HOME COUNTRY</label><select id="f7HomeIso" class="btdt-select" onchange="onStudentPickChange()">${S.homeCountries.map((c) => `<option value="${c.iso}" ${c.iso === state.homeIso ? "selected" : ""}>${c.name} (${c.iso})</option>`).join("")}</select></div>
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">TARGET CAMPUS</label><select id="f7UniId" class="btdt-select" onchange="onStudentPickChange()">${S.universities.map((x) => `<option value="${x.id}" ${x.id === state.uniId ? "selected" : ""}>${x.shortName} · ${x.city}</option>`).join("")}</select></div>
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">INTAKE TERM</label><select id="f7IntakeTerm" class="btdt-select" onchange="onStudentPickChange()"><option value="Winter 2026" ${state.intakeTerm === "Winter 2026" ? "selected" : ""}>Winter 2026</option><option value="Spring 2027" ${state.intakeTerm === "Spring 2027" ? "selected" : ""}>Spring 2027</option></select></div>
+              </div>
+              <div class="btdt-card" style="display:flex;align-items:center;gap:11px;margin-bottom:16px;"><img src="/media/unis/${u.id}.svg" class="uni-logo-pill" alt="${u.shortName}" /><div style="min-width:0;flex:1;"><div style="font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.name}</div><div class="btdt-mono" style="color:#4ade80;margin-top:2px;">${getRoutePeers().length} home-country peers online</div></div></div>
+              <button class="btdt-btn-fill" onclick="enterStudentApp()">Enter Student App →</button>
+            </div>
+          </div>
+        `, false);
+      }
+
+      function renderMentorVerify() {
+        const u = getUniObj();
+        setPageHtml(`
+          <div class="page btdt-app-page" data-name="mentor-verify">
+            <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="btdtBack('role_gate')">← Role</a></div><div class="title">Mentor Check</div></div></div>
+            <div class="page-content">
+              <div style="margin:14px 0 12px;"><h2 class="btdt-h2">Student ID &amp; Enrollment Check</h2><p style="font-size:12.5px;color:rgba(255,255,255,0.65);margin:4px 0 0;">Upload your Student ID card or enrollment document so incoming students know you are verified.</p></div>
+              <div style="display:flex;flex-direction:column;gap:11px;padding-bottom:24px;">
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);">UNIVERSITY CAMPUS EMAIL</label><input id="f7MentorEdu" class="btdt-input" type="email" value="${state.mentorEduEmail}" /></div>
+                <div class="btdt-card" style="display:flex;align-items:center;gap:10px;"><img src="/media/unis/${u.id}.svg" class="uni-logo-pill" alt="${u.shortName}" /><div style="font-size:13px;font-weight:500;color:#fff;">${u.name}</div></div>
+                <div><label class="btdt-mono" style="color:rgba(255,255,255,0.55);display:block;margin-bottom:6px;">STUDENT ID / ENROLLMENT DOCUMENT</label><div class="id-scan-box ${state.mentorIdUploaded ? "uploaded" : ""}" onclick="toggleMentorIdPreview()"><i class="f7-icons" style="font-size:30px;color:${state.mentorIdUploaded ? "#4ade80" : "#f64838"};">${state.mentorIdUploaded ? "checkmark_seal_fill" : "camera_viewfinder"}</i><div style="font-size:13.5px;font-weight:600;margin-top:6px;color:#fff;">${state.mentorIdUploaded ? "Student_ID_or_Enrollment_Doc.pdf staged" : "Tap to scan Student ID or upload enrollment doc"}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);margin-top:4px;">${state.mentorIdUploaded ? "Preview staged — live verification rolls out at release." : "Preview step only — shows verified student status to peers from home."}</div></div></div>
+                <div style="padding:12px;border-radius:12px;border:1.5px solid ${state.mentorPolicyWarn ? "#ff453a" : "rgba(246,72,56,0.55)"};background:rgba(246,72,56,0.12);">
+                  <div class="btdt-mono" style="color:#f64838;margin-bottom:4px;">STRICT MENTOR CONDUCT WARNING</div>
+                  <div style="font-size:11.5px;color:rgba(255,255,255,0.88);line-height:1.45;margin-bottom:8px;">Do not share personal contact details or ask incoming students for theirs. Off-platform solicitation carries <strong style="color:#fff;">account penalties, permanent removal, and reporting to your university</strong>.</div>
+                  <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;">
+                    <input type="checkbox" ${state.mentorPolicyAccepted ? "checked" : ""} onchange="toggleMentorPolicy()" style="margin-top:2px;width:16px;height:16px;accent-color:#f64838;flex-shrink:0;" />
+                    <span style="font-size:11.5px;font-weight:600;color:#fff;line-height:1.35;">I agree not to share or request personal contact details</span>
+                  </label>
+                  ${state.mentorPolicyWarn ? `<div class="btdt-mono" style="color:#ff8a80;margin-top:6px;">Required before entering Mentor Studio.</div>` : ""}
+                </div>
+                <button class="btdt-btn-fill" style="margin-top:2px;" onclick="enterMentorApp()">Enter Mentor Studio →</button>
+              </div>
+            </div>
+          </div>
+        `, false);
+      }
+
+      function renderStudentApp() {
+        const u = getUniObj(), h = getHomeObj(), routePeers = getRoutePeers();
+        const quickMatch = routePeers[0] || S.peers[0], activePeer = S.peers.find((p) => p.id === state.activePeerId) || quickMatch;
+        const tab = state.studentTab;
+        let bodyHtml = "";
+
+        if (tab === "home") {
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:12px;padding-top:10px;">
+              <div class="btdt-card" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1;">
+                  <img src="/media/unis/${u.id}.svg" class="uni-logo-pill" style="flex-shrink:0;" alt="${u.shortName}" />
+                  <div style="min-width:0;flex:1;">
+                    <div style="font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.name} -> ${u.shortName}</div>
+                    <div class="btdt-mono" style="color:#f64838;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${routePeers.length} peers · ${u.city}</div>
+                  </div>
+                </div>
+                <button onclick="btdtBack('student_onboard')" style="width:auto;flex:0 0 auto;white-space:nowrap;padding:6px 10px;border-radius:7px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:#fff;font-size:11px;font-weight:500;cursor:pointer;">Change</button>
+              </div>
+              <div class="btdt-card-accent">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span class="btdt-mono" style="color:#f64838;">1-TAP INSTANT MATCH</span><span class="btdt-mono" style="color:#4ade80;">Online · ~${getReplyMins(quickMatch)}m</span></div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><img src="${quickMatch.avatar}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.25);" /><div style="flex:1;min-width:0;"><div style="font-size:14.5px;font-weight:600;color:#fff;">${quickMatch.name}</div><div style="font-size:11.5px;color:rgba(255,255,255,0.7);">${quickMatch.hometown} · ${quickMatch.languages.slice(0,2).join(", ")}</div></div><strong class="btdt-mono" style="color:#fff;">${quickMatch.aura}/100</strong></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><button class="btdt-btn-fill" style="padding:8px;font-size:12px;" onclick="stateJumpChat('${quickMatch.id}')">Instant Chat</button><button class="btdt-btn-outline" style="padding:8px;font-size:12px;" onclick="openBookingSheet('${quickMatch.id}')">Quick Book</button></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 2px 0;"><span class="btdt-mono" style="color:rgba(255,255,255,0.55);">ROUTE MENTORS (${routePeers.length})</span><span class="btdt-mono" style="color:rgba(255,255,255,0.4);">Tap for Ledger</span></div>
+              ${routePeers.slice(0, 6).map((p) => `<div class="btdt-card" style="padding:11px;"><div onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:10px;min-width:0;"><img src="${p.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${p.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.role} · ${p.program}</div></div></div><span class="btdt-pill">${p.aura} Aura</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);"><button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="stateJumpChat('${p.id}')">Text Now</button><button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="openBookingSheet('${p.id}')">Book €20+</button></div></div>`).join("")}
+            </div>
+          `;
+        } else if (tab === "peers") {
+          const q = state.peerQuery.trim().toLowerCase();
+          const list = S.peers.filter((p) => !q || `${p.name} ${p.homeCountry} ${p.university} ${p.uniCity} ${p.languages.join(" ")}`.toLowerCase().includes(q));
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><input id="btdtPeerSearch" class="btdt-input" style="margin-top:0;" type="search" value="${state.peerQuery}" oninput="filterPeers(this.value)" placeholder="Search country, language, campus..." /><div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${list.length} VERIFIED PEERS ACROSS ${S.universities.length} CAMPUSES</div>${list.slice(0, 14).map((p) => `<div class="btdt-card" onclick="openPeerDetailSheet('${p.id}')" style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><div style="display:flex;align-items:center;gap:10px;min-width:0;"><img src="${p.avatar}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${p.name}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);">${p.homeIso} -> ${p.uniShort} · ${p.languages[0]}</div></div></div><div style="text-align:right;flex-shrink:0;"><div class="btdt-mono" style="color:#f64838;">${p.aura} Aura</div><div class="btdt-mono" style="color:#4ade80;">~${getReplyMins(p)}m</div></div></div>`).join("")}</div>`;
+        } else if (tab === "chat") {
+          bodyHtml = `
+            <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;">
+              <div class="btdt-card" style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px;"><div style="display:flex;align-items:center;gap:9px;min-width:0;"><img src="${activePeer.avatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;" /><div style="min-width:0;"><div style="font-size:13.5px;font-weight:600;color:#fff;">${activePeer.name}</div><div class="btdt-mono" style="color:#4ade80;">Verified ${activePeer.homeCountry} -> ${u.shortName}</div></div></div><button class="btdt-btn-fill" style="width:auto;padding:6px 10px;font-size:11px;" onclick="openBookingSheet('${activePeer.id}')">Book Pass</button></div>
+              <div style="padding:9px 11px;border-radius:11px;border:1px solid rgba(246,72,56,0.48);background:rgba(246,72,56,0.1);font-size:11px;line-height:1.42;color:rgba(255,255,255,0.88);">
+                <strong style="color:#ff7e72;">Safety Disclaimer:</strong> Never share personal contact details (phone, WhatsApp, email, or socials) or send money outside BTDT. BTDT is not responsible for scams or issues faced off-platform.
+              </div>
+              <div class="btdt-chat-stream">
+                ${state.chatMessages.map((m) => `<div class="btdt-msg ${m.sender}"><div>${m.text}</div>${m.pdfName ? `<div onclick="showSavedPdfChecklist()" style="margin-top:7px;padding:7px 9px;border-radius:9px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.2);display:flex;justify-content:space-between;align-items:center;cursor:pointer;"><div><div class="btdt-mono" style="color:#fff;">${m.pdfName}</div><div style="font-size:10px;color:rgba(255,255,255,0.6);">${m.pdfSize}</div></div><span class="btdt-mono" style="color:#fff;text-decoration:underline;">View</span></div>` : ""}${m.receiptTitle ? `<div style="margin-top:7px;padding:7px 9px;border-radius:9px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.16);"><div class="btdt-mono" style="color:#f64838;">${m.receiptTitle}</div><div style="font-size:11px;color:rgba(255,255,255,0.78);">${m.receiptDesc}</div></div>` : ""}</div>`).join("")}
+                ${state.chatTyping ? `<div class="btdt-msg them" style="display:inline-flex;gap:4px;align-items:center;"><span class="btdt-mono" style="color:rgba(255,255,255,0.7);">Typing...</span></div>` : ""}
+              </div>
+              <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;"><button onclick="sendChatReply('Hi!')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Say Hi</button><button onclick="sendChatReply('What are real rent & dorm options?')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Rent &amp; dorms?</button><button onclick="sendChatReply('Does my transcript seal look ready?')" style="padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.04);color:#fff;font-size:11px;white-space:nowrap;cursor:pointer;">Transcript check?</button></div>
+              <div id="f7ChatLiveWarn" style="display:none;padding:7px 10px;border-radius:9px;border:1px solid #ff453a;background:rgba(255,69,58,0.16);color:#ffb4ae;font-size:11px;font-weight:600;">Do not send personal details here — numbers, email IDs, and off-platform messages are automatically deleted.</div>
+              <div style="display:flex;gap:7px;"><input id="f7ChatInput" class="btdt-input" style="margin-top:0;flex:1;" type="text" oninput="onChatInputLive(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();sendChatReply();}" placeholder="Message ${activePeer.name.split(" ")[0]}..." /><button class="btdt-btn-fill" style="width:auto;padding:0 14px;" onclick="sendChatReply()">Send</button></div>
+            </div>
+          `;
+        } else if (tab === "kit") {
+          const items = [["esim", "Arrival eSIM & Campus SIM Partner", "Roam from landing, swap on campus day 1"], ["funds", "Student Banking & Proof-of-Funds Prep", "Approved student accounts & living budget notes"], ["health", "Student Health Insurance Activation", "Public & student plan enrollment guide"], ["rail", `${u.city} Semester Transit & City Reg`, "U-Bahn/rail pass + municipal address checklist"]];
+          const doneCount = items.filter(([k]) => state.kitDone[k]).length, pct = Math.round((doneCount / items.length) * 100);
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-card"><div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span class="btdt-mono" style="color:#f64838;">LANDING READINESS</span><span class="btdt-mono" style="color:#fff;">${pct}% · ${doneCount}/4</span></div><div style="height:6px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;"><div style="height:100%;width:${pct}%;background:#f64838;transition:width 0.25s ease;"></div></div></div>${items.map(([k, title, sub]) => `<label class="btdt-card" style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;border-color:${state.kitDone[k] ? "rgba(74,222,128,0.4)" : "rgba(255,255,255,0.13)"};"><input type="checkbox" ${state.kitDone[k] ? "checked" : ""} onchange="toggleKitCheck('${k}')" style="margin-top:3px;accent-color:#f64838;" /><div><div style="font-size:13px;font-weight:500;color:#fff;${state.kitDone[k] ? "text-decoration:line-through;opacity:0.6;" : ""}">${title}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);margin-top:2px;">${sub}</div></div></label>`).join("")}<div class="btdt-card" style="font-size:11.5px;color:rgba(255,255,255,0.68);line-height:1.45;"><strong style="color:#fff;">Peer Guidance Policy:</strong> BTDT connects seniors and incoming students for practical arrival &amp; document formatting guidance. Official visa issuance remains solely with embassies.</div></div>`;
+        } else {
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="btdt-mono" style="color:#f64838;">SESSION PASSES &amp; NOTES</span><button onclick="openBookingSheet('${quickMatch.id}')" style="background:none;border:0;color:#fff;font-family:var(--btdt-mono);font-size:11px;text-decoration:underline;cursor:pointer;">+ New Pass</button></div>${state.passes.map((ps) => { const pu = S.universities.find((x) => x.id === ps.uniId) || u, open = state.expandedPass === ps.code; return `<div class="btdt-card" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span class="btdt-mono" style="color:#f64838;">${ps.code}</span><span class="btdt-pill ${ps.status === "Confirmed" ? "btdt-pill-green" : ""}">${ps.status}</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><div style="display:flex;align-items:center;gap:9px;min-width:0;"><img src="/media/unis/${pu.id}.svg" class="uni-logo-pill" alt="${pu.shortName}" /><div style="min-width:0;"><div style="font-size:14px;font-weight:600;color:#fff;">${ps.mentorName}</div><div style="font-size:11px;color:rgba(255,255,255,0.62);">${pu.shortName} · ${ps.pkg}</div></div></div><strong class="btdt-mono" style="font-size:15px;color:#fff;">€${ps.total}</strong></div><div style="border-top:1px dashed rgba(255,255,255,0.18);"></div><div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;"><span style="color:rgba(255,255,255,0.6);">${ps.when}</span><button onclick="togglePassExpand('${ps.code}')" style="background:none;border:0;color:#fff;text-decoration:underline;cursor:pointer;font-size:11.5px;">${open ? "Hide Notes" : `Notes (${ps.notes.length})`}</button></div>${open ? `<div style="display:flex;flex-direction:column;gap:5px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.08);">${ps.notes.map((nt) => `<div style="padding:7px 9px;border-radius:8px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.85);">${nt}</div>`).join("")}</div>` : ""}</div>`; }).join("")}</div>`;
+        }
+
+        const tabs = [["home", "house_fill", "Home"], ["peers", "person_2_fill", "Peers"], ["chat", "chat_bubble_2_fill", "Chat"], ["kit", "briefcase_fill", "Kit"], ["passes", "ticket_fill", "Passes"]];
+        setPageHtml(`<div class="page btdt-app-page" data-name="student-app"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()">← iPhone</a></div><div class="title">BTDT · Student</div><div class="right"><a class="link" onclick="btdtBack('role_gate')">Switch</a></div></div></div><div class="toolbar toolbar-bottom tabbar tabbar-icons"><div class="toolbar-inner">${tabs.map(([id, ic, lbl]) => `<a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchStudentTab('${id}')" style="cursor:pointer;"><i class="f7-icons">${ic}</i><span class="tabbar-label">${lbl}</span></a>`).join("")}</div></div><div class="page-content">${bodyHtml}</div></div>`, false);
+      }
+
+      function renderMentorApp() {
+        const u = getUniObj(), tab = state.mentorTab;
+        let bodyHtml = "";
+        if (tab === "queue") {
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:11px;padding-top:12px;"><div class="btdt-card-accent"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><img src="/media/unis/${u.id}.svg" class="uni-logo-pill" alt="${u.shortName}" /><span class="btdt-pill" style="background:#f64838;color:#fff;">MENTOR STUDIO</span></div><div style="font-family:var(--btdt-display);font-size:15px;font-weight:600;color:#fff;">${state.mentorEduEmail}</div><div class="btdt-mono" style="color:${state.mentorIdUploaded ? "#4ade80" : "rgba(255,255,255,0.72)"};margin-top:3px;">Student ID Scan: ${state.mentorIdUploaded ? "Preview Staged" : "Pending Upload Preview"}</div></div>${state.mentorQueue.map((req) => `<div class="btdt-card" style="display:flex;flex-direction:column;gap:7px;"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div style="font-size:14px;font-weight:600;color:#fff;">${req.name}</div><div class="btdt-mono" style="color:rgba(255,255,255,0.55);">${req.route}</div></div><strong class="btdt-mono" style="color:#f64838;">${req.tier}</strong></div><p style="font-size:12px;color:rgba(255,255,255,0.8);margin:0;">“${req.topic}”</p><div style="display:flex;gap:8px;padding-top:4px;">${req.status === "pending" ? `<button class="btdt-btn-fill" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','accepted')">Accept Request</button><button class="btdt-btn-outline" style="padding:7px;font-size:11.5px;" onclick="handleMentorReq('${req.id}','declined')">Decline</button>` : `<span class="btdt-pill ${req.status === "accepted" ? "btdt-pill-green" : ""}">${req.status}</span>`}</div></div>`).join("")}</div>`;
+        } else if (tab === "chats") {
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-mono" style="color:#f64838;">MENTEE CONVERSATIONS</div><div class="btdt-card" style="display:flex;gap:10px;align-items:center;"><img src="/media/avatar-3.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" /><div><div style="font-size:13.5px;font-weight:600;color:#fff;">Priya Deshmukh</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Can I share my transcript format draft?”</div></div></div><div class="btdt-card" style="display:flex;gap:10px;align-items:center;"><img src="/media/avatar-5.jpg" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" /><div><div style="font-size:13.5px;font-weight:600;color:#fff;">Karthik Nair</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">“Which dorm hall is closest to U6?”</div></div></div></div>`;
+        } else if (tab === "sessions") {
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-card-accent"><div class="btdt-mono" style="color:#f64838;">COMPLETED SESSIONS</div><div style="font-family:var(--btdt-display);font-size:32px;font-weight:600;color:#fff;margin:2px 0;">€460.00</div><div style="font-size:11.5px;color:rgba(255,255,255,0.68);">24 students mentored · ${u.shortName}</div></div>${state.passes.map((ps) => `<div class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:13px;font-weight:600;">${ps.code} · ${ps.pkg}</div><div style="font-size:11px;color:rgba(255,255,255,0.58);">${ps.status}</div></div><strong class="btdt-mono">€${ps.total}</strong></div>`).join("")}</div>`;
+        } else if (tab === "hours") {
+          bodyHtml = `<div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;"><div class="btdt-mono" style="color:#f64838;">AVAILABILITY &amp; PICKUP TOGGLES</div>${[["monThu", "Mon–Thu Evenings (18:00–21:00)", "Text & quick calls open"], ["friSat", "Fri–Sat Deep-Dive Slots", "60-min paperwork prep"], ["arrivalGreet", "Airport Meet & Greet (+€40)", "Student covers transit fares"]].map(([k, t, s]) => `<label class="btdt-card" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;"><div><div style="font-size:13px;font-weight:600;">${t}</div><div style="font-size:11px;color:rgba(255,255,255,0.6);">${s}</div></div><input type="checkbox" ${state.availability[k] ? "checked" : ""} onchange="toggleAvail('${k}')" style="width:18px;height:18px;accent-color:#f64838;" /></label>`).join("")}</div>`;
+        } else {
+          bodyHtml = `<div class="btdt-card" style="text-align:center;margin-top:12px;padding:20px;"><div class="btdt-mono" style="color:#f64838;">PUBLIC AURA RATING</div><div style="font-family:var(--btdt-display);font-size:48px;font-weight:600;color:#fff;line-height:1.1;margin:8px 0;">99<span style="font-size:20px;color:#f64838;">/100</span></div><div style="font-size:12.5px;color:rgba(255,255,255,0.75);">24 Verified Sessions · 0 Negative Reviews · ~14m Reply</div></div>`;
+        }
+
+        const mTabs = [["queue", "tray_full_fill", "Queue"], ["chats", "chat_bubble_2_fill", "Chats"], ["sessions", "calendar_today", "Sessions"], ["hours", "clock_fill", "Hours"], ["aura", "rosette", "Aura"]];
+        setPageHtml(`<div class="page btdt-app-page" data-name="mentor-app"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"><a class="link" onclick="goHomeOS()">← iPhone</a></div><div class="title">Mentor Studio</div><div class="right"><a class="link" onclick="btdtBack('role_gate')">Switch</a></div></div></div><div class="toolbar toolbar-bottom tabbar tabbar-icons"><div class="toolbar-inner">${mTabs.map(([id, ic, lbl]) => `<a class="tab-link ${tab === id ? "tab-link-active" : ""}" onclick="switchMentorTab('${id}')" style="cursor:pointer;"><i class="f7-icons">${ic}</i><span class="tabbar-label">${lbl}</span></a>`).join("")}</div></div><div class="page-content">${bodyHtml}</div></div>`, false);
+      }
+
+      window.BTDT_IOS = {
+        bootToLockScreen: () => window.bootToLockScreen(),
+        bootAndOpen: (screen) => {
+          window.bootToLockScreen(() => {
+            window.unlockPhoneOS(() => {
+              if (screen === "chat") window.BTDT_IOS.openStudentScreen("chat");
+              else if (screen === "arrival" || screen === "kit") window.BTDT_IOS.openStudentScreen("kit");
+              else if (screen === "wallet" || screen === "passes") window.BTDT_IOS.openStudentScreen("passes");
+              else if (screen === "auth") window.launchBtdtApp("auth");
+              else window.launchBtdtApp();
+            });
+          });
+        },
+        unlock: () => window.unlockPhoneOS(),
+        goHome: () => { window.unlockPhoneOS(); window.goHomeOS(); },
+        launchBtdt: () => { window.unlockPhoneOS(); window.launchBtdtApp(); },
+        openAuth: () => { window.unlockPhoneOS(); window.launchBtdtApp("auth"); },
+        openStudentScreen: (tab = "home") => {
+          cancelPendingBootAndUnlock();
+          window.unlockPhoneOS();
+          const map = { home: "home", peers: "peers", chat: "chat", arrival: "kit", kit: "kit", wallet: "passes", passes: "passes" };
+          state.role = "student"; state.btdtStage = "student_app"; state.studentTab = map[tab] || "home"; state.currentApp = "btdt";
+          renderBtdtCurrentStage();
+        },
+        openMentorScreen: (tab = "queue") => {
+          cancelPendingBootAndUnlock();
+          window.unlockPhoneOS();
+          state.role = "mentor"; state.btdtStage = "mentor_app"; state.mentorTab = tab; state.currentApp = "btdt";
+          renderBtdtCurrentStage();
+        },
+        openUtilityApp: (name) => { cancelPendingBootAndUnlock(); window.unlockPhoneOS(); window.openUtilityApp(name); },
+        getState: () => ({ ...state, uniName: getUniObj().name })
+      };
+
+      syncParentInspector();
+      window.bootToLockScreen();
+    })();
+  </script>
+</body>
+</html>
