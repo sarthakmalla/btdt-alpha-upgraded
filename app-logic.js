@@ -139,28 +139,44 @@
 
   function renderCampusSurfaces() {
     const marqueeHtml = S.universities.map((u) => {
-      const isWide = Boolean(S.UNI_LOGOS[u.id]?.wide);
-      const logoCls = isWide ? "h-9 md:h-10 w-auto max-w-[150px] md:max-w-[185px] object-contain" : "h-9 md:h-10 w-auto max-w-[58px] object-contain";
+      const brandName = u.officialBrand || u.name;
+      const brandStyle = u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
       return `
-      <button onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center px-4 py-2 hover:opacity-100 opacity-90 transition-all shrink-0 group cursor-pointer hover:scale-105" aria-label="${u.name}" title="${u.name}">
-        <img src="./media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_10px_rgba(255,255,255,0.25)]" />
-      </button>
+      <div onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-3.5 px-4 py-2.5 rounded-[12px] bg-white/[0.07] hover:bg-white/[0.14] border border-white/20 hover:border-white/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(246,72,56,0.2)] transition-all duration-200 shrink-0 group select-text cursor-pointer hover:scale-[1.02]">
+        <div class="w-10 h-10 rounded-[8px] bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+          <img src="./media/unis/${u.id}.svg" alt="${brandName} emblem" class="max-h-full max-w-full object-contain" />
+        </div>
+        <div class="flex flex-col text-left select-text min-w-0">
+          <span class="text-white text-[13.5px] md:text-[14.5px] leading-tight select-text tracking-wide whitespace-nowrap" style="${brandStyle}">
+            ${brandName}
+          </span>
+          <span class="text-[10px] font-mono text-white/55 tracking-wider uppercase select-text mt-0.5">
+            ${u.city} · ${u.iso}
+          </span>
+        </div>
+      </div>
     `;
     }).join("");
     document.getElementById("campusMarqueeTrack").innerHTML = marqueeHtml + marqueeHtml;
 
-    document.getElementById("navCampusesList").innerHTML = S.universities.map((u) => `
+    document.getElementById("navCampusesList").innerHTML = S.universities.map((u) => {
+      const brandName = u.officialBrand || u.name;
+      const brandStyle = u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
+      return `
       <button onclick="closeCampusesDropdown(); openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="w-full text-left px-2.5 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-2">
         <div class="flex items-center gap-2.5 min-w-0">
-          <span class="min-w-7 h-7 flex items-center justify-center shrink-0">${S.getUniLogo(u, "w-6 h-6")}</span>
+          <span class="w-7 h-7 rounded-[6px] bg-white flex items-center justify-center p-1 shrink-0 shadow-sm">
+            <img src="./media/unis/${u.id}.svg" alt="${brandName}" class="max-h-full max-w-full object-contain" />
+          </span>
           <div class="min-w-0">
-            <p style="font-family:${u.font || "var(--font-display)"};" class="text-[13px] font-medium text-white truncate leading-tight">${u.name}</p>
+            <p style="${brandStyle}" class="text-[13px] text-white truncate leading-tight select-text">${brandName}</p>
             <p class="text-[10.5px] text-white/50 truncate">${u.city} · ${u.iso}</p>
           </div>
         </div>
         <span class="font-mono text-[10px] text-white/45 shrink-0">28 peers</span>
       </button>
-    `).join("");
+    `;
+    }).join("");
 
     renderWorkspaceSidebarCampuses();
     renderDirectoryCampusPills();

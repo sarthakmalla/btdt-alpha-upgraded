@@ -287,7 +287,7 @@
             -webkit-mask-image: linear-gradient(270deg, rgba(0,0,0,0) 0%, #000 18%, #000 82%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(270deg, rgba(0,0,0,0) 0%, #000 18%, #000 82%, rgba(0,0,0,0) 100%);
         }
-        .marquee-track { display: flex; width: max-content; gap: 64px; will-change: transform; animation: tickerLoop 78s linear infinite; }
+        .marquee-track { display: flex; width: max-content; gap: 20px; will-change: transform; animation: tickerLoop 78s linear infinite; }
         .marquee-track:hover { animation-play-state: paused; }
         @keyframes tickerLoop { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
 
@@ -1451,13 +1451,13 @@
                 <div class="space-y-2">
                     <p class="font-mono text-[10px] uppercase tracking-wider text-white/50">Jump Directly Inside Phone</p>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="setDemoMode('student')" data-demo-tab="student_home" class="px-3.5 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/20 text-white text-[12px] font-semibold cursor-pointer transition-all hover:bg-crimzon/35 hover:scale-[1.02] shadow-[0_0_12px_rgba(246,72,56,0.25)]">🎓 Student Workspace</button>
-                        <button onclick="switchStudentDemoScreen('peers')" data-demo-tab="peers" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">👥 Enrolled Peers</button>
-                        <button onclick="switchStudentDemoScreen('chat')" data-demo-tab="chat" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">💬 Student Chat</button>
-                        <button onclick="switchStudentDemoScreen('kit')" data-demo-tab="kit" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🧳 Arrival Checklist</button>
-                        <button onclick="switchStudentDemoScreen('wallet')" data-demo-tab="passes" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🎫 Apple Wallet Pass</button>
-                        <button onclick="setDemoMode('mentor')" data-demo-tab="requests" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">🛡️ Mentor Studio</button>
-                        <button onclick="routeIosDemoScreen('os_home')" data-demo-tab="os_home" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">📱 Lock Screen</button>
+                        <button onclick="setDemoMode('student')" data-demo-tab="student_home" class="px-3.5 py-1.5 rounded-[8px] border border-crimzon bg-crimzon/20 text-white text-[12px] font-semibold cursor-pointer transition-all hover:bg-crimzon/35 hover:scale-[1.02] shadow-[0_0_12px_rgba(246,72,56,0.25)]">Student Workspace</button>
+                        <button onclick="switchStudentDemoScreen('peers')" data-demo-tab="peers" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Enrolled Peers</button>
+                        <button onclick="switchStudentDemoScreen('chat')" data-demo-tab="chat" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Student Chat</button>
+                        <button onclick="switchStudentDemoScreen('kit')" data-demo-tab="kit" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Arrival Checklist</button>
+                        <button onclick="switchStudentDemoScreen('wallet')" data-demo-tab="passes" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Apple Wallet Pass</button>
+                        <button onclick="setDemoMode('mentor')" data-demo-tab="requests" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Mentor Studio</button>
+                        <button onclick="routeIosDemoScreen('os_home')" data-demo-tab="os_home" class="px-3 py-1.5 rounded-[8px] border border-white/15 bg-white/[0.03] text-white/80 hover:text-white hover:border-white/30 text-[12px] cursor-pointer transition-colors">Lock Screen</button>
                     </div>
                 </div>
 
