@@ -144,7 +144,7 @@
       const uniFont = u.font || "var(--font-display)";
       return `
       <button onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-3 text-white/95 hover:text-white transition-colors shrink-0 group cursor-pointer">
-        <img src="/media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.22)]" />
+        <img src="../media/unis/${u.id}.svg" alt="${u.shortName} logo" class="${logoCls} shrink-0 drop-shadow-[0_2px_8px_rgba(255,255,255,0.22)]" />
         <span style="font-family: ${uniFont};" class="text-[16.5px] font-semibold tracking-[-0.015em] whitespace-nowrap">${u.name}</span>
       </button>
     `;
@@ -840,7 +840,7 @@
     if (rec) rec.textContent = workspaceRecs[idx];
     const bgImg = document.getElementById("showcaseBgImg");
     if (bgImg) {
-      bgImg.src = idx === 0 ? "/media/hero-bg.webp" : "/media/cta-bg.png";
+      bgImg.src = idx === 0 ? "./media/hero-bg.webp" : "./media/cta-bg.png";
     }
   };
 
