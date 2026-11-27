@@ -372,13 +372,8 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     
-        /* Google Translate Headless & Clean Dark Luxury Styling */
-        .goog-te-banner-frame.skiptranslate, iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; }
-        body { top: 0px !important; position: static !important; }
-        .goog-te-gadget { display: none !important; }
-        .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-        #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+        /* Clean in-page luxury language transition */
+        .lang-transition { transition: opacity 0.25s ease-in-out; }
 
     </style>
 </head>
@@ -518,32 +513,32 @@
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-[16px]" style="animation: heroContentReveal 1.35s var(--ease-crimzon) 0.78s both; will-change: transform, opacity;">
                     <button onclick="goToSection('find-match')" class="btn-fill">
-                        <span>Find Your Match</span>
+                        <span data-i18n="hero.btnMatch">Find Your Match</span>
                         <svg class="arrow-svg w-[14px] h-[14px]" viewBox="0 0 13.5 13.5" fill="none">
                             <path d="M 6.253 1.331 C 6.527 1.056 6.972 1.056 7.247 1.331 L 12.169 6.253 C 12.443 6.527 12.443 6.973 12.169 7.247 L 7.247 12.169 C 6.972 12.444 6.527 12.444 6.253 12.169 C 5.978 11.894 5.978 11.449 6.253 11.175 L 9.974 7.453 L 1.828 7.453 C 1.44 7.453 1.125 7.138 1.125 6.75 C 1.125 6.362 1.44 6.047 1.828 6.047 L 9.974 6.047 L 6.253 2.325 C 5.978 2.051 5.978 1.605 6.253 1.331 Z" fill="#151515"/>
                         </svg>
                     </button>
                     <button onclick="openAppDemo('os_home')" class="btn-hollow border border-white/25 px-5 py-3">
-                        <span>Interactive App Demo</span>
+                        <span data-i18n="hero.btnDemo">Interactive App Demo</span>
                     </button>
                     <button onclick="openModal('checklistModal')" class="btn-hollow">
-                        <span>Free Arrival Checklist</span>
+                        <span data-i18n="hero.btnChecklist">Free Arrival Checklist</span>
                     </button>
                 </div>
 
                 <!-- 3-Step Core Promise Strip -->
                 <div class="w-full max-w-[740px] pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left" style="animation: heroContentReveal 1.35s var(--ease-crimzon) 0.95s both; will-change: transform, opacity;">
                     <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
-                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">01 · SHARED ROOTS</p>
-                        <p class="text-[12px] text-white/75">Ask freely in your language with a senior from home</p>
+                        <p data-i18n="hero.strip1.tag" class="font-mono text-[10.5px] text-crimzon uppercase mb-1">01 · SHARED ROOTS</p>
+                        <p data-i18n="hero.strip1.text" class="text-[12px] text-white/75">Ask freely in your language with a senior from home</p>
                     </div>
                     <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
-                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">02 · VERIFIED PEERS</p>
-                        <p class="text-[12px] text-white/75">Verified by Student ID or Enrollment Documents</p>
+                        <p data-i18n="hero.strip2.tag" class="font-mono text-[10.5px] text-crimzon uppercase mb-1">02 · VERIFIED PEERS</p>
+                        <p data-i18n="hero.strip2.text" class="text-[12px] text-white/75">Verified by Student ID or Enrollment Documents</p>
                     </div>
                     <div class="px-4 py-3 rounded-[10px] border border-white/15 bg-black/55 backdrop-blur-md">
-                        <p class="font-mono text-[10.5px] text-crimzon uppercase mb-1">03 · CONCRETE ANSWERS</p>
-                        <p class="text-[12px] text-white/75">Personal arrival checklists and real people helping you step-by-step</p>
+                        <p data-i18n="hero.strip3.tag" class="font-mono text-[10.5px] text-crimzon uppercase mb-1">03 · CONCRETE ANSWERS</p>
+                        <p data-i18n="hero.strip3.text" class="text-[12px] text-white/75">Personal arrival checklists and real people helping you step-by-step</p>
                     </div>
                 </div>
             </div>
@@ -552,7 +547,7 @@
         <!-- SECTION 2: ACTIVE CAMPUSES MARQUEE -->
         <section class="py-[44px] md:py-[52px] overflow-hidden">
             <div class="crimzon-container flex flex-col items-center gap-[20px]">
-                <p class="text-[18px] leading-[24px] tracking-[-0.02em] text-white text-center max-w-[560px] reveal">
+                <p data-i18n="marquee.title" class="text-[18px] leading-[24px] tracking-[-0.02em] text-white text-center max-w-[560px] reveal">
                     Trusted by incoming students across 30 global universities
                 </p>
                 <div class="w-full marquee-wrap">
@@ -1743,18 +1738,18 @@
             <div class="flex items-start justify-between gap-3 mb-2">
                 <div class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-crimzon/20 border border-crimzon/40 flex items-center justify-center text-[12px]">🌐</span>
-                    <span class="font-mono text-[11px] uppercase tracking-wider text-white font-medium">Regional Language Available</span>
+                    <span id="btdtPromptTitle" class="font-mono text-[11px] uppercase tracking-wider text-white font-medium">Regional Language Available</span>
                 </div>
                 <button onclick="BTDT_I18N.dismissPrompt()" class="text-white/50 hover:text-white transition-colors text-sm p-0.5 leading-none" title="Dismiss">✕</button>
             </div>
-            <p class="text-[12.5px] leading-[17px] text-white/80 mb-3">
-                Read BTDT in <span class="text-white font-medium">Ukrainian (Українська)</span>, <span class="text-white font-medium">German</span>, <span class="text-white font-medium">Spanish</span>, or 100+ languages to understand our student mentorship motive clearly.
+            <p id="btdtPromptDesc" class="text-[12.5px] leading-[17px] text-white/80 mb-3">
+                Read BTDT in Ukrainian (Українська), Chinese, German, Spanish, or other languages to understand our student mentorship motive clearly.
             </p>
             <div class="flex items-center gap-2">
-                <button onclick="BTDT_I18N.openModal()" class="flex-1 btn-fill py-1.5 px-3 text-[12px] font-medium text-center">
+                <button id="btdtPromptSwitchBtn" onclick="BTDT_I18N.openModal()" class="flex-1 btn-fill py-1.5 px-3 text-[12px] font-medium text-center">
                     Switch Language
                 </button>
-                <button onclick="BTDT_I18N.dismissPrompt()" class="btn-hollow py-1.5 px-3 text-[11px] text-white/60 hover:text-white border-white/15">
+                <button id="btdtPromptKeepBtn" onclick="BTDT_I18N.dismissPrompt()" class="btn-hollow py-1.5 px-3 text-[11px] text-white/60 hover:text-white border-white/15">
                     Keep English
                 </button>
             </div>
@@ -1791,42 +1786,20 @@
                 </div>
             </div>
 
-            <div class="p-6 overflow-y-auto space-y-5">
-                <div id="btdtPopularSection">
-                    <p class="font-mono text-[10.5px] uppercase tracking-wider text-crimzon mb-2.5">Popular Student &amp; Regional Languages</p>
-                    <div id="btdtPopularLangGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
-                </div>
-
-                <div>
-                    <p class="font-mono text-[10.5px] uppercase tracking-wider text-white/45 mb-2.5">All Supported Languages (100+ via Translation Engine)</p>
-                    <div id="btdtAllLangGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
-                    <p id="btdtLangNoResults" class="hidden text-center py-8 text-[12.5px] text-white/40">No matching language found.</p>
-                </div>
+            <div class="p-6 overflow-y-auto space-y-3">
+                <div id="btdtAllLangGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+                <p id="btdtLangNoResults" class="hidden text-center py-8 text-[12.5px] text-white/40">No matching language found.</p>
             </div>
 
             <div class="px-6 py-3 border-t border-white/10 bg-white/[0.01] flex items-center justify-between text-[11px] text-white/50">
-                <span>BTDT Global Language Gateway</span>
-                <span>Instant translation across all campus guides &amp; mentors</span>
+                <span>BTDT Native Language Gateway</span>
+                <span>Instant in-page translation · Zero white banners</span>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Google Translate Element Container -->
-    <div id="google_translate_element" style="display:none;" aria-hidden="true"></div>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        if (window.google && window.google.translate) {
-          new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            autoDisplay: false
-          }, 'google_translate_element');
-        }
-      }
-    </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
-
-    <script src="./translations.js?v=20261127c"></script>
-    <script src="./peers-data.js?v=20261127c"></script>
-    <script src="./app-logic.js?v=20261127c"></script>
+    <script src="./translations.js?v=20261127_clean"></script>
+    <script src="./peers-data.js?v=20261127_clean"></script>
+    <script src="./app-logic.js?v=20261127_clean"></script>
 </body>
 </html>
