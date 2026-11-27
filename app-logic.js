@@ -139,18 +139,24 @@
 
   function renderCampusSurfaces() {
     const marqueeHtml = S.universities.map((u) => {
-      const brandName = u.officialBrand || u.name;
-      const brandStyle = u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
+      const font1 = u.lockupFont1 || u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:700;`;
+      const font2 = u.lockupFont2 || u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
+      const line1 = u.lockupLine1 || u.name;
+      const line2 = u.lockupLine2 || `${u.city} · ${u.iso}`;
+      const safeName = u.name.replace(/'/g, "\\'");
       return `
-      <div onclick="openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-3.5 px-4 py-2.5 rounded-[12px] bg-white/[0.07] hover:bg-white/[0.14] border border-white/20 hover:border-white/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(246,72,56,0.2)] transition-all duration-200 shrink-0 group select-text cursor-pointer hover:scale-[1.02]">
-        <div class="w-10 h-10 rounded-[8px] bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-          <img src="./media/unis/${u.id}.svg" alt="${brandName} emblem" class="max-h-full max-w-full object-contain" />
+      <div onclick="if(!window.getSelection()?.toString()) openDirectoryForUni('${safeName}')" class="inline-flex items-center gap-3.5 px-4 py-2.5 rounded-[12px] bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 hover:border-white/40 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.5)] hover:shadow-[0_4px_20px_rgba(246,72,56,0.25)] transition-all duration-200 shrink-0 group select-text cursor-pointer hover:scale-[1.02]">
+        <div class="w-11 h-11 rounded-[9px] bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+          <img src="./media/unis/${u.id}.svg" alt="${u.shortName} emblem" class="max-h-full max-w-full object-contain" />
         </div>
-        <div class="flex flex-col text-left select-text min-w-0">
-          <span class="text-white text-[13.5px] md:text-[14.5px] leading-tight select-text tracking-wide whitespace-nowrap" style="${brandStyle}">
-            ${brandName}
+        <div class="flex flex-col text-left select-text min-w-0 justify-center">
+          <span class="text-white leading-tight select-text whitespace-nowrap" style="${font1}">
+            ${line1}
           </span>
-          <span class="text-[10px] font-mono text-white/55 tracking-wider uppercase select-text mt-0.5">
+          <span class="text-white/85 leading-tight select-text whitespace-nowrap mt-0.5" style="${font2}">
+            ${line2}
+          </span>
+          <span class="text-[9.5px] font-mono text-white/50 tracking-wider uppercase select-text mt-1">
             ${u.city} · ${u.iso}
           </span>
         </div>
@@ -160,17 +166,19 @@
     document.getElementById("campusMarqueeTrack").innerHTML = marqueeHtml + marqueeHtml;
 
     document.getElementById("navCampusesList").innerHTML = S.universities.map((u) => {
-      const brandName = u.officialBrand || u.name;
-      const brandStyle = u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
+      const font1 = u.lockupFont1 || u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:700;`;
+      const font2 = u.lockupFont2 || u.brandStyle || `font-family:${u.font || "var(--font-display)"}; font-weight:600;`;
+      const line1 = u.lockupLine1 || u.name;
+      const line2 = u.lockupLine2 || `${u.city} · ${u.iso}`;
       return `
-      <button onclick="closeCampusesDropdown(); openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="w-full text-left px-2.5 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="w-7 h-7 rounded-[6px] bg-white flex items-center justify-center p-1 shrink-0 shadow-sm">
-            <img src="./media/unis/${u.id}.svg" alt="${brandName}" class="max-h-full max-w-full object-contain" />
+      <button onclick="closeCampusesDropdown(); openDirectoryForUni('${u.name.replace(/'/g, "\\'")}')" class="w-full text-left px-3 py-2 rounded-[8px] hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-2.5">
+        <div class="flex items-center gap-3 min-w-0">
+          <span class="w-8 h-8 rounded-[6px] bg-white flex items-center justify-center p-1.5 shrink-0 shadow-sm">
+            <img src="./media/unis/${u.id}.svg" alt="${u.shortName}" class="max-h-full max-w-full object-contain" />
           </span>
-          <div class="min-w-0">
-            <p style="${brandStyle}" class="text-[13px] text-white truncate leading-tight select-text">${brandName}</p>
-            <p class="text-[10.5px] text-white/50 truncate">${u.city} · ${u.iso}</p>
+          <div class="min-w-0 flex flex-col justify-center">
+            <p style="${font1}" class="text-[13px] text-white truncate leading-tight select-text">${line1}</p>
+            <p style="${font2}" class="text-[11px] text-white/70 truncate leading-tight select-text mt-0.5">${line2}</p>
           </div>
         </div>
         <span class="font-mono text-[10px] text-white/45 shrink-0">28 peers</span>
@@ -362,8 +370,8 @@
         heroBox.innerHTML = `
           <div class="crimzon-card p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 border-crimzon/40">
             <div class="flex items-start gap-4">
-              <div class="min-w-12 h-12 flex items-center justify-center shrink-0">
-                ${S.getUniLogo(uniObj, "w-10 h-10")}
+              <div class="w-14 h-14 rounded-[10px] bg-white flex items-center justify-center p-2 shrink-0 shadow-md">
+                <img src="./media/unis/${uniObj.id}.svg" alt="${uniObj.shortName}" class="max-h-full max-w-full object-contain" />
               </div>
               <div class="space-y-1.5">
                 <div class="flex flex-wrap items-center gap-2">
@@ -371,8 +379,11 @@
                   <span class="font-mono text-[11px] text-crimzon uppercase">${uniObj.brand || uniObj.shortName}</span>
                   <span class="font-mono text-[11px] text-white/55">· ${uniObj.city}, ${uniObj.country}</span>
                 </div>
-                <h2 style="font-family: ${uniObj.font || "var(--font-display)"};" class="text-[22px] md:text-[26px] font-semibold text-white leading-tight">${uniObj.name}</h2>
-                <p class="text-[13px] text-white/75">${uniObj.housing} · ${uniObj.first14}</p>
+                <div class="flex flex-col">
+                  <h2 style="${uniObj.lockupFont1 || uniObj.brandStyle}" class="text-[20px] md:text-[24px] text-white leading-tight select-text">${uniObj.lockupLine1 || uniObj.name}</h2>
+                  <p style="${uniObj.lockupFont2 || uniObj.brandStyle}" class="text-[16px] md:text-[18px] text-white/80 leading-tight mt-0.5 select-text">${uniObj.lockupLine2 || uniObj.city}</p>
+                </div>
+                <p class="text-[13px] text-white/75 mt-1">${uniObj.housing} · ${uniObj.first14}</p>
               </div>
             </div>
             <div class="flex flex-wrap items-center gap-3 shrink-0">
